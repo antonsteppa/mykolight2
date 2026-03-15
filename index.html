@@ -32,43 +32,43 @@ h1{font-family:var(--display);font-size:clamp(18px,4vw,26px);font-weight:700;let
 .field{display:flex;flex-direction:column;gap:6px}
 .field label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.12em}
 .sel-wrap{position:relative}
-.sel-input{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:var(--mono);font-size:13px;padding:10px 32px 10px 12px;outline:none;cursor:pointer;transition:border-color .2s;user-select:none}
-.sel-input:focus{border-color:var(--accent)}
-.sel-input.disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
+.sel-face{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:var(--mono);font-size:13px;padding:10px 32px 10px 12px;cursor:pointer;transition:border-color .2s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;user-select:none}
+.sel-face.off{opacity:.4;cursor:not-allowed;pointer-events:none}
+.sel-face:not(.off):hover{border-color:var(--accent)}
 .sel-arrow{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--text3);pointer-events:none;font-size:10px}
-.sel-dropdown{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;max-height:220px;overflow:hidden;z-index:100;box-shadow:0 8px 24px rgba(0,0,0,.5);flex-direction:column}
-.sel-dropdown.open{display:flex}
-.sel-search{background:var(--bg4);border:none;border-bottom:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:12px;padding:8px 12px;outline:none;flex-shrink:0}
-.sel-search::placeholder{color:var(--text3)}
-.sel-list{overflow-y:auto;flex:1}
-.sel-option{padding:9px 12px;font-size:13px;cursor:pointer;color:var(--text);transition:background .1s}
-.sel-option:hover{background:var(--bg4)}
-.sel-option.selected{color:var(--accent)}
-.sel-empty{padding:10px 12px;font-size:12px;color:var(--text3)}
+.sel-drop{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;z-index:200;box-shadow:0 8px 24px rgba(0,0,0,.6);flex-direction:column;max-height:260px}
+.sel-drop.open{display:flex}
+.sel-srch{background:var(--bg4);border:none;border-bottom:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:12px;padding:8px 12px;outline:none;flex-shrink:0;border-radius:8px 8px 0 0}
+.sel-srch::placeholder{color:var(--text3)}
+.sel-opts{overflow-y:auto;flex:1}
+.sel-opt{padding:9px 12px;font-size:13px;cursor:pointer;color:var(--text);transition:background .1s}
+.sel-opt:hover{background:var(--bg4)}
+.sel-opt.sel{color:var(--accent)}
+.sel-none{padding:10px 12px;font-size:12px;color:var(--text3)}
 .btn-search{grid-column:1/-1;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:12px;font-family:var(--display);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;letter-spacing:.05em;display:flex;align-items:center;justify-content:center;gap:8px}
 .btn-search:hover{background:var(--accent2);transform:translateY(-1px)}
 .btn-search:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .result-card{background:var(--bg2);border-radius:12px;padding:20px;margin-bottom:24px;display:none;animation:fadeIn .3s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.result-card.visible{display:block}
+.result-card.on{display:block}
 .result-status{display:flex;align-items:center;gap:12px;margin-bottom:12px}
 .status-icon{font-size:28px}
 .status-text h2{font-family:var(--display);font-size:16px;font-weight:500}
 .status-text p{font-size:12px;color:var(--text2);margin-top:2px}
-.queue-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:6px;font-family:var(--display);font-size:20px;font-weight:700;margin:8px 0}
+.queue-badge{display:inline-flex;align-items:center;padding:6px 14px;border-radius:6px;font-family:var(--display);font-size:20px;font-weight:700;margin:8px 0}
 .queue-badge.off{background:var(--red-bg);color:var(--red);border:1px solid rgba(239,68,68,.2)}
 .queue-badge.on{background:var(--green-bg);color:var(--green);border:1px solid rgba(34,197,94,.2)}
-.queue-badge.unknown{background:var(--bg3);color:var(--text2);border:1px solid var(--border)}
+.queue-badge.unk{background:var(--bg3);color:var(--text2);border:1px solid var(--border)}
 .timer-block{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px;margin-top:12px;text-align:center}
 .timer-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px}
 .timer-val{font-family:var(--display);font-size:clamp(24px,6vw,40px);font-weight:700;color:var(--accent);letter-spacing:.05em}
 .timer-desc{font-size:11px;color:var(--text2);margin-top:4px}
 .sched-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:24px}
-.sched-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.sched-hd{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
 .sched-title{font-family:var(--display);font-size:12px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:.1em}
-.sched-legend{display:flex;gap:12px;flex-wrap:wrap}
-.leg-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2)}
-.leg-dot{width:10px;height:10px;border-radius:2px}
+.leg{display:flex;gap:12px;flex-wrap:wrap}
+.leg-i{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2)}
+.leg-d{width:10px;height:10px;border-radius:2px}
 .sched-scroll{overflow-x:auto}
 .sched-table{width:100%;border-collapse:collapse;min-width:640px}
 .sched-table th{padding:8px 6px;font-size:10px;color:var(--text3);text-align:center;border-right:1px solid var(--border);background:var(--bg2)}
@@ -78,21 +78,22 @@ h1{font-family:var(--display);font-size:clamp(18px,4vw,26px);font-weight:700;let
 .sched-table td:first-child{padding:0 8px 0 16px;font-size:10px;color:var(--text2);white-space:nowrap}
 .sched-table tr:last-child td{border-bottom:none}
 .cell{width:100%;height:100%}
-.cell.on{background:var(--green-bg)}.cell.off{background:var(--red-bg)}.cell.maybe{background:var(--orange-bg)}.cell.sure{background:rgba(239,68,68,.25)}
-.cell.now-on{background:rgba(34,197,94,.35);box-shadow:inset 0 0 0 1px rgba(34,197,94,.5)}
-.cell.now-off{background:rgba(239,68,68,.35);box-shadow:inset 0 0 0 1px rgba(239,68,68,.5)}
-.cell.now-maybe{background:rgba(249,115,22,.35);box-shadow:inset 0 0 0 1px rgba(249,115,22,.5)}
-.time-col-now{background:rgba(79,127,255,.08)!important}
-.queue-row.highlight td:first-child{color:var(--accent);font-weight:600}
+.c0{background:var(--green-bg)}.c1{background:var(--red-bg)}.c2{background:var(--orange-bg)}.c3{background:rgba(239,68,68,.25)}
+.cn0{background:rgba(34,197,94,.35);box-shadow:inset 0 0 0 1px rgba(34,197,94,.5)}
+.cn1{background:rgba(239,68,68,.35);box-shadow:inset 0 0 0 1px rgba(239,68,68,.5)}
+.cn2{background:rgba(249,115,22,.35);box-shadow:inset 0 0 0 1px rgba(249,115,22,.5)}
+.cn3{background:rgba(239,68,68,.35);box-shadow:inset 0 0 0 1px rgba(239,68,68,.5)}
+.tcn{background:rgba(79,127,255,.08)!important}
+.hl td:first-child{color:var(--accent);font-weight:600}
 .loading{text-align:center;padding:40px;color:var(--text3);font-size:13px}
 .loading::after{content:'';display:block;width:24px;height:24px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;margin:12px auto 0;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.error-msg{background:var(--red-bg);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:12px 16px;font-size:12px;color:var(--red);margin-top:8px;display:none}
-.error-msg.visible{display:block}
-.tab-bar{display:flex;gap:4px;background:var(--bg3);border-radius:8px;padding:4px;margin-bottom:16px}
+.err{background:var(--red-bg);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:12px 16px;font-size:12px;color:var(--red);margin-top:8px;display:none}
+.err.on{display:block}
+.tabs{display:flex;gap:4px;background:var(--bg3);border-radius:8px;padding:4px;margin-bottom:16px}
 .tab{flex:1;padding:8px;text-align:center;font-size:11px;font-family:var(--display);cursor:pointer;border-radius:6px;color:var(--text2);transition:all .2s;border:none;background:none}
-.tab.active{background:var(--bg4);color:var(--text);border:1px solid var(--border2)}
-.saved-chip{display:inline-flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:6px 14px;font-size:11px;color:var(--text2);margin-top:8px}
+.tab.on{background:var(--bg4);color:var(--text);border:1px solid var(--border2)}
+.saved{display:inline-flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:6px 14px;font-size:11px;color:var(--text2);margin-bottom:12px}
 footer{text-align:center;padding:24px 0;font-size:10px;color:var(--text3);border-top:1px solid var(--border)}
 footer a{color:var(--text2);text-decoration:none}
 </style>
@@ -105,92 +106,91 @@ footer a{color:var(--text2);text-decoration:none}
   <div class="time-bar">
     <span><span class="upd-dot"></span>Онлайн</span>
     <span>Миколаїв, <span id="clock">--:--:--</span></span>
-    <span id="date-str" style="color:var(--text3)"></span>
+    <span id="dstr" style="color:var(--text3)"></span>
   </div>
 </header>
 
 <div class="search-card">
   <div class="search-title">Пошук за адресою</div>
-  <div id="saved-wrap" style="display:none;margin-bottom:12px">
-    <span style="font-size:11px;color:var(--text3)">Збережена: </span>
-    <span id="saved-chip" class="saved-chip"></span>
+  <div id="saved-wrap" style="display:none">
+    <div class="saved" id="saved-chip"></div>
   </div>
   <div class="fields">
     <div class="field">
       <label>Дільниця</label>
-      <div class="sel-wrap">
-        <div class="sel-input disabled" id="inp-filial">— Завантаження... —</div>
+      <div class="sel-wrap" id="sw-filial">
+        <div class="sel-face off" id="sf-filial">Завантаження...</div>
         <span class="sel-arrow">▾</span>
-        <div class="sel-dropdown" id="dd-filial">
-          <input class="sel-search" id="search-filial" placeholder="Пошук...">
-          <div class="sel-list" id="list-filial"></div>
+        <div class="sel-drop" id="sd-filial">
+          <input class="sel-srch" id="ss-filial" placeholder="Пошук...">
+          <div class="sel-opts" id="so-filial"></div>
         </div>
       </div>
     </div>
     <div class="field">
       <label>Населений пункт</label>
-      <div class="sel-wrap">
-        <div class="sel-input disabled" id="inp-ns">— Спочатку дільниця —</div>
+      <div class="sel-wrap" id="sw-ns">
+        <div class="sel-face off" id="sf-ns">— Спочатку дільниця —</div>
         <span class="sel-arrow">▾</span>
-        <div class="sel-dropdown" id="dd-ns">
-          <input class="sel-search" id="search-ns" placeholder="Пошук...">
-          <div class="sel-list" id="list-ns"></div>
+        <div class="sel-drop" id="sd-ns">
+          <input class="sel-srch" id="ss-ns" placeholder="Пошук...">
+          <div class="sel-opts" id="so-ns"></div>
         </div>
       </div>
     </div>
     <div class="field">
       <label>Вулиця</label>
-      <div class="sel-wrap">
-        <div class="sel-input disabled" id="inp-street">— Спочатку місто —</div>
+      <div class="sel-wrap" id="sw-street">
+        <div class="sel-face off" id="sf-street">— Спочатку місто —</div>
         <span class="sel-arrow">▾</span>
-        <div class="sel-dropdown" id="dd-street">
-          <input class="sel-search" id="search-street" placeholder="Пошук...">
-          <div class="sel-list" id="list-street"></div>
+        <div class="sel-drop" id="sd-street">
+          <input class="sel-srch" id="ss-street" placeholder="Пошук...">
+          <div class="sel-opts" id="so-street"></div>
         </div>
       </div>
     </div>
     <div class="field">
       <label>Будинок</label>
-      <div class="sel-wrap">
-        <div class="sel-input disabled" id="inp-dom">— Спочатку вулицю —</div>
+      <div class="sel-wrap" id="sw-dom">
+        <div class="sel-face off" id="sf-dom">— Спочатку вулицю —</div>
         <span class="sel-arrow">▾</span>
-        <div class="sel-dropdown" id="dd-dom">
-          <input class="sel-search" id="search-dom" placeholder="Пошук...">
-          <div class="sel-list" id="list-dom"></div>
+        <div class="sel-drop" id="sd-dom">
+          <input class="sel-srch" id="ss-dom" placeholder="Пошук...">
+          <div class="sel-opts" id="so-dom"></div>
         </div>
       </div>
     </div>
-    <button class="btn-search" id="btn-search" disabled>🔍 Перевірити відключення</button>
+    <button class="btn-search" id="btn-s" disabled>🔍 Перевірити відключення</button>
   </div>
-  <div class="error-msg" id="err-msg"></div>
+  <div class="err" id="err"></div>
 </div>
 
-<div class="result-card" id="result-card">
+<div class="result-card" id="res-card">
   <div class="result-status">
-    <div class="status-icon" id="res-icon">⚡</div>
+    <div class="status-icon" id="res-ico">⚡</div>
     <div class="status-text"><h2 id="res-title">—</h2><p id="res-addr">—</p></div>
   </div>
-  <div class="queue-badge" id="res-queue">—</div>
-  <div class="timer-block" id="timer-block" style="display:none">
-    <div class="timer-label" id="timer-label">До включення</div>
-    <div class="timer-val" id="timer-val">--:--:--</div>
-    <div class="timer-desc" id="timer-desc"></div>
+  <div class="queue-badge unk" id="res-badge">—</div>
+  <div class="timer-block" id="timer" style="display:none">
+    <div class="timer-label" id="t-lbl">До включення</div>
+    <div class="timer-val" id="t-val">--:--:--</div>
+    <div class="timer-desc" id="t-desc"></div>
   </div>
 </div>
 
 <div>
-  <div class="tab-bar" id="tab-bar" style="display:none">
-    <button class="tab active" id="tab-my">Моя черга</button>
+  <div class="tabs" id="tabs" style="display:none">
+    <button class="tab on" id="tab-my">Моя черга</button>
     <button class="tab" id="tab-all">Всі черги</button>
   </div>
   <div class="sched-card">
-    <div class="sched-header">
+    <div class="sched-hd">
       <span class="sched-title">Погодинний графік</span>
-      <div class="sched-legend">
-        <span class="leg-item"><span class="leg-dot" style="background:var(--green-bg);border:1px solid rgba(34,197,94,.4)"></span>Є світло</span>
-        <span class="leg-item"><span class="leg-dot" style="background:var(--red-bg);border:1px solid rgba(239,68,68,.3)"></span>Відключення</span>
-        <span class="leg-item"><span class="leg-dot" style="background:var(--orange-bg);border:1px solid rgba(249,115,22,.3)"></span>Можливо</span>
-        <span class="leg-item"><span class="leg-dot" style="background:rgba(239,68,68,.25);border:1px solid rgba(239,68,68,.5)"></span>Гарантовано</span>
+      <div class="leg">
+        <span class="leg-i"><span class="leg-d" style="background:var(--green-bg);border:1px solid rgba(34,197,94,.4)"></span>Є світло</span>
+        <span class="leg-i"><span class="leg-d" style="background:var(--red-bg);border:1px solid rgba(239,68,68,.3)"></span>Відключення</span>
+        <span class="leg-i"><span class="leg-d" style="background:var(--orange-bg);border:1px solid rgba(249,115,22,.3)"></span>Можливо</span>
+        <span class="leg-i"><span class="leg-d" style="background:rgba(239,68,68,.25);border:1px solid rgba(239,68,68,.5)"></span>Гарантовано</span>
       </div>
     </div>
     <div id="sched-body"><div class="loading">Завантаження...</div></div>
@@ -202,373 +202,310 @@ footer a{color:var(--text2);text-decoration:none}
   <div style="margin-top:6px">© 2026 · <a href="https://off.energy.mk.ua/Chergi_GPV.pdf" target="_blank">Черги ГПВ</a> · <a href="https://off.energy.mk.ua/Chergi_GAV.pdf" target="_blank">Черги ГАВ</a></div>
 </footer>
 </div>
-
 <script>
-const API = 'https://off.energy.mk.ua/api';
-const QUEUES_ORDER = ['1.1','1.2','2.1','2.2','3.1','3.2','4.1','4.2','5.1','5.2','6.1','6.2'];
-let scheduleData={}, queueMap={}, myQueue=null, timerInterval=null, currentTab='all', savedAddr=null;
+const BASE = 'https://off.energy.mk.ua/api';
+const QO   = ['1.1','1.2','2.1','2.2','3.1','3.2','4.1','4.2','5.1','5.2','6.1','6.2'];
 
-// Data store for each select
-const store = {
-  filial: { data:[], val:null, label:'' },
-  ns:     { data:[], val:null, label:'' },
-  street: { data:[], val:null, label:'' },
-  dom:    { data:[], val:null, label:'' }
-};
+let SD={}, QM={}, myQ=null, tmr=null, tab='all', saved=null;
+const st={filial:{d:[],v:null,l:''},ns:{d:[],v:null,l:''},street:{d:[],v:null,l:''},dom:{d:[],v:null,l:''}};
 
-// ---- Proxy fetch ----
-async function apiFetch(url) {
-  const proxies = [
-    'https://api.allorigins.win/raw?url=' + encodeURIComponent(url),
-    'https://corsproxy.io/?' + encodeURIComponent(url),
-    url
+/* ---- FETCH: пробуємо 4 різних проксі ---- */
+async function go(url){
+  const proxies=[
+    ()=>fetch('https://thingproxy.freeboard.io/fetch/'+url),
+    ()=>fetch('https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(url)),
+    ()=>fetch('https://api.allorigins.win/raw?url='+encodeURIComponent(url)),
+    ()=>fetch('https://corsproxy.io/?'+encodeURIComponent(url)),
+    ()=>fetch(url)
   ];
-  for (const p of proxies) {
-    try {
-      const r = await fetch(p);
-      if (!r.ok) continue;
-      const text = await r.text();
-      if (text.trim().startsWith('<')) continue;
-      return JSON.parse(text);
-    } catch(e) { continue; }
+  for(const fn of proxies){
+    try{
+      const r=await fn();
+      if(!r.ok) continue;
+      const t=await r.text();
+      if(!t.trim().startsWith('[')&&!t.trim().startsWith('{')) continue;
+      return JSON.parse(t);
+    }catch(e){continue;}
   }
-  throw new Error('API недоступне');
+  throw new Error('Всі проксі недоступні');
 }
 
-// ---- Clock ----
-function updateClock() {
-  const now = new Date();
-  document.getElementById('clock').textContent = now.toLocaleTimeString('uk-UA');
-  document.getElementById('date-str').textContent = now.toLocaleDateString('uk-UA',{weekday:'long',day:'numeric',month:'long'});
+/* ---- CLOCK ---- */
+function tick(){
+  const n=new Date();
+  document.getElementById('clock').textContent=n.toLocaleTimeString('uk-UA');
+  document.getElementById('dstr').textContent=n.toLocaleDateString('uk-UA',{weekday:'long',day:'numeric',month:'long'});
 }
-setInterval(updateClock,1000); updateClock();
+setInterval(tick,1000);tick();
 
-// ---- Custom Select ----
-function setupSelect(name) {
-  const inp  = document.getElementById('inp-'+name);
-  const dd   = document.getElementById('dd-'+name);
-  const srch = document.getElementById('search-'+name);
-  const list = document.getElementById('list-'+name);
+/* ---- CUSTOM SELECT ---- */
+const NAMES=['filial','ns','street','dom'];
+function initSel(n){
+  const face=document.getElementById('sf-'+n);
+  const drop=document.getElementById('sd-'+n);
+  const srch=document.getElementById('ss-'+n);
+  const opts=document.getElementById('so-'+n);
 
-  // Toggle dropdown on click
-  inp.addEventListener('click', () => {
-    if (inp.classList.contains('disabled')) return;
-    const isOpen = dd.classList.contains('open');
-    closeAllDropdowns();
-    if (!isOpen) {
-      dd.classList.add('open');
-      srch.value = '';
-      renderOptions(name, '');
-      srch.focus();
-    }
+  face.addEventListener('click',()=>{
+    if(face.classList.contains('off')) return;
+    const was=drop.classList.contains('open');
+    closeAll();
+    if(!was){drop.classList.add('open');srch.value='';paintOpts(n,'');srch.focus();}
   });
-
-  // Filter on search input
-  srch.addEventListener('input', () => renderOptions(name, srch.value));
-
-  // Select option via event delegation
-  list.addEventListener('click', (e) => {
-    const opt = e.target.closest('.sel-option');
-    if (!opt) return;
-    const id    = opt.dataset.id;
-    const label = opt.dataset.label;
-    selectOption(name, id, label);
+  srch.addEventListener('input',()=>paintOpts(n,srch.value));
+  drop.addEventListener('click',e=>e.stopPropagation());
+  opts.addEventListener('click',e=>{
+    const el=e.target.closest('.sel-opt');
+    if(!el) return;
+    pick(n, el.dataset.id, el.dataset.lbl);
   });
+}
+function closeAll(){document.querySelectorAll('.sel-drop').forEach(d=>d.classList.remove('open'));}
+document.addEventListener('click',closeAll);
 
-  // Prevent dropdown close when clicking inside
-  dd.addEventListener('click', e => e.stopPropagation());
+function paintOpts(n,q){
+  const opts=document.getElementById('so-'+n);
+  const f=q.toLowerCase();
+  const list=st[n].d.filter(i=>i.l.toLowerCase().includes(f));
+  if(!list.length){opts.innerHTML='<div class="sel-none">Нічого не знайдено</div>';return;}
+  opts.innerHTML=list.map(i=>`<div class="sel-opt${st[n].v==i.v?' sel':''}" data-id="${i.v}" data-lbl="${i.l.replace(/"/g,'&quot;')}">${i.l}</div>`).join('');
 }
 
-function closeAllDropdowns() {
-  document.querySelectorAll('.sel-dropdown').forEach(d => d.classList.remove('open'));
+function loadData(n,arr,idK,lblK){
+  st[n].d=arr.map(i=>({v:String(i[idK]),l:String(i[lblK])}));
+  paintOpts(n,'');
+  const face=document.getElementById('sf-'+n);
+  face.textContent='— Оберіть —';
+  face.classList.remove('off');
 }
 
-document.addEventListener('click', closeAllDropdowns);
-
-function renderOptions(name, query) {
-  const list = document.getElementById('list-'+name);
-  const q = query.toLowerCase();
-  const filtered = store[name].data.filter(i => i.label.toLowerCase().includes(q));
-  if (!filtered.length) {
-    list.innerHTML = '<div class="sel-empty">Нічого не знайдено</div>';
-    return;
-  }
-  // Use data attributes instead of inline onclick
-  list.innerHTML = filtered.map(i =>
-    `<div class="sel-option${store[name].val==i.id?' selected':''}" data-id="${i.id}" data-label="${i.label.replace(/"/g,'&quot;')}">${i.label}</div>`
-  ).join('');
+function pick(n,v,l){
+  st[n].v=v; st[n].l=l;
+  document.getElementById('sf-'+n).textContent=l;
+  closeAll();
+  if(n==='filial'){resetFrom('ns');fetchNs();}
+  if(n==='ns'){resetFrom('street');fetchStreet();}
+  if(n==='street'){resetFrom('dom');fetchDom();}
+  if(n==='dom'){document.getElementById('btn-s').disabled=false;}
 }
 
-function selectOption(name, id, label) {
-  store[name].val   = id;
-  store[name].label = label;
-  document.getElementById('inp-'+name).textContent = label;
-  closeAllDropdowns();
-
-  if (name === 'filial') { resetFrom('ns'); loadNs(); }
-  if (name === 'ns')     { resetFrom('street'); loadStreet(); }
-  if (name === 'street') { resetFrom('dom'); loadDom(); }
-  if (name === 'dom')    { document.getElementById('btn-search').disabled = false; }
-}
-
-function setData(name, items, idKey, nameKey) {
-  store[name].data = items.map(i => ({ id: String(i[idKey]), label: String(i[nameKey]) }));
-  renderOptions(name, '');
-}
-
-function resetFrom(name) {
-  const order = ['filial','ns','street','dom'];
-  order.slice(order.indexOf(name)).forEach(n => {
-    store[n].val = null; store[n].label = ''; store[n].data = [];
-    const inp = document.getElementById('inp-'+n);
-    inp.textContent = n==='filial'?'— Оберіть —':n==='ns'?'— Спочатку дільниця —':n==='street'?'— Спочатку місто —':'— Спочатку вулицю —';
-    inp.classList.add('disabled');
-    document.getElementById('list-'+n).innerHTML = '';
+function resetFrom(n){
+  const i=NAMES.indexOf(n);
+  NAMES.slice(i).forEach(k=>{
+    st[k]={d:[],v:null,l:''};
+    const f=document.getElementById('sf-'+k);
+    f.textContent=k==='ns'?'— Спочатку дільниця —':k==='street'?'— Спочатку місто —':'— Спочатку вулицю —';
+    f.classList.add('off');
+    document.getElementById('so-'+k).innerHTML='';
   });
-  document.getElementById('btn-search').disabled = true;
+  document.getElementById('btn-s').disabled=true;
 }
 
-// ---- Saved address ----
-function loadSaved() {
-  try {
-    const s = localStorage.getItem('mkv_addr3');
-    if (!s) return;
-    savedAddr = JSON.parse(s);
-    document.getElementById('saved-chip').innerHTML =
-      `📍 ${savedAddr.streetName} ${savedAddr.domName}, ${savedAddr.nsName} <span id="clear-saved" style="cursor:pointer;margin-left:4px;color:var(--text3)">✕</span>`;
-    document.getElementById('saved-wrap').style.display = 'block';
-    document.getElementById('clear-saved').addEventListener('click', clearSaved);
-  } catch(e) {}
-}
-function clearSaved() {
-  localStorage.removeItem('mkv_addr3');
-  savedAddr = null;
-  document.getElementById('saved-wrap').style.display = 'none';
-}
-
-// ---- Init ----
-async function init() {
-  ['filial','ns','street','dom'].forEach(setupSelect);
-  loadSaved();
-
-  document.getElementById('btn-search').addEventListener('click', search);
-  document.getElementById('tab-my').addEventListener('click', () => switchTab('my'));
-  document.getElementById('tab-all').addEventListener('click', () => switchTab('all'));
-
-  try {
-    const data = await apiFetch(`${API}/addr/filii`);
-    data.sort((a,b) => a.fullname.localeCompare(b.fullname,'uk'));
-    setData('filial', data, 'idfilial', 'fullname');
-    document.getElementById('inp-filial').textContent = '— Оберіть —';
-    document.getElementById('inp-filial').classList.remove('disabled');
-  } catch(e) { showErr('Помилка завантаження: ' + e.message); }
-
-  loadSchedule();
-  setInterval(loadSchedule, 5*60*1000);
-}
-
-async function loadNs() {
-  const id = store.filial.val; if (!id) return;
-  const inp = document.getElementById('inp-ns');
-  inp.textContent = 'Завантаження...'; inp.classList.remove('disabled');
-  try {
-    const data = await apiFetch(`${API}/addr/filii/${id}/ns`);
-    const arr = Array.isArray(data) ? data : [];
-    if (!arr.length) { inp.textContent = 'Немає даних'; return; }
-    const f = arr[0];
-    const idKey   = ['idnaspunkt','idns','id'].find(k => f[k]!==undefined);
-    const nameKey = ['naznaspunkt','nazns','fullname','name'].find(k => f[k]!==undefined && typeof f[k]==='string');
-    arr.sort((a,b) => String(a[nameKey]||'').localeCompare(String(b[nameKey]||''),'uk'));
-    setData('ns', arr, idKey, nameKey);
-    inp.textContent = '— Оберіть —';
-  } catch(e) { inp.textContent = 'Помилка'; showErr(e.message); }
-}
-
-async function loadStreet() {
-  const id = store.ns.val; if (!id) return;
-  const inp = document.getElementById('inp-street');
-  inp.textContent = 'Завантаження...'; inp.classList.remove('disabled');
-  try {
-    const data = await apiFetch(`${API}/addr/ns/${id}/street`);
-    data.sort((a,b) => a.nazstreet.localeCompare(b.nazstreet,'uk'));
-    setData('street', data, 'idstreet', 'nazstreet');
-    inp.textContent = '— Оберіть —';
-  } catch(e) { inp.textContent = 'Помилка'; showErr(e.message); }
-}
-
-async function loadDom() {
-  const id = store.street.val; if (!id) return;
-  const inp = document.getElementById('inp-dom');
-  inp.textContent = 'Завантаження...'; inp.classList.remove('disabled');
-  try {
-    const data = await apiFetch(`${API}/addr/street/${id}/dom`);
-    data.sort((a,b) => {
-      const an=parseInt(a.nazdom), bn=parseInt(b.nazdom);
-      return (!isNaN(an)&&!isNaN(bn)) ? an-bn : (a.nazdom||'').localeCompare(b.nazdom||'','uk');
+/* ---- SAVED ---- */
+function loadSaved(){
+  try{
+    const s=localStorage.getItem('mkv4');
+    if(!s) return;
+    saved=JSON.parse(s);
+    const ch=document.getElementById('saved-chip');
+    ch.innerHTML='📍 '+saved.street+' '+saved.dom+', '+saved.ns+' <span id="clr" style="cursor:pointer;margin-left:6px;color:var(--text3)">✕</span>';
+    document.getElementById('saved-wrap').style.display='block';
+    document.getElementById('clr').addEventListener('click',()=>{
+      localStorage.removeItem('mkv4');saved=null;
+      document.getElementById('saved-wrap').style.display='none';
     });
-    setData('dom', data, 'iddom', 'nazdom');
-    inp.textContent = '— Оберіть —';
-  } catch(e) { inp.textContent = 'Помилка'; showErr(e.message); }
+  }catch(e){}
 }
 
-// ---- Search ----
-async function search() {
-  const domId = store.dom.val; if (!domId) return;
-  const btn = document.getElementById('btn-search');
-  btn.disabled = true; btn.textContent = 'Пошук...'; hideErr();
-  try {
-    const data = await apiFetch(`${API}/addr/dom/${domId}/outage-queue`);
-    savedAddr = {
-      nsName:     store.ns.label,
-      streetName: store.street.label,
-      domName:    store.dom.label
-    };
-    localStorage.setItem('mkv_addr3', JSON.stringify(savedAddr));
+/* ---- INIT ---- */
+async function init(){
+  NAMES.forEach(initSel);
+  loadSaved();
+  document.getElementById('btn-s').addEventListener('click',doSearch);
+  document.getElementById('tab-my').addEventListener('click',()=>setTab('my'));
+  document.getElementById('tab-all').addEventListener('click',()=>setTab('all'));
+  try{
+    const data=await go(BASE+'/addr/filii');
+    data.sort((a,b)=>a.fullname.localeCompare(b.fullname,'uk'));
+    loadData('filial',data,'idfilial','fullname');
+  }catch(e){showErr('Помилка завантаження: '+e.message);}
+  fetchSched();
+  setInterval(fetchSched,5*60*1000);
+}
+
+async function fetchNs(){
+  const id=st.filial.v; if(!id) return;
+  setLoading('ns');
+  try{
+    const data=await go(BASE+'/addr/filii/'+id+'/ns');
+    const arr=Array.isArray(data)?data:[];
+    if(!arr.length){document.getElementById('sf-ns').textContent='Немає даних';return;}
+    const f=arr[0];
+    const ik=['idnaspunkt','idns','id'].find(k=>f[k]!==undefined);
+    const lk=['naznaspunkt','nazns','fullname','name'].find(k=>f[k]!==undefined&&typeof f[k]==='string');
+    arr.sort((a,b)=>String(a[lk]||'').localeCompare(String(b[lk]||''),'uk'));
+    loadData('ns',arr,ik,lk);
+  }catch(e){document.getElementById('sf-ns').textContent='Помилка';showErr(e.message);}
+}
+
+async function fetchStreet(){
+  const id=st.ns.v; if(!id) return;
+  setLoading('street');
+  try{
+    const data=await go(BASE+'/addr/ns/'+id+'/street');
+    data.sort((a,b)=>a.nazstreet.localeCompare(b.nazstreet,'uk'));
+    loadData('street',data,'idstreet','nazstreet');
+  }catch(e){document.getElementById('sf-street').textContent='Помилка';showErr(e.message);}
+}
+
+async function fetchDom(){
+  const id=st.street.v; if(!id) return;
+  setLoading('dom');
+  try{
+    const data=await go(BASE+'/addr/street/'+id+'/dom');
+    data.sort((a,b)=>{const an=parseInt(a.nazdom),bn=parseInt(b.nazdom);return(!isNaN(an)&&!isNaN(bn))?an-bn:(a.nazdom||'').localeCompare(b.nazdom||'','uk');});
+    loadData('dom',data,'iddom','nazdom');
+  }catch(e){document.getElementById('sf-dom').textContent='Помилка';showErr(e.message);}
+}
+
+function setLoading(n){
+  document.getElementById('sf-'+n).textContent='Завантаження...';
+  document.getElementById('sf-'+n).classList.add('off');
+}
+
+async function doSearch(){
+  const id=st.dom.v; if(!id) return;
+  const btn=document.getElementById('btn-s');
+  btn.disabled=true;btn.textContent='Пошук...';hideErr();
+  try{
+    const data=await go(BASE+'/addr/dom/'+id+'/outage-queue');
+    saved={ns:st.ns.l,street:st.street.l,dom:st.dom.l};
+    localStorage.setItem('mkv4',JSON.stringify(saved));
     loadSaved();
     showResult(data);
-  } catch(e) { showErr('Помилка пошуку: ' + e.message); }
-  btn.disabled = false; btn.innerHTML = '🔍 Перевірити відключення';
+  }catch(e){showErr('Помилка пошуку: '+e.message);}
+  btn.disabled=false;btn.innerHTML='🔍 Перевірити відключення';
 }
 
-function showResult(data) {
-  document.getElementById('result-card').classList.add('visible');
-  const arr = Array.isArray(data) ? data : (data ? [data] : []);
-  let queueName = null;
-  if (arr.length > 0) {
-    const item = arr[0];
-    queueName = item.name || item.queue_name || item.queueName
-      || (item.outage_queue && item.outage_queue.name)
-      || (item.outageQueue  && item.outageQueue.name)
-      || (item.queue        && item.queue.name) || null;
+function showResult(data){
+  document.getElementById('res-card').classList.add('on');
+  const arr=Array.isArray(data)?data:(data?[data]:[]);
+  let qn=null;
+  if(arr.length){
+    const x=arr[0];
+    qn=x.name||x.queue_name||x.queueName
+      ||(x.outage_queue&&x.outage_queue.name)
+      ||(x.outageQueue&&x.outageQueue.name)
+      ||(x.queue&&x.queue.name)||null;
   }
-  myQueue = queueName;
-  const badge = document.getElementById('res-queue');
-  if (queueName) {
-    const slot   = getCurrentSlot();
-    const status = (scheduleData[queueName]||[])[slot] || 0;
-    const isOff  = status===1||status===3, isMaybe = status===2;
-    badge.textContent = `Черга ${queueName}`;
-    badge.className   = 'queue-badge '+(isOff||isMaybe?'off':'on');
-    document.getElementById('res-icon').textContent  = isOff?'🔴':(isMaybe?'🟡':'🟢');
-    document.getElementById('res-title').textContent = isOff?'Зараз відключено':(isMaybe?'Можливо відключено':'Є електроенергія');
-    document.getElementById('res-addr').textContent  = `${savedAddr.streetName} ${savedAddr.domName}, ${savedAddr.nsName}`;
-    startTimer(queueName);
-    document.getElementById('tab-bar').style.display = 'flex';
-    switchTab('my');
-  } else {
-    badge.textContent = 'Адреса не в графіку';
-    badge.className   = 'queue-badge unknown';
-    document.getElementById('res-icon').textContent  = '❓';
-    document.getElementById('res-title').textContent = 'Не знайдено в графіках';
-    document.getElementById('res-addr').textContent  = '';
-    document.getElementById('timer-block').style.display = 'none';
-    document.getElementById('tab-bar').style.display = 'none';
-    renderFullSchedule();
+  myQ=qn;
+  const badge=document.getElementById('res-badge');
+  if(qn){
+    const sl=slot(),st2=(SD[qn]||[])[sl]||0;
+    const off=st2===1||st2===3,maybe=st2===2;
+    badge.textContent='Черга '+qn;
+    badge.className='queue-badge '+(off||maybe?'off':'on');
+    document.getElementById('res-ico').textContent=off?'🔴':(maybe?'🟡':'🟢');
+    document.getElementById('res-title').textContent=off?'Зараз відключено':(maybe?'Можливо відключено':'Є електроенергія');
+    document.getElementById('res-addr').textContent=saved.street+' '+saved.dom+', '+saved.ns;
+    startTimer(qn);
+    document.getElementById('tabs').style.display='flex';
+    setTab('my');
+  }else{
+    badge.textContent='Адреса не в графіку';badge.className='queue-badge unk';
+    document.getElementById('res-ico').textContent='❓';
+    document.getElementById('res-title').textContent='Не знайдено в графіках';
+    document.getElementById('res-addr').textContent='';
+    document.getElementById('timer').style.display='none';
+    document.getElementById('tabs').style.display='none';
+    renderAll();
   }
-  document.getElementById('result-card').scrollIntoView({behavior:'smooth'});
+  document.getElementById('res-card').scrollIntoView({behavior:'smooth'});
 }
 
-// ---- Timer ----
-function getCurrentSlot() {
-  const n = new Date();
-  return n.getHours()*2 + (n.getMinutes()>=30?1:0);
-}
-function startTimer(q) {
-  if (timerInterval) clearInterval(timerInterval);
-  updateTimer(q);
-  timerInterval = setInterval(()=>updateTimer(q),1000);
-}
-function updateTimer(q) {
-  const arr = scheduleData[q]; if (!arr) return;
-  const slot=getCurrentSlot(), cur=arr[slot], isOff=cur===1||cur===2||cur===3;
-  document.getElementById('timer-block').style.display='block';
-  document.getElementById('timer-label').textContent = isOff?'До включення':'До відключення';
-  let next=-1;
-  for(let i=slot+1;i<48;i++){const s=arr[i],iS=s===1||s===2||s===3;if(iS!==isOff){next=i;break;}}
-  if(next===-1){document.getElementById('timer-val').textContent='Без змін';document.getElementById('timer-desc').textContent='До кінця доби';return;}
+function slot(){const n=new Date();return n.getHours()*2+(n.getMinutes()>=30?1:0);}
+
+function startTimer(q){if(tmr)clearInterval(tmr);updTimer(q);tmr=setInterval(()=>updTimer(q),1000);}
+function updTimer(q){
+  const arr=SD[q];if(!arr)return;
+  const s=slot(),c=arr[s],off=c===1||c===2||c===3;
+  document.getElementById('timer').style.display='block';
+  document.getElementById('t-lbl').textContent=off?'До включення':'До відключення';
+  let nx=-1;
+  for(let i=s+1;i<48;i++){const v=arr[i],iO=v===1||v===2||v===3;if(iO!==off){nx=i;break;}}
+  if(nx===-1){document.getElementById('t-val').textContent='Без змін';document.getElementById('t-desc').textContent='До кінця доби';return;}
   const now=new Date(),nt=new Date(now);
-  nt.setHours(Math.floor(next/2),(next%2)*30,0,0);
-  const d=nt-now,h=Math.floor(d/3600000),m=Math.floor((d%3600000)/60000),s=Math.floor((d%60000)/1000);
-  document.getElementById('timer-val').textContent=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-  document.getElementById('timer-desc').textContent=`Зміна о ${String(Math.floor(next/2)).padStart(2,'0')}:${(next%2)*30===0?'00':'30'}`;
+  nt.setHours(Math.floor(nx/2),(nx%2)*30,0,0);
+  const d=nt-now,h=Math.floor(d/3600000),m=Math.floor((d%3600000)/60000),sc=Math.floor((d%60000)/1000);
+  document.getElementById('t-val').textContent=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sc).padStart(2,'0')}`;
+  document.getElementById('t-desc').textContent=`Зміна о ${String(Math.floor(nx/2)).padStart(2,'0')}:${(nx%2)*30===0?'00':'30'}`;
 }
 
-// ---- Schedule ----
-async function loadSchedule() {
-  try {
-    const [queues, active] = await Promise.all([
-      apiFetch(`${API}/outage-queue/by-type/3`),
-      apiFetch(`${API}/schedule/active`)
-    ]);
-    queueMap={};
-    queues.forEach(q=>{if(q.id&&q.name)queueMap[q.id]=q.name;});
-    const tmp={};
-    QUEUES_ORDER.forEach(q=>{tmp[q]=new Array(48).fill(0);});
-    active.forEach(item=>{
-      const qName=queueMap[item.outage_queue_id];
-      if(qName&&tmp[qName]){
-        const idx=item.time_series_id-1;
-        let st=0;
-        if(item.type==='OFF')st=1;
-        else if(item.type==='PROBABLY_OFF')st=2;
-        else if(item.type==='SURE_OFF')st=3;
-        if(idx>=0&&idx<48)tmp[qName][idx]=st;
+async function fetchSched(){
+  try{
+    const [q,a]=await Promise.all([go(BASE+'/outage-queue/by-type/3'),go(BASE+'/schedule/active')]);
+    QM={};q.forEach(x=>{if(x.id&&x.name)QM[x.id]=x.name;});
+    const tmp={};QO.forEach(x=>{tmp[x]=new Array(48).fill(0);});
+    a.forEach(x=>{
+      const qn=QM[x.outage_queue_id];
+      if(qn&&tmp[qn]){
+        const i=x.time_series_id-1;
+        let s=0;if(x.type==='OFF')s=1;else if(x.type==='PROBABLY_OFF')s=2;else if(x.type==='SURE_OFF')s=3;
+        if(i>=0&&i<48)tmp[qn][i]=s;
       }
     });
-    scheduleData=tmp;
-    if(currentTab==='my'&&myQueue)renderMyQueue();else renderFullSchedule();
-    if(myQueue)updateTimer(myQueue);
-  } catch(e) {
-    document.getElementById('sched-body').innerHTML=`<div style="padding:20px;font-size:12px;color:var(--red)">Помилка: ${e.message}</div>`;
+    SD=tmp;
+    if(tab==='my'&&myQ)renderMy();else renderAll();
+    if(myQ)updTimer(myQ);
+  }catch(e){
+    document.getElementById('sched-body').innerHTML='<div style="padding:20px;font-size:12px;color:var(--red)">Помилка графіку: '+e.message+'</div>';
   }
 }
 
-function switchTab(tab){
-  currentTab=tab;
-  document.getElementById('tab-my').className='tab'+(tab==='my'?' active':'');
-  document.getElementById('tab-all').className='tab'+(tab==='all'?' active':'');
-  if(tab==='my'&&myQueue)renderMyQueue();else renderFullSchedule();
+function setTab(t){
+  tab=t;
+  document.getElementById('tab-my').className='tab'+(t==='my'?' on':'');
+  document.getElementById('tab-all').className='tab'+(t==='all'?' on':'');
+  if(t==='my'&&myQ)renderMy();else renderAll();
 }
-function makeTimeHeaders(){
+
+function mkTh(){
   let h='<tr><th>Черга</th>';
   const cur=new Date().getHours();
   for(let i=0;i<24;i++)h+=`<th${i===cur?' class="now"':''}>${String(i).padStart(2,'0')}</th>`;
   return h+'</tr>';
 }
-function cellCls(s,cur){
-  if(cur){if(s===0)return'now-on';if(s===1||s===3)return'now-off';if(s===2)return'now-maybe';}
-  return['on','off','maybe','sure'][s]||'on';
+function cls(s,cur){
+  if(cur)return 'cn'+Math.min(s,3);
+  return 'c'+Math.min(s,3);
 }
-function makeCells(arr){
-  const cur=new Date().getHours(),cs=getCurrentSlot();let h='';
+function mkCells(arr){
+  const cur=new Date().getHours(),cs=slot();let h='';
   for(let i=0;i<24;i++){
-    const s1=arr[i*2],s2=arr[i*2+1],isCur=i===cur;
+    const s1=arr[i*2],s2=arr[i*2+1],ic=i===cur;
     if(s1===s2){
-      h+=`<td class="${isCur?'time-col-now':''}"><div class="cell ${cellCls(s1,isCur&&(cs===i*2||cs===i*2+1))}"></div></td>`;
+      h+=`<td class="${ic?'tcn':''}"><div class="cell ${cls(s1,ic&&(cs===i*2||cs===i*2+1))}"></div></td>`;
     }else{
-      h+=`<td class="${isCur?'time-col-now':''}"><div style="display:flex;height:100%"><div class="cell ${cellCls(s1,isCur&&cs===i*2)}" style="flex:1"></div><div class="cell ${cellCls(s2,isCur&&cs===i*2+1)}" style="flex:1"></div></div></td>`;
+      h+=`<td class="${ic?'tcn':''}"><div style="display:flex;height:100%"><div class="cell ${cls(s1,ic&&cs===i*2)}" style="flex:1"></div><div class="cell ${cls(s2,ic&&cs===i*2+1)}" style="flex:1"></div></div></td>`;
     }
   }
   return h;
 }
-function renderFullSchedule(){
-  let h=`<div class="sched-scroll"><table class="sched-table"><thead>${makeTimeHeaders()}</thead><tbody>`;
-  QUEUES_ORDER.forEach(q=>{
-    const arr=scheduleData[q]||new Array(48).fill(0);
-    h+=`<tr class="queue-row${q===myQueue?' highlight':''}"><td>${q}</td>${makeCells(arr)}</tr>`;
-  });
+function renderAll(){
+  let h=`<div class="sched-scroll"><table class="sched-table"><thead>${mkTh()}</thead><tbody>`;
+  QO.forEach(q=>{h+=`<tr class="${q===myQ?'hl':''}"><td>${q}</td>${mkCells(SD[q]||new Array(48).fill(0))}</tr>`;});
   h+='</tbody></table></div>';
   document.getElementById('sched-body').innerHTML=h;
 }
-function renderMyQueue(){
-  if(!myQueue||!scheduleData[myQueue]){renderFullSchedule();return;}
-  let h=`<div class="sched-scroll"><table class="sched-table"><thead>${makeTimeHeaders()}</thead><tbody>`;
-  h+=`<tr class="queue-row highlight"><td>${myQueue}</td>${makeCells(scheduleData[myQueue])}</tr>`;
+function renderMy(){
+  if(!myQ||!SD[myQ]){renderAll();return;}
+  let h=`<div class="sched-scroll"><table class="sched-table"><thead>${mkTh()}</thead><tbody>`;
+  h+=`<tr class="hl"><td>${myQ}</td>${mkCells(SD[myQ])}</tr>`;
   h+='</tbody></table></div>';
   document.getElementById('sched-body').innerHTML=h;
 }
-function showErr(m){const e=document.getElementById('err-msg');e.textContent=m;e.classList.add('visible');}
-function hideErr(){document.getElementById('err-msg').classList.remove('visible');}
+function showErr(m){const e=document.getElementById('err');e.textContent=m;e.classList.add('on');}
+function hideErr(){document.getElementById('err').classList.remove('on');}
 
 init();
 </script>
