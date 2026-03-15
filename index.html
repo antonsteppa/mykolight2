@@ -11,56 +11,30 @@
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Unbounded:wght@300;500;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0a0a0f;
-  --bg2: #0f0f1a;
-  --bg3: #14141f;
-  --bg4: #1a1a28;
-  --border: rgba(255,255,255,0.07);
-  --border2: rgba(255,255,255,0.12);
-  --text: #e8e8f0;
-  --text2: #8888a8;
-  --text3: #4a4a6a;
-  --accent: #4f7fff;
-  --accent2: #3a5fcc;
-  --green: #22c55e;
-  --green-bg: rgba(34,197,94,0.12);
-  --red: #ef4444;
-  --red-bg: rgba(239,68,68,0.12);
-  --orange: #f97316;
-  --orange-bg: rgba(249,115,22,0.12);
-  --yellow: #eab308;
-  --yellow-bg: rgba(234,179,8,0.1);
-  --mono: 'JetBrains Mono', monospace;
-  --display: 'Unbounded', sans-serif;
+  --bg: #0a0a0f; --bg2: #0f0f1a; --bg3: #14141f; --bg4: #1a1a28;
+  --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.12);
+  --text: #e8e8f0; --text2: #8888a8; --text3: #4a4a6a;
+  --accent: #4f7fff; --accent2: #3a5fcc;
+  --green: #22c55e; --green-bg: rgba(34,197,94,0.12);
+  --red: #ef4444; --red-bg: rgba(239,68,68,0.12);
+  --orange: #f97316; --orange-bg: rgba(249,115,22,0.12);
+  --mono: 'JetBrains Mono', monospace; --display: 'Unbounded', sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--mono);min-height:100vh;overflow-x:hidden}
-
-/* Grid bg */
-body::before{
-  content:'';position:fixed;inset:0;
-  background-image:linear-gradient(rgba(79,127,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(79,127,255,0.03) 1px,transparent 1px);
-  background-size:40px 40px;pointer-events:none;z-index:0
-}
-
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(79,127,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(79,127,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
 .wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 16px 60px}
-
-/* Header */
 header{padding:32px 0 24px;text-align:center;border-bottom:1px solid var(--border);margin-bottom:32px}
 .logo-line{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:8px}
 .bolt{font-size:28px;animation:pulse 2s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.7;transform:scale(0.95)}}
 h1{font-family:var(--display);font-size:clamp(18px,4vw,26px);font-weight:700;letter-spacing:-0.02em;color:#fff}
 .subtitle{font-size:11px;color:var(--text2);letter-spacing:0.15em;text-transform:uppercase;margin-top:4px}
-
-/* Current time */
 .time-bar{display:flex;align-items:center;justify-content:center;gap:16px;padding:10px 20px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;margin:20px 0 0;font-size:12px;color:var(--text2);flex-wrap:wrap}
 #clock{color:var(--accent);font-size:15px;font-weight:600;letter-spacing:0.08em}
 .upd-dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;margin-right:4px;animation:blink 2s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
-
-/* Search block */
 .search-card{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:24px;margin-bottom:24px}
 .search-title{font-family:var(--display);font-size:13px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:20px;display:flex;align-items:center;gap:8px}
 .search-title::before{content:'';display:inline-block;width:3px;height:14px;background:var(--accent);border-radius:2px}
@@ -74,10 +48,7 @@ h1{font-family:var(--display);font-size:clamp(18px,4vw,26px);font-weight:700;let
 .field select option{background:var(--bg3);color:var(--text)}
 .btn-search{grid-column:1/-1;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:12px;font-family:var(--display);font-size:13px;font-weight:500;cursor:pointer;transition:all 0.2s;letter-spacing:0.05em;display:flex;align-items:center;justify-content:center;gap:8px}
 .btn-search:hover{background:var(--accent2);transform:translateY(-1px)}
-.btn-search:active{transform:translateY(0)}
 .btn-search:disabled{opacity:0.5;cursor:not-allowed;transform:none}
-
-/* Result */
 .result-card{background:var(--bg2);border-radius:12px;padding:20px;margin-bottom:24px;display:none;animation:fadeIn 0.3s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .result-card.visible{display:block}
@@ -89,21 +60,16 @@ h1{font-family:var(--display);font-size:clamp(18px,4vw,26px);font-weight:700;let
 .queue-badge.off{background:var(--red-bg);color:var(--red);border:1px solid rgba(239,68,68,0.2)}
 .queue-badge.on{background:var(--green-bg);color:var(--green);border:1px solid rgba(34,197,94,0.2)}
 .queue-badge.unknown{background:var(--bg3);color:var(--text2);border:1px solid var(--border)}
-
-/* Timer */
 .timer-block{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px;margin-top:12px;text-align:center}
 .timer-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:4px}
 .timer-val{font-family:var(--display);font-size:clamp(24px,6vw,40px);font-weight:700;color:var(--accent);letter-spacing:0.05em}
 .timer-desc{font-size:11px;color:var(--text2);margin-top:4px}
-
-/* Schedule table */
 .sched-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:24px}
 .sched-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
 .sched-title{font-family:var(--display);font-size:12px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:0.1em}
 .sched-legend{display:flex;gap:12px;flex-wrap:wrap}
 .leg-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2)}
 .leg-dot{width:10px;height:10px;border-radius:2px}
-
 .sched-scroll{overflow-x:auto}
 .sched-table{width:100%;border-collapse:collapse;min-width:640px}
 .sched-table th{padding:8px 6px;font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;text-align:center;border-right:1px solid var(--border);position:sticky;top:0;background:var(--bg2);z-index:2}
@@ -111,60 +77,31 @@ h1{font-family:var(--display);font-size:clamp(18px,4vw,26px);font-weight:700;let
 .sched-table td{padding:0;height:32px;border-right:1px solid var(--border);border-bottom:1px solid rgba(255,255,255,0.03)}
 .sched-table td:first-child{padding:0 8px 0 16px;font-size:10px;color:var(--text2);white-space:nowrap;text-align:left}
 .sched-table tr:last-child td{border-bottom:none}
-.cell{width:100%;height:100%;display:flex;align-items:center;justify-content:center;transition:opacity 0.2s}
-.cell.on{background:var(--green-bg)}
-.cell.off{background:var(--red-bg)}
-.cell.maybe{background:var(--orange-bg)}
-.cell.sure{background:rgba(239,68,68,0.25)}
+.cell{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+.cell.on{background:var(--green-bg)}.cell.off{background:var(--red-bg)}.cell.maybe{background:var(--orange-bg)}.cell.sure{background:rgba(239,68,68,0.25)}
 .cell.now-on{background:rgba(34,197,94,0.35);box-shadow:inset 0 0 0 1px rgba(34,197,94,0.5)}
 .cell.now-off{background:rgba(239,68,68,0.35);box-shadow:inset 0 0 0 1px rgba(239,68,68,0.5)}
 .cell.now-maybe{background:rgba(249,115,22,0.35);box-shadow:inset 0 0 0 1px rgba(249,115,22,0.5)}
 .time-col-now{background:rgba(79,127,255,0.08)!important}
 .sched-table th.now{color:var(--accent);background:rgba(79,127,255,0.1)!important}
-
 .queue-row.highlight td:first-child{color:var(--accent);font-weight:600}
-
-/* Loading */
 .loading{text-align:center;padding:40px;color:var(--text3);font-size:13px}
 .loading::after{content:'';display:block;width:24px;height:24px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;margin:12px auto 0;animation:spin 0.8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* Error */
 .error-msg{background:var(--red-bg);border:1px solid rgba(239,68,68,0.2);border-radius:8px;padding:12px 16px;font-size:12px;color:var(--red);margin-top:8px;display:none}
 .error-msg.visible{display:block}
-
-/* Tabs for full/my queue */
 .tab-bar{display:flex;gap:4px;background:var(--bg3);border-radius:8px;padding:4px;margin-bottom:16px}
 .tab{flex:1;padding:8px;text-align:center;font-size:11px;font-family:var(--display);cursor:pointer;border-radius:6px;color:var(--text2);transition:all 0.2s;border:none;background:none;letter-spacing:0.05em}
 .tab.active{background:var(--bg4);color:var(--text);border:1px solid var(--border2)}
-
-/* No address */
-.no-addr{text-align:center;padding:48px 20px;color:var(--text3);font-size:12px}
-.no-addr .icon{font-size:40px;margin-bottom:12px}
-
-/* Footer */
+.saved-chip{display:inline-flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:6px 14px;font-size:11px;color:var(--text2);cursor:pointer;margin-top:8px}
 footer{text-align:center;padding:24px 0;font-size:10px;color:var(--text3);border-top:1px solid var(--border);letter-spacing:0.08em}
 footer a{color:var(--text2);text-decoration:none}
-
-/* Saved addr chip */
-.saved-chip{display:inline-flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:6px 14px;font-size:11px;color:var(--text2);cursor:pointer;margin-top:8px;transition:border-color 0.2s}
-.saved-chip:hover{border-color:var(--accent)}
-.saved-chip .clear{color:var(--text3);font-size:14px;line-height:1}
-
-@media(max-width:600px){
-  .sched-card{border-radius:8px}
-  header{padding:20px 0 16px}
-}
 </style>
 </head>
 <body>
 <div class="wrap">
-
 <header>
-  <div class="logo-line">
-    <span class="bolt">⚡</span>
-    <h1>Графік відключень</h1>
-  </div>
+  <div class="logo-line"><span class="bolt">⚡</span><h1>Графік відключень</h1></div>
   <div class="subtitle">АТ «Миколаївобленерго» · Реальний час</div>
   <div class="time-bar">
     <span><span class="upd-dot"></span>Онлайн</span>
@@ -173,7 +110,6 @@ footer a{color:var(--text2);text-decoration:none}
   </div>
 </header>
 
-<!-- Search -->
 <div class="search-card">
   <div class="search-title">Пошук за адресою</div>
   <div id="saved-wrap" style="display:none;margin-bottom:12px">
@@ -181,64 +117,34 @@ footer a{color:var(--text2);text-decoration:none}
     <span id="saved-chip" class="saved-chip"></span>
   </div>
   <div class="fields">
-    <div class="field">
-      <label>Дільниця</label>
-      <select id="sel-filial" onchange="loadNs()">
-        <option value="">— Оберіть —</option>
-      </select>
-    </div>
-    <div class="field">
-      <label>Населений пункт</label>
-      <select id="sel-ns" onchange="loadStreet()" disabled>
-        <option value="">— Спочатку дільниця —</option>
-      </select>
-    </div>
-    <div class="field">
-      <label>Вулиця</label>
-      <select id="sel-street" onchange="loadDom()" disabled>
-        <option value="">— Спочатку місто —</option>
-      </select>
-    </div>
-    <div class="field">
-      <label>Будинок</label>
-      <select id="sel-dom" disabled>
-        <option value="">— Спочатку вулиця —</option>
-      </select>
-    </div>
-    <button class="btn-search" onclick="search()" id="btn-search" disabled>
-      <span>🔍</span> Перевірити відключення
-    </button>
+    <div class="field"><label>Дільниця</label><select id="sel-filial" onchange="loadNs()"><option value="">— Оберіть —</option></select></div>
+    <div class="field"><label>Населений пункт</label><select id="sel-ns" onchange="loadStreet()" disabled><option value="">— Спочатку дільниця —</option></select></div>
+    <div class="field"><label>Вулиця</label><select id="sel-street" onchange="loadDom()" disabled><option value="">— Спочатку місто —</option></select></div>
+    <div class="field"><label>Будинок</label><select id="sel-dom" disabled><option value="">— Спочатку вулицю —</option></select></div>
+    <button class="btn-search" onclick="search()" id="btn-search" disabled>🔍 Перевірити відключення</button>
   </div>
   <div class="error-msg" id="err-msg"></div>
-  <div id="debug-info" style="margin-top:8px;font-size:11px;color:var(--text3);display:none">
-    Відкрийте файл через веб-сервер, або спробуйте: <code style="color:var(--accent)">python3 -m http.server</code>
-  </div>
 </div>
 
-<!-- Result -->
 <div class="result-card" id="result-card">
   <div class="result-status">
     <div class="status-icon" id="res-icon">⚡</div>
-    <div class="status-text">
-      <h2 id="res-title">—</h2>
-      <p id="res-addr">—</p>
-    </div>
+    <div class="status-text"><h2 id="res-title">—</h2><p id="res-addr">—</p></div>
   </div>
   <div class="queue-badge" id="res-queue">—</div>
   <div class="timer-block" id="timer-block" style="display:none">
-    <div class="timer-label" id="timer-label">До наступного включення</div>
+    <div class="timer-label" id="timer-label">До включення</div>
     <div class="timer-val" id="timer-val">--:--:--</div>
     <div class="timer-desc" id="timer-desc"></div>
   </div>
 </div>
 
-<!-- Schedule -->
 <div id="sched-wrap">
   <div class="tab-bar" id="tab-bar" style="display:none">
     <button class="tab active" id="tab-my" onclick="switchTab('my')">Моя черга</button>
     <button class="tab" id="tab-all" onclick="switchTab('all')">Всі черги</button>
   </div>
-  <div class="sched-card" id="sched-card">
+  <div class="sched-card">
     <div class="sched-header">
       <span class="sched-title">Погодинний графік</span>
       <div class="sched-legend">
@@ -248,78 +154,54 @@ footer a{color:var(--text2);text-decoration:none}
         <span class="leg-item"><span class="leg-dot" style="background:rgba(239,68,68,0.25);border:1px solid rgba(239,68,68,0.5)"></span>Гарантовано</span>
       </div>
     </div>
-    <div id="sched-body">
-      <div class="loading">Завантаження графіку...</div>
-    </div>
+    <div id="sched-body"><div class="loading">Завантаження графіку...</div></div>
   </div>
 </div>
 
 <footer>
   <div>Дані: <a href="https://off.energy.mk.ua" target="_blank">off.energy.mk.ua</a> · Оновлення: кожні 5 хв</div>
-  <div style="margin-top:6px">© 2026 Неофіційний клієнт · <a href="https://off.energy.mk.ua/Chergi_GPV.pdf" target="_blank">Черги ГПВ</a> · <a href="https://off.energy.mk.ua/Chergi_GAV.pdf" target="_blank">Черги ГАВ</a></div>
+  <div style="margin-top:6px">© 2026 · <a href="https://off.energy.mk.ua/Chergi_GPV.pdf" target="_blank">Черги ГПВ</a> · <a href="https://off.energy.mk.ua/Chergi_GAV.pdf" target="_blank">Черги ГАВ</a></div>
 </footer>
-
 </div>
 
 <script>
-const API_DIRECT = 'https://off.energy.mk.ua/api';
-const PROXY = 'https://corsproxy.io/?';
-const API = API_DIRECT;
+const API = 'https://off.energy.mk.ua/api';
+const QUEUES_ORDER = ['1.1','1.2','2.1','2.2','3.1','3.2','4.1','4.2','5.1','5.2','6.1','6.2'];
+let scheduleData={}, queueMap={}, myQueue=null, timerInterval=null, currentTab='all', savedAddr=null;
 
 async function apiFetch(url) {
-  // Try direct first, fallback to proxy
   try {
-    const r = await fetch(url, {mode: 'cors'});
-    if (r.ok || r.status === 304) return r;
-    throw new Error('status ' + r.status);
+    const r = await fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(url));
+    if (!r.ok) throw new Error(r.status);
+    return r;
   } catch(e) {
-    const r2 = await fetch(PROXY + encodeURIComponent(url));
-    return r2;
+    return await fetch(url);
   }
 }
-const QUEUES_ORDER = ['1.1','1.2','2.1','2.2','3.1','3.2','4.1','4.2','5.1','5.2','6.1','6.2'];
 
-let scheduleData = {}; // queueName -> array[48] of status
-let queueMap = {};     // id -> name
-let myQueue = null;
-let timerInterval = null;
-let schedRefresh = null;
-let currentTab = 'all';
-let savedAddr = null;
-
-// ---- Clock ----
 function updateClock() {
   const now = new Date();
   document.getElementById('clock').textContent = now.toLocaleTimeString('uk-UA');
   document.getElementById('date-str').textContent = now.toLocaleDateString('uk-UA',{weekday:'long',day:'numeric',month:'long'});
 }
-setInterval(updateClock, 1000);
-updateClock();
+setInterval(updateClock, 1000); updateClock();
 
-// ---- Saved address ----
 function loadSaved() {
   try {
-    const s = localStorage.getItem('mykolaiv_addr');
+    const s = localStorage.getItem('mkv_addr');
     if (!s) return;
     savedAddr = JSON.parse(s);
-    const chip = document.getElementById('saved-chip');
-    chip.innerHTML = `📍 ${savedAddr.filialName} / ${savedAddr.nsName} / ${savedAddr.streetName} ${savedAddr.domName} <span class="clear" onclick="clearSaved(event)">✕</span>`;
+    document.getElementById('saved-chip').innerHTML = `📍 ${savedAddr.streetName} ${savedAddr.domName} <span onclick="clearSaved(event)" style="cursor:pointer;margin-left:4px">✕</span>`;
     document.getElementById('saved-wrap').style.display = 'block';
   } catch(e) {}
 }
-function saveAddr(data) {
-  savedAddr = data;
-  localStorage.setItem('mykolaiv_addr', JSON.stringify(data));
-  loadSaved();
-}
 function clearSaved(e) {
   e.stopPropagation();
-  localStorage.removeItem('mykolaiv_addr');
+  localStorage.removeItem('mkv_addr');
   savedAddr = null;
   document.getElementById('saved-wrap').style.display = 'none';
 }
 
-// ---- Load filials ----
 async function init() {
   loadSaved();
   try {
@@ -329,76 +211,51 @@ async function init() {
     data.sort((a,b)=>a.fullname.localeCompare(b.fullname,'uk'));
     data.forEach(f => {
       const o = document.createElement('option');
-      o.value = f.idfilial;
-      o.textContent = f.fullname;
+      o.value = f.idfilial; o.textContent = f.fullname;
       sel.appendChild(o);
     });
-    // Auto-restore if saved
-    if (savedAddr) {
-      sel.value = savedAddr.filialId;
-      await loadNs(true);
-    }
-  } catch(e) {
-    const msg = e.message || String(e);
-    showErr('Помилка завантаження дільниць: ' + msg);
-    document.getElementById('debug-info').style.display = 'block';
-  }
+    if (savedAddr) { sel.value = savedAddr.filialId; await loadNs(true); }
+  } catch(e) { showErr('Помилка: ' + e.message); }
   loadSchedule();
-  schedRefresh = setInterval(loadSchedule, 5*60*1000);
+  setInterval(loadSchedule, 5*60*1000);
 }
 
 async function loadNs(restore=false) {
   const filialId = document.getElementById('sel-filial').value;
   const sel = document.getElementById('sel-ns');
-  sel.disabled = true;
-  sel.innerHTML = '<option>Завантаження...</option>';
+  sel.disabled = true; sel.innerHTML = '<option>Завантаження...</option>';
   document.getElementById('sel-street').disabled = true;
   document.getElementById('sel-street').innerHTML = '<option value="">— Спочатку місто —</option>';
   document.getElementById('sel-dom').disabled = true;
-  document.getElementById('sel-dom').innerHTML = '<option value="">— Спочатку вулиця —</option>';
+  document.getElementById('sel-dom').innerHTML = '<option value="">— Спочатку вулицю —</option>';
   document.getElementById('btn-search').disabled = true;
-  if (!filialId) { 
-    // Check if filial select has options at all
-    const filSel = document.getElementById('sel-filial');
-    if (filSel.options.length <= 1) showErr('Список дільниць порожній — перевірте з\'єднання з інтернетом');
-    sel.innerHTML = '<option value="">— Спочатку дільниця —</option>'; return; 
-  }
+  if (!filialId) { sel.innerHTML = '<option value="">— Спочатку дільниця —</option>'; return; }
   try {
     const r = await apiFetch(`${API}/addr/filii/${filialId}/ns`);
-    const raw = await r.text();
-    console.log('NS raw:', raw.slice(0,300));
-    let data;
-    try { data = JSON.parse(raw); } catch(pe) {
-      sel.innerHTML = '<option value="">Помилка JSON</option>';
-      showErr('NS помилка: ' + raw.slice(0,150));
-      return;
-    }
-    const arr = Array.isArray(data) ? data : (data.items || data.data || data.result || []);
+    const data = await r.json();
+    const arr = Array.isArray(data) ? data : [];
     if (!arr.length) { sel.innerHTML = '<option value="">Немає даних</option>'; return; }
     const first = arr[0];
-    const idKey = ['idnaspunkt','idns','idNs','id'].find(k=>first[k]!==undefined) || Object.keys(first).find(k=>Number.isInteger(first[k]));
-    const nameKey = ['naznaspunkt','nazns','nazNs','fullname','name','naz'].find(k=>first[k]!==undefined&&typeof first[k]==='string') || Object.keys(first).find(k=>typeof first[k]==='string');
+    const idKey = ['idnaspunkt','idns','id'].find(k=>first[k]!==undefined);
+    const nameKey = ['naznaspunkt','nazns','fullname','name'].find(k=>first[k]!==undefined&&typeof first[k]==='string');
     sel.innerHTML = '<option value="">— Оберіть —</option>';
     arr.sort((a,b)=>String(a[nameKey]||'').localeCompare(String(b[nameKey]||''),'uk'));
     arr.forEach(n => {
       const o = document.createElement('option');
-      o.value = n[idKey];
-      o.textContent = n[nameKey];
+      o.value = n[idKey]; o.textContent = n[nameKey];
       sel.appendChild(o);
     });
     sel.disabled = false;
     if (restore && savedAddr) { sel.value = savedAddr.nsId; await loadStreet(true); }
-  } catch(e) { sel.innerHTML = '<option value="">Помилка</option>'; showErr('Помилка NS: ' + e.message); }
+  } catch(e) { sel.innerHTML = '<option value="">Помилка</option>'; showErr('Помилка: ' + e.message); }
 }
 
 async function loadStreet(restore=false) {
   const nsId = document.getElementById('sel-ns').value;
-  const filialId = document.getElementById('sel-filial').value;
   const sel = document.getElementById('sel-street');
-  sel.disabled = true;
-  sel.innerHTML = '<option>Завантаження...</option>';
+  sel.disabled = true; sel.innerHTML = '<option>Завантаження...</option>';
   document.getElementById('sel-dom').disabled = true;
-  document.getElementById('sel-dom').innerHTML = '<option value="">— Спочатку вулиця —</option>';
+  document.getElementById('sel-dom').innerHTML = '<option value="">— Спочатку вулицю —</option>';
   document.getElementById('btn-search').disabled = true;
   if (!nsId) { sel.innerHTML = '<option value="">— Спочатку місто —</option>'; return; }
   try {
@@ -408,8 +265,7 @@ async function loadStreet(restore=false) {
     data.sort((a,b)=>a.nazstreet.localeCompare(b.nazstreet,'uk'));
     data.forEach(s => {
       const o = document.createElement('option');
-      o.value = s.idstreet;
-      o.textContent = s.nazstreet;
+      o.value = s.idstreet; o.textContent = s.nazstreet;
       sel.appendChild(o);
     });
     sel.disabled = false;
@@ -420,23 +276,17 @@ async function loadStreet(restore=false) {
 async function loadDom(restore=false) {
   const streetId = document.getElementById('sel-street').value;
   const sel = document.getElementById('sel-dom');
-  sel.disabled = true;
-  sel.innerHTML = '<option>Завантаження...</option>';
+  sel.disabled = true; sel.innerHTML = '<option>Завантаження...</option>';
   document.getElementById('btn-search').disabled = true;
-  if (!streetId) { sel.innerHTML = '<option value="">— Спочатку вулиця —</option>'; return; }
+  if (!streetId) { sel.innerHTML = '<option value="">— Спочатку вулицю —</option>'; return; }
   try {
     const r = await apiFetch(`${API}/addr/street/${streetId}/dom`);
     const data = await r.json();
     sel.innerHTML = '<option value="">— Оберіть —</option>';
-    data.sort((a,b)=>{
-      const an = parseInt(a.nazdom), bn = parseInt(b.nazdom);
-      if (!isNaN(an)&&!isNaN(bn)) return an-bn;
-      return (a.nazdom||'').localeCompare(b.nazdom||'','uk');
-    });
+    data.sort((a,b)=>{ const an=parseInt(a.nazdom),bn=parseInt(b.nazdom); return (!isNaN(an)&&!isNaN(bn))?an-bn:(a.nazdom||'').localeCompare(b.nazdom||'','uk'); });
     data.forEach(d => {
       const o = document.createElement('option');
-      o.value = d.iddom;
-      o.textContent = d.nazdom;
+      o.value = d.iddom; o.textContent = d.nazdom;
       sel.appendChild(o);
     });
     sel.disabled = false;
@@ -444,267 +294,170 @@ async function loadDom(restore=false) {
   } catch(e) { sel.innerHTML = '<option value="">Помилка</option>'; }
 }
 
-// Enable search when dom selected
 document.getElementById('sel-dom').addEventListener('change', () => {
   document.getElementById('btn-search').disabled = !document.getElementById('sel-dom').value;
 });
 
-// ---- Search ----
 async function search() {
   const domId = document.getElementById('sel-dom').value;
   if (!domId) return;
   const btn = document.getElementById('btn-search');
-  btn.disabled = true;
-  btn.textContent = 'Пошук...';
-  hideErr();
+  btn.disabled = true; btn.textContent = 'Пошук...'; hideErr();
   try {
     const r = await apiFetch(`${API}/addr/dom/${domId}/outage-queue`);
     const data = await r.json();
-    
-    // Save address
-    const filSel = document.getElementById('sel-filial');
-    const nsSel = document.getElementById('sel-ns');
-    const strSel = document.getElementById('sel-street');
-    const domSel = document.getElementById('sel-dom');
-    saveAddr({
-      filialId: filSel.value, filialName: filSel.options[filSel.selectedIndex].text,
-      nsId: nsSel.value, nsName: nsSel.options[nsSel.selectedIndex].text,
-      streetId: strSel.value, streetName: strSel.options[strSel.selectedIndex].text,
-      domId: domSel.value, domName: domSel.options[domSel.selectedIndex].text
-    });
-
+    const filSel=document.getElementById('sel-filial'), nsSel=document.getElementById('sel-ns');
+    const strSel=document.getElementById('sel-street'), domSel=document.getElementById('sel-dom');
+    savedAddr = {
+      filialId:filSel.value, filialName:filSel.options[filSel.selectedIndex].text,
+      nsId:nsSel.value, nsName:nsSel.options[nsSel.selectedIndex].text,
+      streetId:strSel.value, streetName:strSel.options[strSel.selectedIndex].text,
+      domId:domSel.value, domName:domSel.options[domSel.selectedIndex].text
+    };
+    localStorage.setItem('mkv_addr', JSON.stringify(savedAddr));
+    loadSaved();
     showResult(data);
-  } catch(e) {
-    showErr('Помилка пошуку. Спробуйте знову.');
-  }
-  btn.disabled = false;
-  btn.innerHTML = '<span>🔍</span> Перевірити відключення';
+  } catch(e) { showErr('Помилка пошуку: ' + e.message); }
+  btn.disabled = false; btn.innerHTML = '🔍 Перевірити відключення';
 }
 
 function showResult(data) {
-  const card = document.getElementById('result-card');
-  card.classList.add('visible');
-
-  // Extract queue name from any response structure
-  let queueName = null;
+  document.getElementById('result-card').classList.add('visible');
   const arr = Array.isArray(data) ? data : (data ? [data] : []);
+  let queueName = null;
   if (arr.length > 0) {
     const item = arr[0];
-    // Try all possible field paths
-    queueName = item.name
-      || item.queue_name
-      || item.queueName
+    queueName = item.name || item.queue_name || item.queueName
       || (item.outage_queue && item.outage_queue.name)
       || (item.outageQueue && item.outageQueue.name)
-      || (item.queue && item.queue.name)
-      || null;
+      || (item.queue && item.queue.name) || null;
   }
-
   myQueue = queueName;
-
   const badge = document.getElementById('res-queue');
   if (queueName) {
     const slot = getCurrentSlot();
-    const status = scheduleData[queueName] ? scheduleData[queueName][slot] : -1;
-    isOff = status === 1 || status === 3;
-    const isMaybe = status === 2;
-
+    const status = scheduleData[queueName] ? scheduleData[queueName][slot] : 0;
+    const isOff = status===1||status===3, isMaybe = status===2;
     badge.textContent = `Черга ${queueName}`;
-    badge.className = 'queue-badge ' + (isOff ? 'off' : (isMaybe ? 'off' : 'on'));
-
-    document.getElementById('res-icon').textContent = isOff ? '🔴' : '🟢';
+    badge.className = 'queue-badge ' + (isOff||isMaybe ? 'off' : 'on');
+    document.getElementById('res-icon').textContent = isOff ? '🔴' : (isMaybe ? '🟡' : '🟢');
     document.getElementById('res-title').textContent = isOff ? 'Зараз відключено' : (isMaybe ? 'Можливо відключено' : 'Є електроенергія');
-    document.getElementById('res-addr').textContent = savedAddr ? `${savedAddr.streetName} ${savedAddr.domName}, ${savedAddr.nsName}` : '';
-
+    document.getElementById('res-addr').textContent = `${savedAddr.streetName} ${savedAddr.domName}, ${savedAddr.nsName}`;
     startTimer(queueName);
     document.getElementById('tab-bar').style.display = 'flex';
-    currentTab = 'my';
     switchTab('my');
   } else {
-    badge.textContent = 'Адреса не знайдена в графіках';
-    badge.className = 'queue-badge unknown';
+    badge.textContent = 'Адреса не в графіку'; badge.className = 'queue-badge unknown';
     document.getElementById('res-icon').textContent = '❓';
-    document.getElementById('res-title').textContent = 'Не в графіку';
-    document.getElementById('res-addr').textContent = 'Можливо немає планових відключень';
+    document.getElementById('res-title').textContent = 'Не знайдено в графіках';
+    document.getElementById('res-addr').textContent = '';
     document.getElementById('timer-block').style.display = 'none';
     document.getElementById('tab-bar').style.display = 'none';
-    renderFullSchedule();
   }
-
-  card.scrollIntoView({behavior:'smooth', block:'start'});
+  document.getElementById('result-card').scrollIntoView({behavior:'smooth'});
 }
 
-// ---- Timer ----
 function getCurrentSlot() {
   const now = new Date();
-  return now.getHours() * 2 + (now.getMinutes() >= 30 ? 1 : 0);
+  return now.getHours()*2 + (now.getMinutes()>=30?1:0);
 }
 
 function startTimer(qName) {
   if (timerInterval) clearInterval(timerInterval);
   updateTimer(qName);
-  timerInterval = setInterval(() => updateTimer(qName), 1000);
+  timerInterval = setInterval(()=>updateTimer(qName), 1000);
 }
 
 function updateTimer(qName) {
-  const arr = scheduleData[qName];
-  if (!arr) return;
-  const slot = getCurrentSlot();
-  const current = arr[slot];
-  const isOff = current === 1 || current === 2 || current === 3;
-
-  const tb = document.getElementById('timer-block');
-  tb.style.display = 'block';
+  const arr = scheduleData[qName]; if (!arr) return;
+  const slot = getCurrentSlot(), current = arr[slot];
+  const isOff = current===1||current===2||current===3;
+  document.getElementById('timer-block').style.display = 'block';
   document.getElementById('timer-label').textContent = isOff ? 'До включення' : 'До відключення';
-
-  // Find next change
   let nextSlot = -1;
-  for (let i = slot+1; i < 48; i++) {
-    const s = arr[i];
-    const iS = s===1||s===2||s===3;
-    if (iS !== isOff) { nextSlot = i; break; }
-  }
-
-  if (nextSlot === -1) {
-    document.getElementById('timer-val').textContent = 'Без змін';
-    document.getElementById('timer-desc').textContent = 'До кінця доби';
-    return;
-  }
-
-  const now = new Date();
-  const nextTime = new Date(now);
-  nextTime.setHours(Math.floor(nextSlot/2), (nextSlot%2)*30, 0, 0);
-  const diff = nextTime - now;
-  const h = Math.floor(diff/3600000);
-  const m = Math.floor((diff%3600000)/60000);
-  const s = Math.floor((diff%60000)/1000);
-  document.getElementById('timer-val').textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-  document.getElementById('timer-desc').textContent = `Зміна о ${String(Math.floor(nextSlot/2)).padStart(2,'0')}:${(nextSlot%2)*30===0?'00':'30'}`;
+  for (let i=slot+1;i<48;i++) { const s=arr[i],iS=s===1||s===2||s===3; if(iS!==isOff){nextSlot=i;break;} }
+  if (nextSlot===-1) { document.getElementById('timer-val').textContent='Без змін'; document.getElementById('timer-desc').textContent='До кінця доби'; return; }
+  const now=new Date(), next=new Date(now);
+  next.setHours(Math.floor(nextSlot/2),(nextSlot%2)*30,0,0);
+  const diff=next-now, h=Math.floor(diff/3600000), m=Math.floor((diff%3600000)/60000), s=Math.floor((diff%60000)/1000);
+  document.getElementById('timer-val').textContent=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  document.getElementById('timer-desc').textContent=`Зміна о ${String(Math.floor(nextSlot/2)).padStart(2,'0')}:${(nextSlot%2)*30===0?'00':'30'}`;
 }
 
-// ---- Schedule ----
 async function loadSchedule() {
   try {
-    const [rq, ra] = await Promise.all([
-      fetch(`${API}/outage-queue/by-type/3`),
-      fetch(`${API}/schedule/active`)
-    ]);
-    const queues = await rq.json();
-    const active = await ra.json();
-
-    queueMap = {};
-    queues.forEach(q => { if (q.id && q.name) queueMap[q.id] = q.name; });
-
-    const tmp = {};
-    QUEUES_ORDER.forEach(q => { tmp[q] = new Array(48).fill(0); });
-
-    active.forEach(item => {
-      const qName = queueMap[item.outage_queue_id];
-      if (qName && tmp[qName]) {
-        const idx = item.time_series_id - 1;
-        let st = 0;
-        if (item.type==='OFF') st=1;
-        else if (item.type==='PROBABLY_OFF') st=2;
-        else if (item.type==='SURE_OFF') st=3;
-        if (idx>=0&&idx<48) tmp[qName][idx] = st;
+    const [rq,ra] = await Promise.all([apiFetch(`${API}/outage-queue/by-type/3`), apiFetch(`${API}/schedule/active`)]);
+    const queues=await rq.json(), active=await ra.json();
+    queueMap={};
+    queues.forEach(q=>{if(q.id&&q.name)queueMap[q.id]=q.name;});
+    const tmp={};
+    QUEUES_ORDER.forEach(q=>{tmp[q]=new Array(48).fill(0);});
+    active.forEach(item=>{
+      const qName=queueMap[item.outage_queue_id];
+      if(qName&&tmp[qName]){
+        const idx=item.time_series_id-1;
+        let st=0;
+        if(item.type==='OFF')st=1; else if(item.type==='PROBABLY_OFF')st=2; else if(item.type==='SURE_OFF')st=3;
+        if(idx>=0&&idx<48)tmp[qName][idx]=st;
       }
     });
-    scheduleData = tmp;
-
-    if (currentTab==='my' && myQueue) renderMyQueue();
-    else renderFullSchedule();
-
-    if (myQueue) updateTimer(myQueue);
+    scheduleData=tmp;
+    if(currentTab==='my'&&myQueue)renderMyQueue(); else renderFullSchedule();
+    if(myQueue)updateTimer(myQueue);
   } catch(e) {
-    document.getElementById('sched-body').innerHTML = `<div style="padding:20px;font-size:12px;color:var(--red)">Помилка завантаження: ${e.message}</div>`;
+    document.getElementById('sched-body').innerHTML=`<div style="padding:20px;font-size:12px;color:var(--red)">Помилка: ${e.message}</div>`;
   }
 }
 
 function switchTab(tab) {
-  currentTab = tab;
-  document.getElementById('tab-my').className = 'tab' + (tab==='my'?' active':'');
-  document.getElementById('tab-all').className = 'tab' + (tab==='all'?' active':'');
-  if (tab==='my' && myQueue) renderMyQueue();
-  else renderFullSchedule();
+  currentTab=tab;
+  document.getElementById('tab-my').className='tab'+(tab==='my'?' active':'');
+  document.getElementById('tab-all').className='tab'+(tab==='all'?' active':'');
+  if(tab==='my'&&myQueue)renderMyQueue(); else renderFullSchedule();
 }
 
 function makeTimeHeaders() {
-  let html = '<tr><th>Черга</th>';
-  for (let i=0;i<24;i++) html += `<th${i===new Date().getHours()?' class="now"':''}>${String(i).padStart(2,'0')}</th>`;
-  return html + '</tr>';
+  let html='<tr><th>Черга</th>';
+  const h=new Date().getHours();
+  for(let i=0;i<24;i++)html+=`<th${i===h?' class="now"':''}>${String(i).padStart(2,'0')}</th>`;
+  return html+'</tr>';
 }
 
-function makeCells(arr, qName) {
-  const now = new Date();
-  const curSlot = getCurrentSlot();
-  let html = '';
-  for (let hour=0; hour<24; hour++) {
-    const slot1 = hour*2, slot2 = hour*2+1;
-    const s1 = arr[slot1], s2 = arr[slot2];
-    const isCurHour = hour === now.getHours();
-    // Merge: if both same status, one cell; else split
-    if (s1===s2) {
-      const cls = cellClass(s1, isCurHour && (curSlot===slot1||curSlot===slot2));
-      html += `<td class="${isCurHour?'time-col-now':''}"><div class="cell ${cls}"></div></td>`;
-    } else {
-      // Show as two halves in one td
-      const cls1 = cellClass(s1, isCurHour && curSlot===slot1);
-      const cls2 = cellClass(s2, isCurHour && curSlot===slot2);
-      html += `<td class="${isCurHour?'time-col-now':''}"><div style="display:flex;height:100%"><div class="cell ${cls1}" style="flex:1"></div><div class="cell ${cls2}" style="flex:1"></div></div></td>`;
-    }
+function cellClass(s,cur){
+  if(cur){if(s===0)return'now-on';if(s===1||s===3)return'now-off';if(s===2)return'now-maybe';}
+  if(s===0)return'on';if(s===1)return'off';if(s===2)return'maybe';if(s===3)return'sure';return'on';
+}
+
+function makeCells(arr){
+  const now=new Date(),curSlot=getCurrentSlot();let html='';
+  for(let h=0;h<24;h++){
+    const s1=arr[h*2],s2=arr[h*2+1],cur=h===now.getHours();
+    if(s1===s2){html+=`<td class="${cur?'time-col-now':''}"><div class="cell ${cellClass(s1,cur&&(curSlot===h*2||curSlot===h*2+1))}"></div></td>`;}
+    else{html+=`<td class="${cur?'time-col-now':''}"><div style="display:flex;height:100%"><div class="cell ${cellClass(s1,cur&&curSlot===h*2)}" style="flex:1"></div><div class="cell ${cellClass(s2,cur&&curSlot===h*2+1)}" style="flex:1"></div></div></td>`;}
   }
   return html;
 }
 
-function cellClass(status, isCurrent) {
-  if (isCurrent) {
-    if (status===0) return 'now-on';
-    if (status===1) return 'now-off';
-    if (status===2) return 'now-maybe';
-    if (status===3) return 'now-off';
-  }
-  if (status===0) return 'on';
-  if (status===1) return 'off';
-  if (status===2) return 'maybe';
-  if (status===3) return 'sure';
-  return 'on';
-}
-
-function renderFullSchedule() {
-  let html = `<div class="sched-scroll"><table class="sched-table"><thead>${makeTimeHeaders()}</thead><tbody>`;
-  QUEUES_ORDER.forEach(q => {
-    const arr = scheduleData[q] || new Array(48).fill(0);
-    const isMyQ = q === myQueue;
-    html += `<tr class="queue-row${isMyQ?' highlight':''}"><td>${q}</td>${makeCells(arr, q)}</tr>`;
+function renderFullSchedule(){
+  let html=`<div class="sched-scroll"><table class="sched-table"><thead>${makeTimeHeaders()}</thead><tbody>`;
+  QUEUES_ORDER.forEach(q=>{
+    const arr=scheduleData[q]||new Array(48).fill(0);
+    html+=`<tr class="queue-row${q===myQueue?' highlight':''}"><td>${q}</td>${makeCells(arr)}</tr>`;
   });
-  html += '</tbody></table></div>';
-  document.getElementById('sched-body').innerHTML = html;
+  html+='</tbody></table></div>';
+  document.getElementById('sched-body').innerHTML=html;
 }
 
-function renderMyQueue() {
-  if (!myQueue || !scheduleData[myQueue]) { renderFullSchedule(); return; }
-  const arr = scheduleData[myQueue];
-  let html = `<div class="sched-scroll"><table class="sched-table"><thead>${makeTimeHeaders()}</thead><tbody>`;
-  html += `<tr class="queue-row highlight"><td>${myQueue}</td>${makeCells(arr, myQueue)}</tr>`;
-  html += '</tbody></table></div>';
-  document.getElementById('sched-body').innerHTML = html;
+function renderMyQueue(){
+  if(!myQueue||!scheduleData[myQueue]){renderFullSchedule();return;}
+  let html=`<div class="sched-scroll"><table class="sched-table"><thead>${makeTimeHeaders()}</thead><tbody>`;
+  html+=`<tr class="queue-row highlight"><td>${myQueue}</td>${makeCells(scheduleData[myQueue])}</tr>`;
+  html+='</tbody></table></div>';
+  document.getElementById('sched-body').innerHTML=html;
 }
 
-function showErr(msg) {
-  const el = document.getElementById('err-msg');
-  el.textContent = msg;
-  el.classList.add('visible');
-}
-function hideErr() {
-  document.getElementById('err-msg').classList.remove('visible');
-}
-
-// PWA install
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  deferredPrompt = e;
-});
+function showErr(msg){const el=document.getElementById('err-msg');el.textContent=msg;el.classList.add('visible');}
+function hideErr(){document.getElementById('err-msg').classList.remove('visible');}
 
 init();
 </script>
