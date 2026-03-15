@@ -509,14 +509,30 @@ async function fetchSched(){
     const [q,a]=await Promise.all([go(BASE+'/outage-queue/by-type/3'),go(BASE+'/schedule/active')]);
     QM={};q.forEach(x=>{if(x.id&&x.name)QM[x.id]=x.name;});
 
-    // Group schedules by date
+    // Group schedules by date (Kyiv time UTC+2/+3)
     ALL_SCHED={};
     a.forEach(sched=>{
-      // Each sched has {id, from, to, series:[{time_series_id, outage_queue_id, type}]}
-      const dateKey = sched.from ? sched.from.substring(0,10) : null;
-      if(!dateKey) return;
+      if(!sched.series||!sched.series.length) return;
+      // Determine date from time_series_id of first item
+      // time_series_id 1-48 = slots for the day
+      // Use from field to get the date in Kyiv time
+      let dateKey;
+      if(sched.from){
+        const d=new Date(sched.from);
+        // Convert to Kyiv time (UTC+2 winter, UTC+3 summer)
+        const kyiv=new Date(d.getTime()+2*3600000);
+        // If time_series_id suggests next day, use next day
+        const minSlot=Math.min(...sched.series.map(x=>x.time_series_id));
+        // slot 1 = 00:00, if from is evening but slots start from 1 = it's next day schedule
+        if(kyiv.getHours()>=20 && minSlot<=10){
+          const next=new Date(kyiv);next.setDate(next.getDate()+1);
+          dateKey=next.toISOString().substring(0,10);
+        } else {
+          dateKey=kyiv.toISOString().substring(0,10);
+        }
+      } else return;
       if(!ALL_SCHED[dateKey]){ALL_SCHED[dateKey]={};QO.forEach(x=>{ALL_SCHED[dateKey][x]=new Array(48).fill(0);});}
-      (sched.series||[]).forEach(x=>{
+      sched.series.forEach(x=>{
         const qn=QM[x.outage_queue_id];
         if(qn&&ALL_SCHED[dateKey][qn]){
           const i=x.time_series_id-1;
@@ -525,16 +541,6 @@ async function fetchSched(){
         }
       });
     });
-
-    // Also handle flat format (old API)
-    if(a.length && a[0].time_series_id!==undefined){
-      const today=new Date().toISOString().substring(0,10);
-      ALL_SCHED[today]={};QO.forEach(x=>{ALL_SCHED[today][x]=new Array(48).fill(0);});
-      a.forEach(x=>{
-        const qn=QM[x.outage_queue_id];
-        if(qn&&ALL_SCHED[today][qn]){const i=x.time_series_id-1;let s=0;if(x.type==='OFF')s=1;else if(x.type==='PROBABLY_OFF')s=2;else if(x.type==='SURE_OFF')s=3;if(i>=0&&i<48)ALL_SCHED[today][qn][i]=s;}
-      });
-    }
 
     DATES=Object.keys(ALL_SCHED).sort();
     // Default: today or first available
