@@ -8,12 +8,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Unbounded:wght@300;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0a0f;--bg2:#0f0f1a;--bg3:#14141f;--bg4:#1a1a28;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);--text:#e8e8f0;--text2:#8888a8;--text3:#4a4a6a;--accent:#4f7fff;--accent2:#3a5fcc;--green:#22c55e;--green-bg:rgba(34,197,94,0.12);--red:#ef4444;--red-bg:rgba(239,68,68,0.12);--orange:#f97316;--orange-bg:rgba(249,115,22,0.12);--mono:'JetBrains Mono',monospace;--display:'Unbounded',sans-serif}
+:root{--bg:#0a0a0f;--bg2:#0f0f1a;--bg3:#14141f;--bg4:#1a1a28;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);--text:#e8e8f0;--text2:#8888a8;--text3:#4a4a6a;--accent:#4f7fff;--accent2:#3a5fcc;--green:#22c55e;--red:#ef4444;--orange:#f97316;--mono:'JetBrains Mono',monospace;--display:'Unbounded',sans-serif}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--mono);min-height:100vh;overflow-x:hidden}
 body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(79,127,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(79,127,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
-.wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 16px 60px}
+.wrap{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:0 16px 60px}
 header{padding:32px 0 24px;text-align:center;border-bottom:1px solid var(--border);margin-bottom:32px}
 .logo-line{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:8px}
 .bolt{font-size:28px;animation:pulse 2s ease-in-out infinite}
@@ -24,15 +24,24 @@ h1{font-family:var(--display);font-size:clamp(18px,4vw,26px);font-weight:700;let
 #clock{color:var(--accent);font-size:15px;font-weight:600;letter-spacing:.08em}
 .upd-dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;margin-right:4px;animation:blink 2s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-.search-card{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:24px;margin-bottom:24px}
-.search-title{font-family:var(--display);font-size:13px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:20px;display:flex;align-items:center;gap:8px}
-.search-title::before{content:'';display:inline-block;width:3px;height:14px;background:var(--accent);border-radius:2px}
-.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* Accordion */
+.acc{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;margin-bottom:16px;overflow:hidden}
+.acc-head{display:flex;align-items:center;padding:14px 20px;cursor:pointer;gap:12px;user-select:none}
+.acc-head:hover{background:var(--bg3)}
+.acc-arrow{font-size:10px;color:var(--text3);transition:transform .2s;flex-shrink:0}
+.acc-arrow.open{transform:rotate(180deg)}
+.acc-title{font-family:var(--display);font-size:12px;font-weight:500;color:var(--text2);letter-spacing:.05em}
+.acc-body{display:none;padding:0 20px 20px}
+.acc-body.open{display:block}
+
+/* Search */
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
 @media(max-width:500px){.fields{grid-template-columns:1fr}}
 .field{display:flex;flex-direction:column;gap:6px}
 .field label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.12em}
 .sel-wrap{position:relative}
-.sel-face{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:var(--mono);font-size:13px;padding:10px 32px 10px 12px;cursor:pointer;transition:border-color .2s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;user-select:none}
+.sel-face{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:var(--mono);font-size:13px;padding:10px 32px 10px 12px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;user-select:none;transition:border-color .2s}
 .sel-face.off{opacity:.4;cursor:not-allowed;pointer-events:none}
 .sel-face:not(.off):hover{border-color:var(--accent)}
 .sel-arrow{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--text3);pointer-events:none;font-size:10px}
@@ -48,7 +57,12 @@ h1{font-family:var(--display);font-size:clamp(18px,4vw,26px);font-weight:700;let
 .btn-search{grid-column:1/-1;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:12px;font-family:var(--display);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;letter-spacing:.05em;display:flex;align-items:center;justify-content:center;gap:8px}
 .btn-search:hover{background:var(--accent2);transform:translateY(-1px)}
 .btn-search:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.result-card{background:var(--bg2);border-radius:12px;padding:20px;margin-bottom:24px;display:none;animation:fadeIn .3s ease}
+.err{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:12px;font-size:12px;color:var(--red);margin-top:8px;display:none}
+.err.on{display:block}
+.saved{display:inline-flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:6px 14px;font-size:11px;color:var(--text2);margin-top:12px}
+
+/* Result */
+.result-card{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:20px;margin-bottom:16px;display:none;animation:fadeIn .3s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .result-card.on{display:block}
 .result-status{display:flex;align-items:center;gap:12px;margin-bottom:12px}
@@ -56,76 +70,53 @@ h1{font-family:var(--display);font-size:clamp(18px,4vw,26px);font-weight:700;let
 .status-text h2{font-family:var(--display);font-size:16px;font-weight:500}
 .status-text p{font-size:12px;color:var(--text2);margin-top:2px}
 .queue-badge{display:inline-flex;align-items:center;padding:6px 14px;border-radius:6px;font-family:var(--display);font-size:20px;font-weight:700;margin:8px 0}
-.queue-badge.off{background:var(--red-bg);color:var(--red);border:1px solid rgba(239,68,68,.2)}
-.queue-badge.on{background:var(--green-bg);color:var(--green);border:1px solid rgba(34,197,94,.2)}
+.queue-badge.off{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.2)}
+.queue-badge.on{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.2)}
 .queue-badge.unk{background:var(--bg3);color:var(--text2);border:1px solid var(--border)}
 .timer-block{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px;margin-top:12px;text-align:center}
 .timer-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px}
 .timer-val{font-family:var(--display);font-size:clamp(24px,6vw,40px);font-weight:700;color:var(--accent);letter-spacing:.05em}
 .timer-desc{font-size:11px;color:var(--text2);margin-top:4px}
-.sched-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:24px}
-.sched-hd{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
-.sched-title{font-family:var(--display);font-size:12px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:.1em}
+
+/* Checkboxes */
+.cb-row{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--border);margin-bottom:12px}
+.cb-row label{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text);cursor:pointer;font-weight:500}
+.cb-row input{width:15px;height:15px;accent-color:var(--accent);cursor:pointer}
+.cb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:6px}
+.cb-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2);cursor:pointer;padding:4px 0}
+.cb-item input{width:14px;height:14px;accent-color:var(--accent);cursor:pointer;flex-shrink:0}
+
+/* Schedule bar chart */
+.sched-card{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;overflow:hidden;margin-bottom:16px}
+.sched-hd{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.sched-title{font-family:var(--display);font-size:11px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:.1em}
 .leg{display:flex;gap:12px;flex-wrap:wrap}
 .leg-i{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2)}
 .leg-d{width:10px;height:10px;border-radius:2px}
-.sched-scroll{overflow-x:auto}
-.sched-table{width:100%;border-collapse:collapse;min-width:640px}
-.sched-table th{padding:8px 6px;font-size:10px;color:var(--text3);text-align:center;border-right:1px solid var(--border);background:var(--bg2)}
-.sched-table th:first-child{text-align:left;padding-left:16px;min-width:52px}
-.sched-table th.now{color:var(--accent);background:rgba(79,127,255,.1)!important}
-.sched-table td{padding:0;height:32px;border-right:1px solid var(--border);border-bottom:1px solid rgba(255,255,255,.03)}
-.sched-table td:first-child{padding:0 8px 0 16px;font-size:10px;color:var(--text2);white-space:nowrap}
-.sched-table tr:last-child td{border-bottom:none}
-.cell{width:100%;height:100%}
-.c0{background:#a8e6c0}.c1{background:#f87171}.c2{background:#fb923c}.c3{background:#fde68a}
-.cn0{background:#6ee09a;box-shadow:inset 0 0 0 2px #22c55e}
-.cn1{background:#f85050;box-shadow:inset 0 0 0 2px #ef4444}
-.cn2{background:#f97316;box-shadow:inset 0 0 0 2px #ea580c}
-.cn3{background:#fbbf24;box-shadow:inset 0 0 0 2px #d97706}
-.tcn{background:rgba(79,127,255,.08)!important}
-.hl td:first-child{color:var(--accent);font-weight:600}
-.loading{text-align:center;padding:40px;color:var(--text3);font-size:13px}
-.loading::after{content:'';display:block;width:24px;height:24px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;margin:12px auto 0;animation:spin .8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.err{background:var(--red-bg);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:12px 16px;font-size:12px;color:var(--red);margin-top:8px;display:none}
-.err.on{display:block}
-.tabs{display:flex;gap:4px;background:var(--bg3);border-radius:8px;padding:4px;margin-bottom:16px}
-.tab{flex:1;padding:8px;text-align:center;font-size:11px;font-family:var(--display);cursor:pointer;border-radius:6px;color:var(--text2);transition:all .2s;border:none;background:none}
-.tab.on{background:var(--bg4);color:var(--text);border:1px solid var(--border2)}
-.saved{display:inline-flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:6px 14px;font-size:11px;color:var(--text2);margin-bottom:12px}
-footer{text-align:center;padding:24px 0;font-size:10px;color:var(--text3);border-top:1px solid var(--border)}
-footer a{color:var(--text2);text-decoration:none}
-
-/* Accordion */
-.acc-wrap{background:var(--bg2)}
-.acc-btn-row{display:flex;align-items:center;border-bottom:1px solid var(--border)}
-.acc-btn{background:none;border:none;color:var(--text2);font-family:var(--display);font-size:12px;padding:14px 20px;text-align:left;cursor:pointer;transition:background .2s;letter-spacing:.05em}
-.acc-btn:hover{background:var(--bg3)}
-.cb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
-.cb-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2);cursor:pointer;padding:4px 0}
-.cb-item input{width:14px;height:14px;accent-color:var(--accent);cursor:pointer;flex-shrink:0}
-.cb-all-item{grid-column:1/-1;color:var(--text);font-weight:500;padding-bottom:8px;border-bottom:1px solid var(--border);margin-bottom:4px}
-
-/* New bar chart schedule */
-.bar-chart-wrap{padding:16px 20px 0}
-.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.bar-row-label{font-size:11px;color:var(--text2);width:36px;flex-shrink:0;text-align:right}
-.bar-track{flex:1;height:44px;display:flex;border-radius:6px;overflow:hidden;position:relative}
-.bar-seg{height:100%;transition:opacity .2s;cursor:default}
-.bar-seg:hover{opacity:.85}
+.bar-wrap{padding:16px 20px 4px}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.bar-lbl{font-size:11px;color:var(--text2);width:32px;text-align:right;flex-shrink:0}
+.bar-lbl.my{color:var(--accent);font-weight:700}
+.bar-track{flex:1;height:40px;display:flex;border-radius:6px;overflow:hidden}
+.bar-seg{height:100%;flex:1}
 .bar-seg.s0{background:#a8e6c0}
 .bar-seg.s1{background:#f4a9a8}
 .bar-seg.s2{background:#f4cba8}
-.bar-seg.s3{background:#e8a0a0}
-.bar-seg.snow{outline:2px solid #fff;outline-offset:-2px;z-index:1}
-.bar-time-axis{display:flex;padding:4px 0 12px 46px}
-.bar-time-tick{flex:1;font-size:9px;color:var(--text3);text-align:left}
-.bar-time-tick.now-tick{color:var(--accent);font-weight:600}
+.bar-seg.s3{background:#e89090}
+.bar-seg.now{outline:2px solid #fff;outline-offset:-2px;z-index:1;position:relative}
+.bar-axis{display:flex;padding:2px 0 8px 40px}
+.bar-tick{flex:2;font-size:9px;color:var(--text3);text-align:left}
+.bar-tick.now{color:var(--accent);font-weight:600}
+.loading{text-align:center;padding:40px;color:var(--text3);font-size:13px}
+.loading::after{content:'';display:block;width:24px;height:24px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;margin:12px auto 0;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+footer{text-align:center;padding:24px 0;font-size:10px;color:var(--text3);border-top:1px solid var(--border)}
+footer a{color:var(--text2);text-decoration:none}
 </style>
 </head>
 <body>
 <div class="wrap">
+
 <header>
   <div class="logo-line"><span class="bolt">⚡</span><h1>Графік відключень</h1></div>
   <div class="subtitle">АТ «Миколаївобленерго» · Реальний час</div>
@@ -136,69 +127,7 @@ footer a{color:var(--text2);text-decoration:none}
   </div>
 </header>
 
-<button id="search-toggle" onclick="toggleSearch()" style="background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:10px 20px;color:var(--text2);font-family:var(--mono);font-size:12px;cursor:pointer;width:100%;margin-bottom:8px;display:flex;align-items:center;justify-content:between;gap:8px">
-  <span id="search-toggle-icon">▼</span> <span>Пошук за адресою</span>
-  <span id="search-toggle-addr" style="margin-left:auto;color:var(--accent);font-size:11px"></span>
-</button>
-<div id="search-collapse" style="display:none">
-<div class="acc-body" id="acc-search" style="display:none">
-<div class="search-card" style="border-radius:0;border:none;border-bottom:1px solid var(--border);margin-bottom:0">
-  <div class="search-title">Пошук за адресою</div>
-  <div id="saved-wrap" style="display:none">
-    <div class="saved" id="saved-chip"></div>
-  </div>
-  <div class="fields">
-    <div class="field">
-      <label>Дільниця</label>
-      <div class="sel-wrap" id="sw-filial">
-        <div class="sel-face off" id="sf-filial">Завантаження...</div>
-        <span class="sel-arrow">▾</span>
-        <div class="sel-drop" id="sd-filial">
-          <input class="sel-srch" id="ss-filial" placeholder="Пошук...">
-          <div class="sel-opts" id="so-filial"></div>
-        </div>
-      </div>
-    </div>
-    <div class="field">
-      <label>Населений пункт</label>
-      <div class="sel-wrap" id="sw-ns">
-        <div class="sel-face off" id="sf-ns">— Спочатку дільниця —</div>
-        <span class="sel-arrow">▾</span>
-        <div class="sel-drop" id="sd-ns">
-          <input class="sel-srch" id="ss-ns" placeholder="Пошук...">
-          <div class="sel-opts" id="so-ns"></div>
-        </div>
-      </div>
-    </div>
-    <div class="field">
-      <label>Вулиця</label>
-      <div class="sel-wrap" id="sw-street">
-        <div class="sel-face off" id="sf-street">— Спочатку місто —</div>
-        <span class="sel-arrow">▾</span>
-        <div class="sel-drop" id="sd-street">
-          <input class="sel-srch" id="ss-street" placeholder="Пошук...">
-          <div class="sel-opts" id="so-street"></div>
-        </div>
-      </div>
-    </div>
-    <div class="field">
-      <label>Будинок</label>
-      <div class="sel-wrap" id="sw-dom">
-        <div class="sel-face off" id="sf-dom">— Спочатку вулицю —</div>
-        <span class="sel-arrow">▾</span>
-        <div class="sel-drop" id="sd-dom">
-          <input class="sel-srch" id="ss-dom" placeholder="Пошук...">
-          <div class="sel-opts" id="so-dom"></div>
-        </div>
-      </div>
-    </div>
-    <button class="btn-search" id="btn-s" disabled>🔍 Перевірити відключення</button>
-  </div>
-  <div class="err" id="err"></div>
-</div>
-</div>
-</div>
-
+<!-- Result card -->
 <div class="result-card" id="res-card">
   <div class="result-status">
     <div class="status-icon" id="res-ico">⚡</div>
@@ -212,49 +141,110 @@ footer a{color:var(--text2);text-decoration:none}
   </div>
 </div>
 
-<div class="sched-card">
-  <!-- Вибір черги — акордеон -->
-  <div class="acc-wrap" style="border-bottom:1px solid var(--border)">
-    <div class="acc-btn-row">
-      <label class="cb-item" style="padding:14px 20px;margin:0;cursor:pointer" onclick="event.stopPropagation()">
-        <input type="checkbox" id="cb-all" checked>
-        <span style="font-family:var(--display);font-size:12px;letter-spacing:.05em;color:var(--text2)">Всі черги</span>
-      </label>
-      <button class="acc-btn" id="acc-queues-btn" onclick="toggleAcc('queues')" style="flex:1;text-align:right">
-        <span id="acc-queues-label">1.1, 1.2, 2.1, 2.2, 3.1, 3.2, 4.1, 4.2, 5.1, 5.2, 6.1, 6.2 ▾</span>
-      </button>
+<!-- Search accordion -->
+<div class="acc">
+  <div class="acc-head" onclick="toggleAcc('search')">
+    <span class="acc-arrow" id="arr-search">▲</span>
+    <span class="acc-title">🔍 Пошук за адресою</span>
+    <span id="saved-label" style="margin-left:auto;font-size:11px;color:var(--accent)"></span>
+  </div>
+  <div class="acc-body open" id="body-search">
+    <div id="saved-wrap" style="display:none">
+      <div class="saved" id="saved-chip"></div>
     </div>
-    <div class="acc-body" id="acc-queues" style="display:none;padding:16px 20px">
-      <div class="cb-grid">
-        <label class="cb-item"><input type="checkbox" class="cb-q" value="1.1" checked><span>1.1 Черга</span></label>
-        <label class="cb-item"><input type="checkbox" class="cb-q" value="1.2" checked><span>1.2 Черга</span></label>
-        <label class="cb-item"><input type="checkbox" class="cb-q" value="2.1" checked><span>2.1 Черга</span></label>
-        <label class="cb-item"><input type="checkbox" class="cb-q" value="2.2" checked><span>2.2 Черга</span></label>
-        <label class="cb-item"><input type="checkbox" class="cb-q" value="3.1" checked><span>3.1 Черга</span></label>
-        <label class="cb-item"><input type="checkbox" class="cb-q" value="3.2" checked><span>3.2 Черга</span></label>
-        <label class="cb-item"><input type="checkbox" class="cb-q" value="4.1" checked><span>4.1 Черга</span></label>
-        <label class="cb-item"><input type="checkbox" class="cb-q" value="4.2" checked><span>4.2 Черга</span></label>
-        <label class="cb-item"><input type="checkbox" class="cb-q" value="5.1" checked><span>5.1 Черга</span></label>
-        <label class="cb-item"><input type="checkbox" class="cb-q" value="5.2" checked><span>5.2 Черга</span></label>
-        <label class="cb-item"><input type="checkbox" class="cb-q" value="6.1" checked><span>6.1 Черга</span></label>
-        <label class="cb-item"><input type="checkbox" class="cb-q" value="6.2" checked><span>6.2 Черга</span></label>
+    <div class="fields">
+      <div class="field">
+        <label>Дільниця</label>
+        <div class="sel-wrap">
+          <div class="sel-face off" id="sf-filial">Завантаження...</div>
+          <span class="sel-arrow">▾</span>
+          <div class="sel-drop" id="sd-filial">
+            <input class="sel-srch" id="ss-filial" placeholder="Пошук...">
+            <div class="sel-opts" id="so-filial"></div>
+          </div>
+        </div>
       </div>
+      <div class="field">
+        <label>Населений пункт</label>
+        <div class="sel-wrap">
+          <div class="sel-face off" id="sf-ns">— Спочатку дільниця —</div>
+          <span class="sel-arrow">▾</span>
+          <div class="sel-drop" id="sd-ns">
+            <input class="sel-srch" id="ss-ns" placeholder="Пошук...">
+            <div class="sel-opts" id="so-ns"></div>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Вулиця</label>
+        <div class="sel-wrap">
+          <div class="sel-face off" id="sf-street">— Спочатку місто —</div>
+          <span class="sel-arrow">▾</span>
+          <div class="sel-drop" id="sd-street">
+            <input class="sel-srch" id="ss-street" placeholder="Пошук...">
+            <div class="sel-opts" id="so-street"></div>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Будинок</label>
+        <div class="sel-wrap">
+          <div class="sel-face off" id="sf-dom">— Спочатку вулицю —</div>
+          <span class="sel-arrow">▾</span>
+          <div class="sel-drop" id="sd-dom">
+            <input class="sel-srch" id="ss-dom" placeholder="Пошук...">
+            <div class="sel-opts" id="so-dom"></div>
+          </div>
+        </div>
+      </div>
+      <button class="btn-search" id="btn-s" disabled>🔍 Перевірити відключення</button>
+    </div>
+    <div class="err" id="err"></div>
+  </div>
+</div>
+
+<!-- Schedule card -->
+<div class="sched-card">
+  <!-- Queue filter accordion -->
+  <div class="acc-head" onclick="toggleAcc('queues')" style="border-bottom:1px solid var(--border)">
+    <span class="acc-arrow" id="arr-queues">▲</span>
+    <span class="acc-title">Вибір черги</span>
+    <span id="queues-label" style="margin-left:auto;font-size:11px;color:var(--text2)">Всі</span>
+  </div>
+  <div class="acc-body open" id="body-queues" style="padding:16px 20px">
+    <div class="cb-row">
+      <label>
+        <input type="checkbox" id="cb-all" checked onclick="toggleAll(this)">
+        <span>Всі черги</span>
+      </label>
+    </div>
+    <div class="cb-grid">
+      <label class="cb-item"><input type="checkbox" class="cb-q" value="1.1" checked onclick="updateQueues()"><span>1.1 Черга</span></label>
+      <label class="cb-item"><input type="checkbox" class="cb-q" value="1.2" checked onclick="updateQueues()"><span>1.2 Черга</span></label>
+      <label class="cb-item"><input type="checkbox" class="cb-q" value="2.1" checked onclick="updateQueues()"><span>2.1 Черга</span></label>
+      <label class="cb-item"><input type="checkbox" class="cb-q" value="2.2" checked onclick="updateQueues()"><span>2.2 Черга</span></label>
+      <label class="cb-item"><input type="checkbox" class="cb-q" value="3.1" checked onclick="updateQueues()"><span>3.1 Черга</span></label>
+      <label class="cb-item"><input type="checkbox" class="cb-q" value="3.2" checked onclick="updateQueues()"><span>3.2 Черга</span></label>
+      <label class="cb-item"><input type="checkbox" class="cb-q" value="4.1" checked onclick="updateQueues()"><span>4.1 Черга</span></label>
+      <label class="cb-item"><input type="checkbox" class="cb-q" value="4.2" checked onclick="updateQueues()"><span>4.2 Черга</span></label>
+      <label class="cb-item"><input type="checkbox" class="cb-q" value="5.1" checked onclick="updateQueues()"><span>5.1 Черга</span></label>
+      <label class="cb-item"><input type="checkbox" class="cb-q" value="5.2" checked onclick="updateQueues()"><span>5.2 Черга</span></label>
+      <label class="cb-item"><input type="checkbox" class="cb-q" value="6.1" checked onclick="updateQueues()"><span>6.1 Черга</span></label>
+      <label class="cb-item"><input type="checkbox" class="cb-q" value="6.2" checked onclick="updateQueues()"><span>6.2 Черга</span></label>
     </div>
   </div>
 
-  <!-- Легенда -->
+  <!-- Legend + chart -->
   <div class="sched-hd">
-    <span class="sched-title">Погодинний графік · 15 березня 2026</span>
+    <span class="sched-title" id="sched-date">Погодинний графік</span>
     <div class="leg">
-      <span class="leg-i"><span class="leg-d" style="background:#a8e6c0;border:1px solid #6dcc99"></span>Є світло</span>
-      <span class="leg-i"><span class="leg-d" style="background:#f4a9a8;border:1px solid #e07070"></span>Немає</span>
-      <span class="leg-i"><span class="leg-d" style="background:#f4cba8;border:1px solid #e0a070"></span>Можливо</span>
-      <span class="leg-i"><span class="leg-d" style="background:#f0e68c;border:1px solid #d4c800"></span>Невідомо</span>
+      <span class="leg-i"><span class="leg-d" style="background:#a8e6c0"></span>Є світло</span>
+      <span class="leg-i"><span class="leg-d" style="background:#f4a9a8"></span>Немає</span>
+      <span class="leg-i"><span class="leg-d" style="background:#f4cba8"></span>Можливо</span>
+      <span class="leg-i"><span class="leg-d" style="background:#e89090"></span>Гарантовано</span>
     </div>
   </div>
   <div id="sched-body"><div class="loading">Завантаження...</div></div>
-</div>
-
 </div>
 
 <footer>
@@ -262,53 +252,81 @@ footer a{color:var(--text2);text-decoration:none}
   <div style="margin-top:6px">© 2026 · <a href="https://off.energy.mk.ua/Chergi_GPV.pdf" target="_blank">Черги ГПВ</a> · <a href="https://off.energy.mk.ua/Chergi_GAV.pdf" target="_blank">Черги ГАВ</a></div>
 </footer>
 </div>
+
 <script>
 const BASE = 'https://billowing-recipe-682d.antonsteppa.workers.dev/api';
-const QO   = ['1.1','1.2','2.1','2.2','3.1','3.2','4.1','4.2','5.1','5.2','6.1','6.2'];
-
-let SD={}, QM={}, myQ=null, tmr=null, tab='all', saved=null, activeQueues=[...['1.1','1.2','2.1','2.2','3.1','3.2','4.1','4.2','5.1','5.2','6.1','6.2']];
+const QO = ['1.1','1.2','2.1','2.2','3.1','3.2','4.1','4.2','5.1','5.2','6.1','6.2'];
+let SD={}, QM={}, myQ=null, tmr=null, saved=null;
+let activeQ = [...QO];
 const st={filial:{d:[],v:null,l:''},ns:{d:[],v:null,l:''},street:{d:[],v:null,l:''},dom:{d:[],v:null,l:''}};
 
-/* ---- FETCH: пробуємо 4 різних проксі ---- */
-async function go(url){
-  const r = await fetch(url);
-  if(!r.ok) throw new Error('HTTP '+r.status);
-  return await r.json();
-}
-
-/* ---- CLOCK ---- */
+/* Clock */
 function tick(){
   const n=new Date();
   document.getElementById('clock').textContent=n.toLocaleTimeString('uk-UA');
   document.getElementById('dstr').textContent=n.toLocaleDateString('uk-UA',{weekday:'long',day:'numeric',month:'long'});
+  const d=n.toLocaleDateString('uk-UA',{day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('sched-date').textContent='Погодинний графік · '+d;
 }
-setInterval(tick,1000);tick();
+setInterval(tick,1000); tick();
 
-/* ---- CUSTOM SELECT ---- */
+/* Accordion */
+function toggleAcc(name){
+  const body=document.getElementById('body-'+name);
+  const arr=document.getElementById('arr-'+name);
+  const isOpen=body.classList.contains('open');
+  body.classList.toggle('open',!isOpen);
+  if(arr) arr.textContent=isOpen?'▼':'▲';
+}
+
+/* Checkboxes */
+function toggleAll(cb){
+  document.querySelectorAll('.cb-q').forEach(c=>{c.checked=cb.checked;});
+  updateQueues();
+}
+function updateQueues(){
+  const checked=[...document.querySelectorAll('.cb-q:checked')].map(c=>c.value);
+  activeQ=checked;
+  const all=document.getElementById('cb-all');
+  const total=QO.length;
+  all.checked=checked.length===total;
+  all.indeterminate=checked.length>0&&checked.length<total;
+  const lbl=document.getElementById('queues-label');
+  lbl.textContent=checked.length===total?'Всі':checked.length===0?'Нічого':checked.join(', ');
+  renderSched();
+}
+
+/* Fetch */
+async function go(url){
+  const r=await fetch(url);
+  if(!r.ok) throw new Error('HTTP '+r.status);
+  return r.json();
+}
+
+/* Custom select */
 const NAMES=['filial','ns','street','dom'];
 function initSel(n){
   const face=document.getElementById('sf-'+n);
   const drop=document.getElementById('sd-'+n);
   const srch=document.getElementById('ss-'+n);
   const opts=document.getElementById('so-'+n);
-
-  face.addEventListener('click',(e)=>{
+  face.addEventListener('click',e=>{
     e.stopPropagation();
-    if(face.classList.contains('off')) return;
+    if(face.classList.contains('off'))return;
     const was=drop.classList.contains('open');
-    closeAll();
+    closeDrops();
     if(!was){drop.classList.add('open');srch.value='';paintOpts(n,'');srch.focus();}
   });
   srch.addEventListener('input',()=>paintOpts(n,srch.value));
   drop.addEventListener('click',e=>e.stopPropagation());
   opts.addEventListener('click',e=>{
     const el=e.target.closest('.sel-opt');
-    if(!el) return;
-    pick(n, el.dataset.id, el.dataset.lbl);
+    if(!el)return;
+    pick(n,el.dataset.id,el.dataset.lbl);
   });
 }
-function closeAll(){document.querySelectorAll('.sel-drop').forEach(d=>d.classList.remove('open'));}
-document.addEventListener('click',closeAll);
+function closeDrops(){document.querySelectorAll('.sel-drop').forEach(d=>d.classList.remove('open'));}
+document.addEventListener('click',closeDrops);
 
 function paintOpts(n,q){
   const opts=document.getElementById('so-'+n);
@@ -317,75 +335,69 @@ function paintOpts(n,q){
   if(!list.length){opts.innerHTML='<div class="sel-none">Нічого не знайдено</div>';return;}
   opts.innerHTML=list.map(i=>`<div class="sel-opt${st[n].v==i.v?' sel':''}" data-id="${i.v}" data-lbl="${i.l.replace(/"/g,'&quot;')}">${i.l}</div>`).join('');
 }
-
-function loadData(n,arr,idK,lblK){
-  st[n].d=arr.map(i=>({v:String(i[idK]),l:String(i[lblK])}));
-  paintOpts(n,'');
+function setData(n,arr,ik,lk){
+  st[n].d=arr.map(i=>({v:String(i[ik]),l:String(i[lk])}));
   const face=document.getElementById('sf-'+n);
   face.textContent='— Оберіть —';
   face.classList.remove('off');
+  paintOpts(n,'');
 }
-
+function resetFrom(n){
+  const i=NAMES.indexOf(n);
+  NAMES.slice(i).forEach(k=>{
+    st[k]={d:[],v:null,l:''};
+    const f=document.getElementById('sf-'+k);
+    const ph={filial:'— Оберіть —',ns:'— Спочатку дільниця —',street:'— Спочатку місто —',dom:'— Спочатку вулицю —'};
+    f.textContent=ph[k]; f.classList.add('off');
+    document.getElementById('so-'+k).innerHTML='';
+  });
+  document.getElementById('btn-s').disabled=true;
+}
 function pick(n,v,l){
   st[n].v=v; st[n].l=l;
   document.getElementById('sf-'+n).textContent=l;
-  closeAll();
+  closeDrops();
   if(n==='filial'){resetFrom('ns');fetchNs();}
   if(n==='ns'){resetFrom('street');fetchStreet();}
   if(n==='street'){resetFrom('dom');fetchDom();}
   if(n==='dom'){document.getElementById('btn-s').disabled=false;}
 }
 
-function resetFrom(n){
-  const i=NAMES.indexOf(n);
-  NAMES.slice(i).forEach(k=>{
-    st[k]={d:[],v:null,l:''};
-    const f=document.getElementById('sf-'+k);
-    f.textContent=k==='ns'?'— Спочатку дільниця —':k==='street'?'— Спочатку місто —':'— Спочатку вулицю —';
-    f.classList.add('off');
-    document.getElementById('so-'+k).innerHTML='';
-  });
-  document.getElementById('btn-s').disabled=true;
-}
-
-/* ---- SAVED ---- */
+/* Saved */
 function loadSaved(){
   try{
-    const s=localStorage.getItem('mkv4');
-    if(!s) return;
+    const s=localStorage.getItem('mkv5');
+    if(!s)return;
     saved=JSON.parse(s);
-    const ch=document.getElementById('saved-chip');
-    ch.innerHTML='📍 '+saved.street+' '+saved.dom+', '+saved.ns+' <span id="clr" style="cursor:pointer;margin-left:6px;color:var(--text3)">✕</span>';
+    document.getElementById('saved-chip').innerHTML='📍 '+saved.street+' '+saved.dom+', '+saved.ns+' <span id="clr-saved" style="cursor:pointer;margin-left:6px;color:var(--text3)">✕</span>';
     document.getElementById('saved-wrap').style.display='block';
-    document.getElementById('clr').addEventListener('click',()=>{
-      localStorage.removeItem('mkv4');saved=null;
+    document.getElementById('saved-label').textContent=saved.street+' '+saved.dom;
+    document.getElementById('clr-saved').addEventListener('click',()=>{
+      localStorage.removeItem('mkv5'); saved=null;
       document.getElementById('saved-wrap').style.display='none';
+      document.getElementById('saved-label').textContent='';
     });
   }catch(e){}
 }
 
-/* ---- INIT ---- */
+/* Init */
 async function init(){
   NAMES.forEach(initSel);
   loadSaved();
   document.getElementById('btn-s').addEventListener('click',doSearch);
-  document.getElementById('cb-all').addEventListener('change',function(){toggleAll(this);});
-  document.querySelectorAll('.cb-q').forEach(cb=>{cb.addEventListener('change',updateQueues);});
-  updateQueues();
-  document.getElementById('tab-my').addEventListener('click',()=>setTab('my'));
-  document.getElementById('tab-all').addEventListener('click',()=>setTab('all'));
   try{
     const data=await go(BASE+'/addr/filii');
     data.sort((a,b)=>a.fullname.localeCompare(b.fullname,'uk'));
-    loadData('filial',data,'idfilial','fullname');
+    setData('filial',data,'idfilial','fullname');
   }catch(e){showErr('Помилка завантаження: '+e.message);}
   fetchSched();
   setInterval(fetchSched,5*60*1000);
 }
 
 async function fetchNs(){
-  const id=st.filial.v; if(!id) return;
-  setLoading('ns');
+  const id=st.filial.v; if(!id)return;
+  document.getElementById('sf-ns').textContent='Завантаження...';
+  document.getElementById('sf-ns').classList.add('off');
   try{
     const data=await go(BASE+'/addr/filii/'+id+'/ns');
     const arr=Array.isArray(data)?data:[];
@@ -394,47 +406,43 @@ async function fetchNs(){
     const ik=['idnaspunkt','idns','id'].find(k=>f[k]!==undefined);
     const lk=['naznaspunkt','nazns','fullname','name'].find(k=>f[k]!==undefined&&typeof f[k]==='string');
     arr.sort((a,b)=>String(a[lk]||'').localeCompare(String(b[lk]||''),'uk'));
-    loadData('ns',arr,ik,lk);
+    setData('ns',arr,ik,lk);
   }catch(e){document.getElementById('sf-ns').textContent='Помилка';showErr(e.message);}
 }
-
 async function fetchStreet(){
-  const id=st.ns.v; if(!id) return;
-  setLoading('street');
+  const id=st.ns.v; if(!id)return;
+  document.getElementById('sf-street').textContent='Завантаження...';
+  document.getElementById('sf-street').classList.add('off');
   try{
     const data=await go(BASE+'/addr/ns/'+id+'/street');
     data.sort((a,b)=>a.nazstreet.localeCompare(b.nazstreet,'uk'));
-    loadData('street',data,'idstreet','nazstreet');
-  }catch(e){document.getElementById('sf-street').textContent='Помилка';showErr(e.message);}
+    setData('street',data,'idstreet','nazstreet');
+  }catch(e){document.getElementById('sf-street').textContent='Помилка';}
 }
-
 async function fetchDom(){
-  const id=st.street.v; if(!id) return;
-  setLoading('dom');
+  const id=st.street.v; if(!id)return;
+  document.getElementById('sf-dom').textContent='Завантаження...';
+  document.getElementById('sf-dom').classList.add('off');
   try{
     const data=await go(BASE+'/addr/street/'+id+'/dom');
     data.sort((a,b)=>{const an=parseInt(a.nazdom),bn=parseInt(b.nazdom);return(!isNaN(an)&&!isNaN(bn))?an-bn:(a.nazdom||'').localeCompare(b.nazdom||'','uk');});
-    loadData('dom',data,'iddom','nazdom');
-  }catch(e){document.getElementById('sf-dom').textContent='Помилка';showErr(e.message);}
+    setData('dom',data,'iddom','nazdom');
+  }catch(e){document.getElementById('sf-dom').textContent='Помилка';}
 }
 
-function setLoading(n){
-  document.getElementById('sf-'+n).textContent='Завантаження...';
-  document.getElementById('sf-'+n).classList.add('off');
-}
-
+/* Search */
 async function doSearch(){
-  const id=st.dom.v; if(!id) return;
+  const id=st.dom.v; if(!id)return;
   const btn=document.getElementById('btn-s');
-  btn.disabled=true;btn.textContent='Пошук...';hideErr();
+  btn.disabled=true; btn.textContent='Пошук...'; hideErr();
   try{
     const data=await go(BASE+'/addr/dom/'+id+'/outage-queue');
     saved={ns:st.ns.l,street:st.street.l,dom:st.dom.l};
-    localStorage.setItem('mkv4',JSON.stringify(saved));
+    localStorage.setItem('mkv5',JSON.stringify(saved));
     loadSaved();
     showResult(data);
-  }catch(e){showErr('Помилка пошуку: '+e.message);}
-  btn.disabled=false;btn.innerHTML='🔍 Перевірити відключення';
+  }catch(e){showErr('Помилка: '+e.message);}
+  btn.disabled=false; btn.innerHTML='🔍 Перевірити відключення';
 }
 
 function showResult(data){
@@ -443,41 +451,34 @@ function showResult(data){
   let qn=null;
   if(arr.length){
     const x=arr[0];
-    qn=x.name||x.queue_name||x.queueName
-      ||(x.outage_queue&&x.outage_queue.name)
-      ||(x.outageQueue&&x.outageQueue.name)
-      ||(x.queue&&x.queue.name)||null;
+    qn=x.name||x.queue_name||x.queueName||(x.outage_queue&&x.outage_queue.name)||(x.outageQueue&&x.outageQueue.name)||(x.queue&&x.queue.name)||null;
   }
   myQ=qn;
   const badge=document.getElementById('res-badge');
   if(qn){
-    const sl=slot(),st2=(SD[qn]||[])[sl]||0;
-    const off=st2===1||st2===3,maybe=st2===2;
-    badge.textContent='Черга '+qn;
-    badge.className='queue-badge '+(off||maybe?'off':'on');
+    const s2=(SD[qn]||[])[slot()]||0;
+    const off=s2===1||s2===3, maybe=s2===2;
+    badge.textContent='Черга '+qn; badge.className='queue-badge '+(off||maybe?'off':'on');
     document.getElementById('res-ico').textContent=off?'🔴':(maybe?'🟡':'🟢');
     document.getElementById('res-title').textContent=off?'Зараз відключено':(maybe?'Можливо відключено':'Є електроенергія');
     document.getElementById('res-addr').textContent=saved.street+' '+saved.dom+', '+saved.ns;
     startTimer(qn);
-    document.getElementById('tabs').style.display='flex';
-    setTab('my');
   }else{
-    badge.textContent='Адреса не в графіку';badge.className='queue-badge unk';
+    badge.textContent='Адреса не в графіку'; badge.className='queue-badge unk';
     document.getElementById('res-ico').textContent='❓';
     document.getElementById('res-title').textContent='Не знайдено в графіках';
     document.getElementById('res-addr').textContent='';
     document.getElementById('timer').style.display='none';
-    document.getElementById('tabs').style.display='none';
-    renderAll();
   }
   document.getElementById('res-card').scrollIntoView({behavior:'smooth'});
+  renderSched();
 }
 
+/* Timer */
 function slot(){const n=new Date();return n.getHours()*2+(n.getMinutes()>=30?1:0);}
-
 function startTimer(q){if(tmr)clearInterval(tmr);updTimer(q);tmr=setInterval(()=>updTimer(q),1000);}
 function updTimer(q){
-  const arr=SD[q];if(!arr)return;
+  const arr=SD[q]; if(!arr)return;
   const s=slot(),c=arr[s],off=c===1||c===2||c===3;
   document.getElementById('timer').style.display='block';
   document.getElementById('t-lbl').textContent=off?'До включення':'До відключення';
@@ -491,6 +492,7 @@ function updTimer(q){
   document.getElementById('t-desc').textContent=`Зміна о ${String(Math.floor(nx/2)).padStart(2,'0')}:${(nx%2)*30===0?'00':'30'}`;
 }
 
+/* Schedule */
 async function fetchSched(){
   try{
     const [q,a]=await Promise.all([go(BASE+'/outage-queue/by-type/3'),go(BASE+'/schedule/active')]);
@@ -498,120 +500,38 @@ async function fetchSched(){
     const tmp={};QO.forEach(x=>{tmp[x]=new Array(48).fill(0);});
     a.forEach(x=>{
       const qn=QM[x.outage_queue_id];
-      if(qn&&tmp[qn]){
-        const i=x.time_series_id-1;
-        let s=0;if(x.type==='OFF')s=1;else if(x.type==='PROBABLY_OFF')s=2;else if(x.type==='SURE_OFF')s=3;
-        if(i>=0&&i<48)tmp[qn][i]=s;
-      }
+      if(qn&&tmp[qn]){const i=x.time_series_id-1;let s=0;if(x.type==='OFF')s=1;else if(x.type==='PROBABLY_OFF')s=2;else if(x.type==='SURE_OFF')s=3;if(i>=0&&i<48)tmp[qn][i]=s;}
     });
     SD=tmp;
-    if(tab==='my'&&myQ)renderMy();else renderAll();
+    renderSched();
     if(myQ)updTimer(myQ);
   }catch(e){
-    document.getElementById('sched-body').innerHTML='<div style="padding:20px;font-size:12px;color:var(--red)">Помилка графіку: '+e.message+'</div>';
+    document.getElementById('sched-body').innerHTML='<div style="padding:20px;font-size:12px;color:var(--red)">Помилка: '+e.message+'</div>';
   }
 }
 
-function setTab(t){
-  tab=t;
-  document.getElementById('tab-my').className='tab'+(t==='my'?' on':'');
-  document.getElementById('tab-all').className='tab'+(t==='all'?' on':'');
-  if(t==='my'&&myQ)renderMy();else renderAll();
-}
-
-function mkTh(){
-  let h='<tr><th>Черга</th>';
-  const cur=new Date().getHours();
-  for(let i=0;i<24;i++)h+=`<th${i===cur?' class="now"':''}>${String(i).padStart(2,'0')}</th>`;
-  return h+'</tr>';
-}
-function cls(s,cur){
-  if(cur)return 'cn'+Math.min(s,3);
-  return 'c'+Math.min(s,3);
-}
-function mkCells(arr){
-  const cur=new Date().getHours(),cs=slot();let h='';
-  for(let i=0;i<24;i++){
-    const s1=arr[i*2],s2=arr[i*2+1],ic=i===cur;
-    if(s1===s2){
-      h+=`<td class="${ic?'tcn':''}"><div class="cell ${cls(s1,ic&&(cs===i*2||cs===i*2+1))}"></div></td>`;
-    }else{
-      h+=`<td class="${ic?'tcn':''}"><div style="display:flex;height:100%"><div class="cell ${cls(s1,ic&&cs===i*2)}" style="flex:1"></div><div class="cell ${cls(s2,ic&&cs===i*2+1)}" style="flex:1"></div></div></td>`;
-    }
-  }
-  return h;
-}
-function toggleAcc(name){
-  const body=document.getElementById('acc-'+name);
-  if(!body)return;
-  body.style.display=body.style.display==='none'?'block':'none';
-}
-
-function toggleAll(cb){
-  document.querySelectorAll('.cb-q').forEach(c=>{c.checked=cb.checked;});
-  updateQueues();
-}
-
-function updateQueues(){
-  const checked=[...document.querySelectorAll('.cb-q:checked')].map(c=>c.value);
-  activeQueues=checked;
-  const all=document.getElementById('cb-all');
-  const total=document.querySelectorAll('.cb-q').length;
-  all.checked=checked.length===total;
-  all.indeterminate=checked.length>0&&checked.length<total;
-  const lbl=document.getElementById('acc-queues-label');
-  if(checked.length===0)lbl.textContent='Нічого не вибрано ▾';
-  else lbl.textContent=checked.join(', ')+' ▾';
-  renderAll();
-}
-
-function renderAll(){
-  const qs=activeQueues.length?activeQueues:QO;
+function renderSched(){
+  const qs=activeQ.length?activeQ:QO;
   const now=new Date().getHours(), cs=slot();
-  let h='<div class="bar-chart-wrap">';
+  let h='<div class="bar-wrap">';
   qs.forEach(q=>{
     const arr=SD[q]||new Array(48).fill(0);
-    const isMyQ=q===myQ;
-    h+=`<div class="bar-row"><div class="bar-row-label" style="${isMyQ?'color:var(--accent);font-weight:700':''}">${q}</div><div class="bar-track">`;
+    h+=`<div class="bar-row"><div class="bar-lbl${q===myQ?' my':''}">${q}</div><div class="bar-track">`;
     for(let i=0;i<48;i++){
-      const s=arr[i],isn=i===cs;
-      h+=`<div class="bar-seg s${Math.min(s,3)}${isn?' snow':''}" style="flex:1" title="${String(Math.floor(i/2)).padStart(2,'0')}:${i%2===0?'00':'30'}"></div>`;
+      h+=`<div class="bar-seg s${Math.min(arr[i],3)}${i===cs?' now':''}" title="${String(Math.floor(i/2)).padStart(2,'0')}:${i%2===0?'00':'30'}"></div>`;
     }
     h+='</div></div>';
   });
-  h+='<div class="bar-time-axis">';
-  for(let i=0;i<24;i++)h+=`<div class="bar-time-tick${i===now?' now-tick':''}" style="flex:2">${String(i).padStart(2,'0')}</div>`;
+  h+='<div class="bar-axis">';
+  for(let i=0;i<24;i++)h+=`<div class="bar-tick${i===now?' now':''}" style="flex:2">${String(i).padStart(2,'0')}</div>`;
   h+='</div></div>';
   document.getElementById('sched-body').innerHTML=h;
 }
 
-function renderMy(){renderAll();}
-
-
 function showErr(m){const e=document.getElementById('err');e.textContent=m;e.classList.add('on');}
 function hideErr(){document.getElementById('err').classList.remove('on');}
 
-document.getElementById('queue-filter').addEventListener('change', renderAll);
-
-function toggleSearch(){
-  const el = document.getElementById('search-collapse');
-  const icon = document.getElementById('search-toggle-icon');
-  const isOpen = el.style.display !== 'none';
-  el.style.display = isOpen ? 'none' : 'block';
-  icon.textContent = isOpen ? '▼' : '▲';
-}
-
-// Show saved address in toggle button
-const origLoadSaved = loadSaved;
-
 init();
-
-// After init update toggle label
-setTimeout(()=>{
-  if(saved){
-    document.getElementById('search-toggle-addr').textContent = saved.street+' '+saved.dom;
-  }
-},500);
 </script>
 </body>
 </html>
