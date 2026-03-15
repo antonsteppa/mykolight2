@@ -232,7 +232,8 @@ function initSel(n){
   const srch=document.getElementById('ss-'+n);
   const opts=document.getElementById('so-'+n);
 
-  face.addEventListener('click',()=>{
+  face.addEventListener('click',(e)=>{
+    e.stopPropagation();
     if(face.classList.contains('off')) return;
     const was=drop.classList.contains('open');
     closeAll();
