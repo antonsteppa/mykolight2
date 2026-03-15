@@ -26,14 +26,14 @@ h1{font-family:var(--display);font-size:clamp(18px,4vw,26px);font-weight:700;let
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 
 /* Accordion */
-.acc{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;margin-bottom:16px;overflow:hidden}
+.acc{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;margin-bottom:16px;overflow:visible}
 .acc-head{display:flex;align-items:center;padding:14px 20px;cursor:pointer;gap:12px;user-select:none}
 .acc-head:hover{background:var(--bg3)}
 .acc-arrow{font-size:10px;color:var(--text3);transition:transform .2s;flex-shrink:0}
 .acc-arrow.open{transform:rotate(180deg)}
 .acc-title{font-family:var(--display);font-size:12px;font-weight:500;color:var(--text2);letter-spacing:.05em}
-.acc-body{display:none;padding:0 20px 20px}
-.acc-body.open{display:block}
+.acc-body{display:none;padding:0 20px 20px;overflow:visible}
+.acc-body.open{display:block;overflow:visible}
 
 /* Search */
 .fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
@@ -87,7 +87,7 @@ h1{font-family:var(--display);font-size:clamp(18px,4vw,26px);font-weight:700;let
 .cb-item input{width:14px;height:14px;accent-color:var(--accent);cursor:pointer;flex-shrink:0}
 
 /* Schedule bar chart */
-.sched-card{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;overflow:hidden;margin-bottom:16px}
+.sched-card{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;margin-bottom:16px}
 .sched-hd{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
 .sched-title{font-family:var(--display);font-size:11px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:.1em}
 .leg{display:flex;gap:12px;flex-wrap:wrap}
@@ -127,28 +127,14 @@ footer a{color:var(--text2);text-decoration:none}
   </div>
 </header>
 
-<!-- Result card -->
-<div class="result-card" id="res-card">
-  <div class="result-status">
-    <div class="status-icon" id="res-ico">⚡</div>
-    <div class="status-text"><h2 id="res-title">—</h2><p id="res-addr">—</p></div>
-  </div>
-  <div class="queue-badge unk" id="res-badge">—</div>
-  <div class="timer-block" id="timer" style="display:none">
-    <div class="timer-label" id="t-lbl">До включення</div>
-    <div class="timer-val" id="t-val">--:--:--</div>
-    <div class="timer-desc" id="t-desc"></div>
-  </div>
-</div>
-
 <!-- Search accordion -->
 <div class="acc">
   <div class="acc-head" onclick="toggleAcc('search')">
-    <span class="acc-arrow" id="arr-search">▲</span>
+    <span class="acc-arrow" id="arr-search">▼</span>
     <span class="acc-title">🔍 Пошук за адресою</span>
     <span id="saved-label" style="margin-left:auto;font-size:11px;color:var(--accent)"></span>
   </div>
-  <div class="acc-body open" id="body-search">
+  <div class="acc-body" id="body-search">
     <div id="saved-wrap" style="display:none">
       <div class="saved" id="saved-chip"></div>
     </div>
@@ -200,6 +186,19 @@ footer a{color:var(--text2);text-decoration:none}
       <button class="btn-search" id="btn-s" disabled>🔍 Перевірити відключення</button>
     </div>
     <div class="err" id="err"></div>
+    <!-- Result inside search block -->
+    <div class="result-card" id="res-card" style="margin-top:16px;border:1px solid var(--border2);border-radius:8px">
+      <div class="result-status">
+        <div class="status-icon" id="res-ico">⚡</div>
+        <div class="status-text"><h2 id="res-title">—</h2><p id="res-addr">—</p></div>
+      </div>
+      <div class="queue-badge unk" id="res-badge">—</div>
+      <div class="timer-block" id="timer" style="display:none">
+        <div class="timer-label" id="t-lbl">До включення</div>
+        <div class="timer-val" id="t-val">--:--:--</div>
+        <div class="timer-desc" id="t-desc"></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -207,11 +206,11 @@ footer a{color:var(--text2);text-decoration:none}
 <div class="sched-card">
   <!-- Queue filter accordion -->
   <div class="acc-head" onclick="toggleAcc('queues')" style="border-bottom:1px solid var(--border)">
-    <span class="acc-arrow" id="arr-queues">▲</span>
+    <span class="acc-arrow" id="arr-queues">▼</span>
     <span class="acc-title">Вибір черги</span>
     <span id="queues-label" style="margin-left:auto;font-size:11px;color:var(--text2)">Всі</span>
   </div>
-  <div class="acc-body open" id="body-queues" style="padding:16px 20px">
+  <div class="acc-body" id="body-queues" style="padding:16px 20px">
     <div class="cb-row">
       <label>
         <input type="checkbox" id="cb-all" checked onclick="toggleAll(this)">
@@ -470,7 +469,7 @@ function showResult(data){
     document.getElementById('res-addr').textContent='';
     document.getElementById('timer').style.display='none';
   }
-  document.getElementById('res-card').scrollIntoView({behavior:'smooth'});
+  // result shown in search block
   renderSched();
 }
 
@@ -511,7 +510,11 @@ async function fetchSched(){
 }
 
 function renderSched(){
-  const qs=activeQ.length?activeQ:QO;
+  if(!activeQ.length){
+    document.getElementById('sched-body').innerHTML='<div style="padding:20px;font-size:12px;color:var(--text3);text-align:center">Оберіть черги для відображення</div>';
+    return;
+  }
+  const qs=activeQ;
   const now=new Date().getHours(), cs=slot();
   let h='<div class="bar-wrap">';
   qs.forEach(q=>{
