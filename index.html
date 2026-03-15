@@ -78,11 +78,11 @@ h1{font-family:var(--display);font-size:clamp(18px,4vw,26px);font-weight:700;let
 .sched-table td:first-child{padding:0 8px 0 16px;font-size:10px;color:var(--text2);white-space:nowrap}
 .sched-table tr:last-child td{border-bottom:none}
 .cell{width:100%;height:100%}
-.c0{background:var(--green-bg)}.c1{background:var(--red-bg)}.c2{background:var(--orange-bg)}.c3{background:rgba(239,68,68,.25)}
-.cn0{background:rgba(34,197,94,.35);box-shadow:inset 0 0 0 1px rgba(34,197,94,.5)}
-.cn1{background:rgba(239,68,68,.35);box-shadow:inset 0 0 0 1px rgba(239,68,68,.5)}
-.cn2{background:rgba(249,115,22,.35);box-shadow:inset 0 0 0 1px rgba(249,115,22,.5)}
-.cn3{background:rgba(239,68,68,.35);box-shadow:inset 0 0 0 1px rgba(239,68,68,.5)}
+.c0{background:#a8e6c0}.c1{background:#f87171}.c2{background:#fb923c}.c3{background:#fde68a}
+.cn0{background:#6ee09a;box-shadow:inset 0 0 0 2px #22c55e}
+.cn1{background:#f85050;box-shadow:inset 0 0 0 2px #ef4444}
+.cn2{background:#f97316;box-shadow:inset 0 0 0 2px #ea580c}
+.cn3{background:#fbbf24;box-shadow:inset 0 0 0 2px #d97706}
 .tcn{background:rgba(79,127,255,.08)!important}
 .hl td:first-child{color:var(--accent);font-weight:600}
 .loading{text-align:center;padding:40px;color:var(--text3);font-size:13px}
@@ -96,6 +96,31 @@ h1{font-family:var(--display);font-size:clamp(18px,4vw,26px);font-weight:700;let
 .saved{display:inline-flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:6px 14px;font-size:11px;color:var(--text2);margin-bottom:12px}
 footer{text-align:center;padding:24px 0;font-size:10px;color:var(--text3);border-top:1px solid var(--border)}
 footer a{color:var(--text2);text-decoration:none}
+
+/* Accordion */
+.acc-wrap{background:var(--bg2)}
+.acc-btn{width:100%;background:none;border:none;color:var(--text2);font-family:var(--display);font-size:12px;padding:14px 20px;text-align:left;cursor:pointer;transition:background .2s;letter-spacing:.05em}
+.acc-btn:hover{background:var(--bg3)}
+.cb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+.cb-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2);cursor:pointer;padding:4px 0}
+.cb-item input{width:14px;height:14px;accent-color:var(--accent);cursor:pointer;flex-shrink:0}
+.cb-all-item{grid-column:1/-1;color:var(--text);font-weight:500;padding-bottom:8px;border-bottom:1px solid var(--border);margin-bottom:4px}
+
+/* New bar chart schedule */
+.bar-chart-wrap{padding:16px 20px 0}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.bar-row-label{font-size:11px;color:var(--text2);width:36px;flex-shrink:0;text-align:right}
+.bar-track{flex:1;height:44px;display:flex;border-radius:6px;overflow:hidden;position:relative}
+.bar-seg{height:100%;transition:opacity .2s;cursor:default}
+.bar-seg:hover{opacity:.85}
+.bar-seg.s0{background:#a8e6c0}
+.bar-seg.s1{background:#f4a9a8}
+.bar-seg.s2{background:#f4cba8}
+.bar-seg.s3{background:#e8a0a0}
+.bar-seg.snow{outline:2px solid #fff;outline-offset:-2px;z-index:1}
+.bar-time-axis{display:flex;padding:4px 0 12px 46px}
+.bar-time-tick{flex:1;font-size:9px;color:var(--text3);text-align:left}
+.bar-time-tick.now-tick{color:var(--accent);font-weight:600}
 </style>
 </head>
 <body>
@@ -110,7 +135,13 @@ footer a{color:var(--text2);text-decoration:none}
   </div>
 </header>
 
-<div class="search-card">
+<button id="search-toggle" onclick="toggleSearch()" style="background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:10px 20px;color:var(--text2);font-family:var(--mono);font-size:12px;cursor:pointer;width:100%;margin-bottom:8px;display:flex;align-items:center;justify-content:between;gap:8px">
+  <span id="search-toggle-icon">▼</span> <span>Пошук за адресою</span>
+  <span id="search-toggle-addr" style="margin-left:auto;color:var(--accent);font-size:11px"></span>
+</button>
+<div id="search-collapse" style="display:none">
+<div class="acc-body" id="acc-search" style="display:none">
+<div class="search-card" style="border-radius:0;border:none;border-bottom:1px solid var(--border);margin-bottom:0">
   <div class="search-title">Пошук за адресою</div>
   <div id="saved-wrap" style="display:none">
     <div class="saved" id="saved-chip"></div>
@@ -164,6 +195,8 @@ footer a{color:var(--text2);text-decoration:none}
   </div>
   <div class="err" id="err"></div>
 </div>
+</div>
+</div>
 
 <div class="result-card" id="res-card">
   <div class="result-status">
@@ -178,23 +211,54 @@ footer a{color:var(--text2);text-decoration:none}
   </div>
 </div>
 
-<div>
-  <div class="tabs" id="tabs" style="display:none">
-    <button class="tab on" id="tab-my">Моя черга</button>
-    <button class="tab" id="tab-all">Всі черги</button>
+<div class="sched-card">
+  <!-- Пошук за адресою — акордеон -->
+  <div class="acc-wrap" style="margin-bottom:0;border-bottom:1px solid var(--border)">
+    <button class="acc-btn" id="acc-search-btn" onclick="toggleAcc('search')">
+      <span>🔍 Пошук за адресою ▾</span>
+    </button>
   </div>
-  <div class="sched-card">
-    <div class="sched-hd">
-      <span class="sched-title">Погодинний графік</span>
-      <div class="leg">
-        <span class="leg-i"><span class="leg-d" style="background:var(--green-bg);border:1px solid rgba(34,197,94,.4)"></span>Є світло</span>
-        <span class="leg-i"><span class="leg-d" style="background:var(--red-bg);border:1px solid rgba(239,68,68,.3)"></span>Відключення</span>
-        <span class="leg-i"><span class="leg-d" style="background:var(--orange-bg);border:1px solid rgba(249,115,22,.3)"></span>Можливо</span>
-        <span class="leg-i"><span class="leg-d" style="background:rgba(239,68,68,.25);border:1px solid rgba(239,68,68,.5)"></span>Гарантовано</span>
+
+  <!-- Вибір черги — акордеон -->
+  <div class="acc-wrap" style="border-bottom:1px solid var(--border)">
+    <button class="acc-btn" id="acc-queues-btn" onclick="toggleAcc('queues')">
+      <span id="acc-queues-label">☰ Вибір черги: Всі ▾</span>
+    </button>
+    <div class="acc-body" id="acc-queues" style="display:none;padding:16px 20px">
+      <div class="cb-grid">
+        <label class="cb-item cb-all-item">
+          <input type="checkbox" id="cb-all" checked>
+          <span>Всі черги</span>
+        </label>
+        <label class="cb-item"><input type="checkbox" class="cb-q" value="1.1" checked><span>1.1 Черга</span></label>
+        <label class="cb-item"><input type="checkbox" class="cb-q" value="1.2" checked><span>1.2 Черга</span></label>
+        <label class="cb-item"><input type="checkbox" class="cb-q" value="2.1" checked><span>2.1 Черга</span></label>
+        <label class="cb-item"><input type="checkbox" class="cb-q" value="2.2" checked><span>2.2 Черга</span></label>
+        <label class="cb-item"><input type="checkbox" class="cb-q" value="3.1" checked><span>3.1 Черга</span></label>
+        <label class="cb-item"><input type="checkbox" class="cb-q" value="3.2" checked><span>3.2 Черга</span></label>
+        <label class="cb-item"><input type="checkbox" class="cb-q" value="4.1" checked><span>4.1 Черга</span></label>
+        <label class="cb-item"><input type="checkbox" class="cb-q" value="4.2" checked><span>4.2 Черга</span></label>
+        <label class="cb-item"><input type="checkbox" class="cb-q" value="5.1" checked><span>5.1 Черга</span></label>
+        <label class="cb-item"><input type="checkbox" class="cb-q" value="5.2" checked><span>5.2 Черга</span></label>
+        <label class="cb-item"><input type="checkbox" class="cb-q" value="6.1" checked><span>6.1 Черга</span></label>
+        <label class="cb-item"><input type="checkbox" class="cb-q" value="6.2" checked><span>6.2 Черга</span></label>
       </div>
     </div>
-    <div id="sched-body"><div class="loading">Завантаження...</div></div>
   </div>
+
+  <!-- Легенда -->
+  <div class="sched-hd">
+    <span class="sched-title">Погодинний графік · 15 березня 2026</span>
+    <div class="leg">
+      <span class="leg-i"><span class="leg-d" style="background:#a8e6c0;border:1px solid #6dcc99"></span>Є світло</span>
+      <span class="leg-i"><span class="leg-d" style="background:#f4a9a8;border:1px solid #e07070"></span>Немає</span>
+      <span class="leg-i"><span class="leg-d" style="background:#f4cba8;border:1px solid #e0a070"></span>Можливо</span>
+      <span class="leg-i"><span class="leg-d" style="background:#f0e68c;border:1px solid #d4c800"></span>Невідомо</span>
+    </div>
+  </div>
+  <div id="sched-body"><div class="loading">Завантаження...</div></div>
+</div>
+
 </div>
 
 <footer>
@@ -206,7 +270,7 @@ footer a{color:var(--text2);text-decoration:none}
 const BASE = 'https://billowing-recipe-682d.antonsteppa.workers.dev/api';
 const QO   = ['1.1','1.2','2.1','2.2','3.1','3.2','4.1','4.2','5.1','5.2','6.1','6.2'];
 
-let SD={}, QM={}, myQ=null, tmr=null, tab='all', saved=null;
+let SD={}, QM={}, myQ=null, tmr=null, tab='all', saved=null, activeQueues=[...['1.1','1.2','2.1','2.2','3.1','3.2','4.1','4.2','5.1','5.2','6.1','6.2']];
 const st={filial:{d:[],v:null,l:''},ns:{d:[],v:null,l:''},street:{d:[],v:null,l:''},dom:{d:[],v:null,l:''}};
 
 /* ---- FETCH: пробуємо 4 різних проксі ---- */
@@ -309,6 +373,8 @@ async function init(){
   NAMES.forEach(initSel);
   loadSaved();
   document.getElementById('btn-s').addEventListener('click',doSearch);
+  document.getElementById('cb-all').addEventListener('change',function(){toggleAll(this);});
+  document.querySelectorAll('.cb-q').forEach(cb=>{cb.addEventListener('change',updateQueues);});
   document.getElementById('tab-my').addEventListener('click',()=>setTab('my'));
   document.getElementById('tab-all').addEventListener('click',()=>setTab('all'));
   try{
@@ -478,23 +544,78 @@ function mkCells(arr){
   }
   return h;
 }
+function toggleAcc(name){
+  const body=document.getElementById('acc-'+name);
+  if(!body)return;
+  body.style.display=body.style.display==='none'?'block':'none';
+}
+
+function toggleAll(cb){
+  document.querySelectorAll('.cb-q').forEach(c=>{c.checked=cb.checked;});
+  updateQueues();
+}
+
+function updateQueues(){
+  const checked=[...document.querySelectorAll('.cb-q:checked')].map(c=>c.value);
+  activeQueues=checked;
+  const all=document.getElementById('cb-all');
+  const total=document.querySelectorAll('.cb-q').length;
+  all.checked=checked.length===total;
+  all.indeterminate=checked.length>0&&checked.length<total;
+  const lbl=document.getElementById('acc-queues-label');
+  if(checked.length===total)lbl.textContent='☰ Вибір черги: Всі ▾';
+  else if(checked.length===0)lbl.textContent='☰ Вибір черги: Нічого ▾';
+  else lbl.textContent=`☰ Вибір черги: ${checked.join(', ')} ▾`;
+  renderAll();
+}
+
 function renderAll(){
-  let h=`<div class="sched-scroll"><table class="sched-table"><thead>${mkTh()}</thead><tbody>`;
-  QO.forEach(q=>{h+=`<tr class="${q===myQ?'hl':''}"><td>${q}</td>${mkCells(SD[q]||new Array(48).fill(0))}</tr>`;});
-  h+='</tbody></table></div>';
+  const qs=activeQueues.length?activeQueues:QO;
+  const now=new Date().getHours(), cs=slot();
+  let h='<div class="bar-chart-wrap">';
+  qs.forEach(q=>{
+    const arr=SD[q]||new Array(48).fill(0);
+    const isMyQ=q===myQ;
+    h+=`<div class="bar-row"><div class="bar-row-label" style="${isMyQ?'color:var(--accent);font-weight:700':''}">${q}</div><div class="bar-track">`;
+    for(let i=0;i<48;i++){
+      const s=arr[i],isn=i===cs;
+      h+=`<div class="bar-seg s${Math.min(s,3)}${isn?' snow':''}" style="flex:1" title="${String(Math.floor(i/2)).padStart(2,'0')}:${i%2===0?'00':'30'}"></div>`;
+    }
+    h+='</div></div>';
+  });
+  h+='<div class="bar-time-axis">';
+  for(let i=0;i<24;i++)h+=`<div class="bar-time-tick${i===now?' now-tick':''}" style="flex:2">${String(i).padStart(2,'0')}</div>`;
+  h+='</div></div>';
   document.getElementById('sched-body').innerHTML=h;
 }
-function renderMy(){
-  if(!myQ||!SD[myQ]){renderAll();return;}
-  let h=`<div class="sched-scroll"><table class="sched-table"><thead>${mkTh()}</thead><tbody>`;
-  h+=`<tr class="hl"><td>${myQ}</td>${mkCells(SD[myQ])}</tr>`;
-  h+='</tbody></table></div>';
-  document.getElementById('sched-body').innerHTML=h;
-}
+
+function renderMy(){renderAll();}
+
+
 function showErr(m){const e=document.getElementById('err');e.textContent=m;e.classList.add('on');}
 function hideErr(){document.getElementById('err').classList.remove('on');}
 
+document.getElementById('queue-filter').addEventListener('change', renderAll);
+
+function toggleSearch(){
+  const el = document.getElementById('search-collapse');
+  const icon = document.getElementById('search-toggle-icon');
+  const isOpen = el.style.display !== 'none';
+  el.style.display = isOpen ? 'none' : 'block';
+  icon.textContent = isOpen ? '▼' : '▲';
+}
+
+// Show saved address in toggle button
+const origLoadSaved = loadSaved;
+
 init();
+
+// After init update toggle label
+setTimeout(()=>{
+  if(saved){
+    document.getElementById('search-toggle-addr').textContent = saved.street+' '+saved.dom;
+  }
+},500);
 </script>
 </body>
 </html>
