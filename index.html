@@ -450,7 +450,12 @@ function showResult(data){
   let qn=null;
   if(arr.length){
     const x=arr[0];
-    qn=x.name||x.queue_name||x.queueName||(x.outage_queue&&x.outage_queue.name)||(x.outageQueue&&x.outageQueue.name)||(x.queue&&x.queue.name)||null;
+    // API returns: [{outage:{id,name:"2.2",...}, outageType:{name:"ГПВ",...}}]
+    qn=(x.outage&&x.outage.name)
+      ||x.name||x.queue_name||x.queueName
+      ||(x.outage_queue&&x.outage_queue.name)
+      ||(x.outageQueue&&x.outageQueue.name)
+      ||(x.queue&&x.queue.name)||null;
   }
   myQ=qn;
   const badge=document.getElementById('res-badge');
