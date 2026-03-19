@@ -506,104 +506,74 @@ function updTimer(q){
 /* Schedule */
 async function fetchSched(){
   try{
-    const [q,a]=await Promise.all([go(BASE+'/outage-queue/by-type/3'),go(BASE+'/schedule/active')]);
-    QM={};q.forEach(x=>{if(x.id&&x.name)QM[x.id]=x.name;});
-
-    // Group schedules by date (Kyiv time UTC+2/+3)
-    ALL_SCHED={};
-    a.forEach(sched=>{
-      if(!sched.series||!sched.series.length) return;
-      // Determine date from time_series_id of first item
-      // time_series_id 1-48 = slots for the day
-      // Use from field to get the date in Kyiv time
-      let dateKey;
-      if(sched.from){
-        const d=new Date(sched.from);
-        // Convert to Kyiv time (UTC+2 winter, UTC+3 summer)
-        const kyiv=new Date(d.getTime()+2*3600000);
-        // If time_series_id suggests next day, use next day
-        const minSlot=Math.min(...sched.series.map(x=>x.time_series_id));
-        // slot 1 = 00:00, if from is evening but slots start from 1 = it's next day schedule
-        if(kyiv.getHours()>=20 && minSlot<=10){
-          const next=new Date(kyiv);next.setDate(next.getDate()+1);
-          dateKey=next.toISOString().substring(0,10);
-        } else {
-          dateKey=kyiv.toISOString().substring(0,10);
+    // Read from Google Sheets (updated by Apps Script every 5 min)
+    const SHEET_ID = '1ue9qF2dIjy78-bd11obwxTxjG97HMDTt7HflvmVnMMQ';
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Data&t=${Date.now()}`;
+    const r = await fetch(url);
+    if(!r.ok) throw new Error('Sheets HTTP '+r.status);
+    const csv = await r.text();
+    
+    // Parse CSV: each row = queueName, 48 values (0/1/2/3)
+    const tmp={};
+    QO.forEach(q=>{tmp[q]=new Array(48).fill(0);});
+    let updTime='';
+    
+    csv.trim().split('\n').forEach(line=>{
+      // Remove quotes
+      const cells = line.split(',').map(c=>c.replace(/^"|"$/g,'').trim());
+      const qName = cells[0];
+      if(QO.includes(qName)){
+        for(let i=1;i<=48;i++){
+          tmp[qName][i-1] = parseInt(cells[i])||0;
         }
-      } else return;
-      if(!ALL_SCHED[dateKey]){ALL_SCHED[dateKey]={};QO.forEach(x=>{ALL_SCHED[dateKey][x]=new Array(48).fill(0);});}
-      sched.series.forEach(x=>{
-        const qn=QM[x.outage_queue_id];
-        if(qn&&ALL_SCHED[dateKey][qn]){
-          const i=x.time_series_id-1;
-          let s=0;if(x.type==='OFF')s=1;else if(x.type==='PROBABLY_OFF')s=2;else if(x.type==='SURE_OFF')s=3;
-          if(i>=0&&i<48)ALL_SCHED[dateKey][qn][i]=s;
-        }
-      });
+      }
+      // BA1 = column 53 = update time
+      if(cells[52]) updTime=cells[52];
     });
-
-    DATES=Object.keys(ALL_SCHED).sort();
-    // Default: today or first available
-    const today=new Date().toISOString().substring(0,10);
-    selDate=DATES.includes(today)?today:(DATES[0]||today);
-    SD=ALL_SCHED[selDate]||{};
-
+    
+    SD=tmp;
+    DATES=[];
+    selDate=null;
+    
+    // Update footer with last update time
+    if(updTime){
+      const ft=document.querySelector('footer div');
+      if(ft) ft.innerHTML=`Дані: <a href="https://off.energy.mk.ua" target="_blank">off.energy.mk.ua</a> · Оновлено: ${updTime}`;
+    }
+    
     renderDateBar();
     renderSched();
     if(myQ)updTimer(myQ);
   }catch(e){
-    document.getElementById('sched-body').innerHTML='<div style="padding:20px;font-size:12px;color:var(--red)">Помилка: '+e.message+'</div>';
-  }
-}
-
-function renderDateBar(){
-  const bar=document.getElementById('date-bar');
-  if(DATES.length<=1){bar.style.display='none';return;}
-  bar.style.display='flex';
-  bar.innerHTML=DATES.map(d=>{
-    const label=d.split('-').reverse().join('.');
-    return `<button class="date-btn${d===selDate?' active':''}" data-date="${d}">${label}</button>`;
-  }).join('');
-  bar.querySelectorAll('.date-btn').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      selDate=btn.dataset.date;
+    // Fallback to Worker API
+    try{
+      const [q,a]=await Promise.all([go(BASE+'/outage-queue/by-type/3'),go(BASE+'/schedule/active')]);
+      QM={};q.forEach(x=>{if(x.id&&x.name)QM[x.id]=x.name;});
+      ALL_SCHED={};
+      a.forEach(sched=>{
+        const dateKey=sched.from?sched.from.substring(0,10):null;
+        if(!dateKey)return;
+        if(!ALL_SCHED[dateKey]){ALL_SCHED[dateKey]={};QO.forEach(x=>{ALL_SCHED[dateKey][x]=new Array(48).fill(0);});}
+        (sched.series||[]).forEach(x=>{
+          const qn=QM[x.outage_queue_id];
+          if(qn&&ALL_SCHED[dateKey][qn]){
+            const i=x.time_series_id-1;
+            let s=0;if(x.type==='OFF')s=1;else if(x.type==='PROBABLY_OFF')s=2;else if(x.type==='SURE_OFF')s=3;
+            if(i>=0&&i<48)ALL_SCHED[dateKey][qn][i]=s;
+          }
+        });
+      });
+      DATES=Object.keys(ALL_SCHED).sort();
+      const today=new Date().toISOString().substring(0,10);
+      selDate=DATES.includes(today)?today:(DATES[0]||today);
       SD=ALL_SCHED[selDate]||{};
-      bar.querySelectorAll('.date-btn').forEach(b=>b.classList.toggle('active',b.dataset.date===selDate));
-      // Update sched title
-      const d=new Date(selDate);
-      document.getElementById('sched-date').textContent='Погодинний графік · '+d.toLocaleDateString('uk-UA',{day:'numeric',month:'long',year:'numeric'});
+      renderDateBar();
       renderSched();
       if(myQ)updTimer(myQ);
-    });
-  });
-}
-
-function renderSched(){
-  if(!activeQ.length){
-    document.getElementById('sched-body').innerHTML='<div style="padding:20px;font-size:12px;color:var(--text3);text-align:center">Оберіть черги для відображення</div>';
-    return;
-  }
-  const qs=activeQ;
-  const now=new Date().getHours(), cs=slot();
-  let h='<div class="bar-wrap">';
-  qs.forEach(q=>{
-    const arr=SD[q]||new Array(48).fill(0);
-    h+=`<div class="bar-row"><div class="bar-lbl${q===myQ?' my':''}">${q}</div><div class="bar-track">`;
-    for(let i=0;i<48;i++){
-      h+=`<div class="bar-seg s${Math.min(arr[i],3)}${i===cs?' now':''}" title="${String(Math.floor(i/2)).padStart(2,'0')}:${i%2===0?'00':'30'}"></div>`;
+    }catch(e2){
+      document.getElementById('sched-body').innerHTML='<div style="padding:20px;font-size:12px;color:var(--red)">Помилка: '+e2.message+'</div>';
     }
-    h+='</div></div>';
-  });
-  h+='<div class="bar-axis">';
-  for(let i=0;i<24;i++)h+=`<div class="bar-tick${i===now?' now':''}" style="flex:2">${String(i).padStart(2,'0')}</div>`;
-  h+='</div></div>';
-  document.getElementById('sched-body').innerHTML=h;
+  }
 }
 
-function showErr(m){const e=document.getElementById('err');e.textContent=m;e.classList.add('on');}
-function hideErr(){document.getElementById('err').classList.remove('on');}
 
-init();
-</script>
-</body>
-</html>
