@@ -447,26 +447,33 @@ async function doSearch(){
 function showResult(data){
   document.getElementById('res-card').classList.add('on');
   const arr=Array.isArray(data)?data:(data?[data]:[]);
-  let qn=null;
-  if(arr.length){
-    const x=arr[0];
-    // API returns: [{outage:{id,name:"2.2",...}, outageType:{name:"ГПВ",...}}]
-    qn=(x.outage&&x.outage.name)
-      ||x.name||x.queue_name||x.queueName
-      ||(x.outage_queue&&x.outage_queue.name)
-      ||(x.outageQueue&&x.outageQueue.name)
-      ||(x.queue&&x.queue.name)||null;
-  }
-  myQ=qn;
+
+  // Збираємо всі черги згрупованi по типу
+  const queues={}; // {typeName: queueName}
+  let gpvQueue=null;
+  arr.forEach(x=>{
+    const qn=(x.outage&&x.outage.name)||x.name||x.queue_name||null;
+    const tn=(x.outageType&&x.outageType.name)||null;
+    if(qn&&tn){queues[tn]=qn;}
+    if(tn==='ГПВ') gpvQueue=qn;
+  });
+
+  myQ=gpvQueue||(arr.length?(arr[0].outage&&arr[0].outage.name)||arr[0].name:null)||null;
+
   const badge=document.getElementById('res-badge');
-  if(qn){
-    const s2=(SD[qn]||[])[slot()]||0;
+  if(Object.keys(queues).length>0){
+    const sl=slot();
+    const s2=(SD[myQ]||[])[sl]||0;
     const off=s2===1||s2===3, maybe=s2===2;
-    badge.textContent='Черга '+qn; badge.className='queue-badge '+(off||maybe?'off':'on');
+    const parts=Object.entries(queues).map(([type,num])=>
+      `<span style="font-size:12px;opacity:.7">${type}</span> <strong>${num}</strong>`
+    );
+    badge.innerHTML=parts.join('<span style="margin:0 10px;opacity:.3">|</span>');
+    badge.className='queue-badge '+(off||maybe?'off':'on');
     document.getElementById('res-ico').textContent=off?'🔴':(maybe?'🟡':'🟢');
     document.getElementById('res-title').textContent=off?'Зараз відключено':(maybe?'Можливо відключено':'Є електроенергія');
     document.getElementById('res-addr').textContent=saved.street+' '+saved.dom+', '+saved.ns;
-    startTimer(qn);
+    startTimer(myQ);
   }else{
     badge.textContent='Адреса не в графіку'; badge.className='queue-badge unk';
     document.getElementById('res-ico').textContent='❓';
@@ -478,8 +485,7 @@ function showResult(data){
   renderSched();
 }
 
-/* Timer */
-function slot(){const n=new Date();return n.getHours()*2+(n.getMinutes()>=30?1:0);}
+/* Timer */ot(){const n=new Date();return n.getHours()*2+(n.getMinutes()>=30?1:0);}
 function startTimer(q){if(tmr)clearInterval(tmr);updTimer(q);tmr=setInterval(()=>updTimer(q),1000);}
 function updTimer(q){
   const arr=SD[q]; if(!arr)return;
