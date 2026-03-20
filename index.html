@@ -110,9 +110,15 @@ h1{font-family:var(--display);font-size:clamp(18px,4vw,26px);font-weight:700;let
 .bar-seg.s2{background:#f0e68c}
 .bar-seg.s3{background:#e89090}
 .bar-seg.now{outline:3px solid #fff;outline-offset:-2px;z-index:1;position:relative}
-.bar-axis{display:flex;padding:4px 0 12px 46px;gap:1px}
-.bar-tick{flex:1;font-size:10px;color:var(--text3);text-align:left}
-.bar-tick.now{color:var(--accent);font-weight:600}
+.bar-axis{display:flex;padding:0 0 12px 46px;gap:1px}
+.bar-tick{flex:1;position:relative;height:20px}
+.bar-tick::before{content:"";position:absolute;left:0;top:0;width:1px;height:10px;background:var(--text3)}
+.bar-tick.half::before{height:5px}
+.bar-tick span{position:absolute;left:0;top:12px;font-size:14px;color:var(--text3);transform:none;white-space:nowrap}
+.bar-tick.now::before{background:var(--accent)}
+.bar-tick.now span{color:var(--accent);font-weight:600}
+
+
 .loading{text-align:center;padding:40px;color:var(--text3);font-size:13px}
 .loading::after{content:'';display:block;width:24px;height:24px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;margin:12px auto 0;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -611,7 +617,10 @@ function renderSched(){
     h+='</div></div>';
   });
   h+='<div class="bar-axis">';
-  for(let i=0;i<24;i++)h+=`<div class="bar-tick${i===now?' now':''}">${String(i).padStart(2,'0')}</div>`;
+  for(let i=0;i<24;i++){
+    h+=`<div class="bar-tick${i===now?' now':''}"><span>${String(i).padStart(2,'0')}</span></div>`;
+    h+=`<div class="bar-tick half"></div>`;
+  }
   h+='</div></div>';
   document.getElementById('sched-body').innerHTML=h;
 }
