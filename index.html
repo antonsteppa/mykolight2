@@ -13,7 +13,7 @@
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--mono);min-height:100vh;overflow-x:hidden}
 body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(79,127,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(79,127,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
-.wrap{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:0 16px 60px}
+.wrap{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:0 24px 60px}
 header{padding:32px 0 24px;text-align:center;border-bottom:1px solid var(--border);margin-bottom:32px}
 .logo-line{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:8px}
 .bolt{font-size:28px;animation:pulse 2s ease-in-out infinite}
@@ -90,22 +90,22 @@ h1{font-family:var(--display);font-size:clamp(18px,4vw,26px);font-weight:700;let
 .sched-card{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;margin-bottom:16px}
 .sched-hd{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
 .sched-title{font-family:var(--display);font-size:11px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:.1em}
-.leg{display:flex;gap:12px;flex-wrap:wrap}
-.leg-i{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2)}
-.leg-d{width:10px;height:10px;border-radius:2px}
-.bar-wrap{padding:16px 20px 4px}
-.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.bar-lbl{font-size:11px;color:var(--text2);width:32px;text-align:right;flex-shrink:0}
+.leg{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;padding:12px 20px}
+.leg-i{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text2)}
+.leg-d{width:14px;height:14px;border-radius:3px}
+.bar-wrap{padding:16px 20px 0}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.bar-lbl{font-size:12px;color:var(--text2);width:36px;text-align:right;flex-shrink:0;font-weight:500}
 .bar-lbl.my{color:var(--accent);font-weight:700}
-.bar-track{flex:1;height:40px;display:flex;border-radius:6px;overflow:hidden}
-.bar-seg{height:100%;flex:1}
+.bar-track{flex:1;height:52px;display:flex;gap:3px}
+.bar-seg{height:100%;flex:1;border-radius:4px}
 .bar-seg.s0{background:#a8e6c0}
 .bar-seg.s1{background:#f4a9a8}
-.bar-seg.s2{background:#f4cba8}
+.bar-seg.s2{background:#f0e68c}
 .bar-seg.s3{background:#e89090}
-.bar-seg.now{outline:2px solid #fff;outline-offset:-2px;z-index:1;position:relative}
-.bar-axis{display:flex;padding:2px 0 8px 40px}
-.bar-tick{flex:2;font-size:9px;color:var(--text3);text-align:left}
+.bar-seg.now{outline:3px solid #fff;outline-offset:-2px;z-index:1;position:relative}
+.bar-axis{display:flex;padding:4px 0 12px 46px}
+.bar-tick{flex:2;font-size:10px;color:var(--text3);text-align:left}
 .bar-tick.now{color:var(--accent);font-weight:600}
 .loading{text-align:center;padding:40px;color:var(--text3);font-size:13px}
 .loading::after{content:'';display:block;width:24px;height:24px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;margin:12px auto 0;animation:spin .8s linear infinite}
@@ -241,14 +241,14 @@ footer a{color:var(--text2);text-decoration:none}
   <div class="date-bar" id="date-bar" style="display:none"></div>
   <div class="sched-hd">
     <span class="sched-title" id="sched-date">Погодинний графік</span>
-    <div class="leg">
-      <span class="leg-i"><span class="leg-d" style="background:#a8e6c0"></span>Є світло</span>
-      <span class="leg-i"><span class="leg-d" style="background:#f4a9a8"></span>Немає</span>
-      <span class="leg-i"><span class="leg-d" style="background:#f4cba8"></span>Можливо</span>
-      <span class="leg-i"><span class="leg-d" style="background:#e89090"></span>Гарантовано</span>
-    </div>
   </div>
   <div id="sched-body"><div class="loading">Завантаження...</div></div>
+  <div class="leg">
+    <span class="leg-i"><span class="leg-d" style="background:#a8e6c0"></span>Світло</span>
+    <span class="leg-i"><span class="leg-d" style="background:#f4a9a8"></span>Нема</span>
+    <span class="leg-i"><span class="leg-d" style="background:#f0e68c"></span>Можливо</span>
+    <span class="leg-i"><span class="leg-d" style="background:#e89090"></span>Гарантовано</span>
+  </div>
 </div>
 
 <footer>
@@ -607,8 +607,3 @@ function renderSched(){
 
 function showErr(m){const e=document.getElementById('err');e.textContent=m;e.classList.add('on');}
 function hideErr(){document.getElementById('err').classList.remove('on');}
-
-init();
-</script>
-</body>
-</html>
