@@ -111,10 +111,10 @@ h1{font-family:var(--display);font-size:clamp(18px,4vw,26px);font-weight:700;let
 .bar-seg.s3{background:#e89090}
 .bar-seg.now{outline:3px solid #fff;outline-offset:-2px;z-index:1;position:relative}
 .bar-axis{display:flex;padding:0 0 12px 46px;gap:1px}
-.bar-tick{flex:1;position:relative;height:20px}
-.bar-tick::before{content:"";position:absolute;left:0;top:0;width:1px;height:10px;background:var(--text3)}
+.bar-tick{flex:1;position:relative;height:24px;display:flex;flex-direction:column;align-items:center}
+.bar-tick::before{content:"";width:1px;height:10px;background:#aaa;flex-shrink:0}
 .bar-tick.half::before{height:5px}
-.bar-tick span{position:absolute;left:0;top:12px;font-size:14px;color:var(--text3);transform:none;white-space:nowrap}
+.bar-tick span{font-size:14px;color:#ccc;margin-top:2px;white-space:nowrap}
 .bar-tick.now::before{background:var(--accent)}
 .bar-tick.now span{color:var(--accent);font-weight:600}
 
