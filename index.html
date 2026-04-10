@@ -14,20 +14,11 @@
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--mono);min-height:100vh;overflow-x:hidden}
 body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(79,127,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(79,127,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
-.wrap{position:relative;z-index:1;max-width:800px;margin:30px auto;padding:0 24px 60px}
-header{padding:32px 0 24px;text-align:center;border-bottom:1px solid var(--border);margin-bottom:32px}
-.logo-line{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:8px}
-.bolt{font-size:28px;animation:pulse 2s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.7;transform:scale(.95)}}
-h1{font-family:var(--display);font-size:clamp(18px,4vw,26px);font-weight:700;letter-spacing:-.02em;color:#fff}
-.subtitle{font-size:11px;color:var(--text2);letter-spacing:.15em;text-transform:uppercase;margin-top:4px}
-.time-bar{display:flex;align-items:center;justify-content:center;gap:16px;padding:10px 20px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;margin:20px 0 0;font-size:12px;color:var(--text2);flex-wrap:wrap}
+.wrap{position:relative;z-index:1;width:100%;margin:0;padding:0 16px 60px}
 #clock{color:var(--accent);font-size:15px;font-weight:600;letter-spacing:.08em}
-.upd-dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;margin-right:4px;animation:blink 2s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 
 /* Accordion */
-.acc{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;margin-bottom:16px;overflow:visible}
+.acc{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;margin:24px 0 16px;overflow:visible}
 .acc-head{display:flex;align-items:center;padding:14px 20px;cursor:pointer;gap:12px;user-select:none}
 .acc-head:hover{background:var(--bg3)}
 .acc-arrow{font-size:10px;color:var(--text3);transition:transform .2s;flex-shrink:0}
@@ -70,7 +61,7 @@ h1{font-family:var(--display);font-size:clamp(18px,4vw,26px);font-weight:700;let
 .status-icon{font-size:28px}
 .status-text h2{font-family:var(--display);font-size:16px;font-weight:500}
 .status-text p{font-size:12px;color:var(--text2);margin-top:2px}
-.queue-badge{display:inline-flex;align-items:center;padding:6px 14px;border-radius:6px;font-family:var(--display);font-size:20px;font-weight:700;margin:8px 0}
+.queue-badge{display:inline-flex;align-items:center;padding:6px 14px;border-radius:6px;font-family:var(--display);font-size:16px;font-weight:700;margin:8px 0}
 .queue-badge.off{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.2)}
 .queue-badge.on{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.2)}
 .queue-badge.unk{background:var(--bg3);color:var(--text2);border:1px solid var(--border)}
@@ -99,12 +90,7 @@ h1{font-family:var(--display);font-size:clamp(18px,4vw,26px);font-weight:700;let
 .bar-lbl{font-size:12px;color:var(--text2);width:36px;text-align:right;flex-shrink:0;font-weight:500}
 .bar-lbl.my{color:var(--accent);font-weight:700}
 .bar-track{flex:1;height:52px;display:flex;gap:1px}
-.bar-hour{flex:1;display:flex;border-radius:3px;overflow:hidden}
-.bar-hour .bar-seg{flex:1;border-radius:0}
-.bar-hour{flex:1;display:flex;gap:0}
-.bar-hour .bar-seg{flex:1;border-radius:0}
-.bar-hour:first-child .bar-seg:first-child{border-radius:3px 0 0 3px}
-.bar-hour:last-child .bar-seg:last-child{border-radius:0 3px 3px 0}
+.bar-hour{flex:1;display:flex;gap:1px}
 .bar-seg{height:100%;flex:1;border-radius:3px}
 .bar-seg.s0{background:#a8e6c0}
 .bar-seg.s1{background:#f4a9a8}
@@ -114,22 +100,19 @@ h1{font-family:var(--display);font-size:clamp(18px,4vw,26px);font-weight:700;let
 .bar-axis{display:flex;padding:0 0 12px 46px;gap:1px}
 .bar-tick{flex:1;position:relative;height:24px}
 .bar-tick::before{content:"";position:absolute;left:0;top:0;width:1px;height:10px;background:#aaa}
-.bar-tick.half::before{height:5px}
 .bar-tick span{position:absolute;left:0;transform:translateX(-50%);top:12px;font-size:14px;color:#ccc;white-space:nowrap}
-.bar-tick.now::before{background:var(--accent)}
-.bar-tick.now span{color:var(--accent);font-weight:600}
 
-/* Vertical mobile schedule */
 @media (max-width: 600px) {
-  .bar-row { flex-direction: column; align-items: stretch; gap: 8px; margin-bottom: 24px; padding: 12px; background: var(--bg3); border-radius: 8px; border: 1px solid var(--border) }
-  .bar-lbl { width: 100%; text-align: left; font-size: 14px; margin-bottom: 8px }
+  .wrap { padding: 0 8px 60px }
+  .sched-card, .acc, .result-card { border-radius: 0; margin-left: -8px; margin-right: -8px; border-left: none; border-right: none }
+  .bar-row { flex-direction: column; align-items: stretch; gap: 8px; margin-bottom: 32px; padding: 12px; background: var(--bg3); border-radius: 8px; border: 1px solid var(--border) }
+  .bar-lbl { width: 100%; text-align: left; font-size: 15px; font-weight: 700; color: var(--accent); margin-bottom: 4px }
   .bar-track { flex-direction: column; height: auto; gap: 2px }
-  .bar-hour { height: 24px; display: grid; grid-template-columns: 50px 1fr 1fr; gap: 2px; border-radius: 0 }
+  .bar-hour { height: 28px; display: grid; grid-template-columns: 60px 1fr 1fr; gap: 4px }
   .bar-hour::before { content: attr(data-h); font-size: 12px; color: var(--text2); display: flex; align-items: center }
   .bar-seg { border-radius: 4px !important }
   .bar-axis { display: none }
 }
-
 
 .loading{text-align:center;padding:40px;color:var(--text3);font-size:13px}
 .loading::after{content:'';display:block;width:24px;height:24px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;margin:12px auto 0;animation:spin .8s linear infinite}
@@ -204,8 +187,7 @@ footer a{color:var(--text2);text-decoration:none}
       <button class="btn-search" id="btn-s" disabled>🔍 Перевірити відключення</button>
     </div>
     <div class="err" id="err"></div>
-    <!-- Result inside search block -->
-    <div class="result-card" id="res-card" style="margin-top:16px;border:1px solid var(--border2);border-radius:8px">
+    <div class="result-card" id="res-card" style="margin-top:16px">
       <div class="result-status">
         <div class="status-icon" id="res-ico">⚡</div>
         <div class="status-text"><h2 id="res-title">—</h2><p id="res-addr">—</p></div>
@@ -222,7 +204,6 @@ footer a{color:var(--text2);text-decoration:none}
 
 <!-- Schedule card -->
 <div class="sched-card">
-  <!-- Queue filter accordion -->
   <div class="acc-head" onclick="toggleAcc('queues')" style="border-bottom:1px solid var(--border)">
     <span class="acc-arrow" id="arr-queues">▼</span>
     <span class="acc-title">Вибір черги</span>
@@ -230,10 +211,7 @@ footer a{color:var(--text2);text-decoration:none}
   </div>
   <div class="acc-body" id="body-queues" style="padding:16px 20px">
     <div class="cb-row">
-      <label>
-        <input type="checkbox" id="cb-all" checked onclick="toggleAll(this)">
-        <span>Всі черги</span>
-      </label>
+      <label><input type="checkbox" id="cb-all" checked onclick="toggleAll(this)"><span>Всі черги</span></label>
     </div>
     <div class="cb-grid">
       <label class="cb-item"><input type="checkbox" class="cb-q" value="1.1" checked onclick="updateQueues()"><span>1.1 Черга</span></label>
@@ -251,7 +229,6 @@ footer a{color:var(--text2);text-decoration:none}
     </div>
   </div>
 
-  <!-- Legend + chart -->
   <div class="date-bar" id="date-bar" style="display:none"></div>
   <div class="sched-hd">
     <span class="sched-title" id="sched-date">Погодинний графік</span>
@@ -267,7 +244,6 @@ footer a{color:var(--text2);text-decoration:none}
 
 <footer>
   <div>Дані: <a href="https://off.energy.mk.ua" target="_blank">off.energy.mk.ua</a> · Оновлення кожні 5 хв</div>
-  <div style="margin-top:6px">© 2026 · <a href="https://off.energy.mk.ua/Chergi_GPV.pdf" target="_blank">Черги ГПВ</a> · <a href="https://off.energy.mk.ua/Chergi_GAV.pdf" target="_blank">Черги ГАВ</a></div>
 </footer>
 </div>
 
@@ -278,20 +254,14 @@ let SD={}, QM={}, myQ=null, tmr=null, saved=null, ALL_SCHED={}, DATES=[], selDat
 let activeQ = [...QO];
 const st={filial:{d:[],v:null,l:''},ns:{d:[],v:null,l:''},street:{d:[],v:null,l:''},dom:{d:[],v:null,l:''}};
 
-/* Clock */
 function tick(){
   const n=new Date();
-  const clk = document.getElementById('clock');
-  if(clk) clk.textContent=n.toLocaleTimeString('uk-UA');
-  const dst = document.getElementById('dstr');
-  if(dst) dst.textContent=n.toLocaleDateString('uk-UA',{weekday:'long',day:'numeric',month:'long'});
   const d=n.toLocaleDateString('uk-UA',{day:'numeric',month:'long',year:'numeric'});
   const sd = document.getElementById('sched-date');
   if(sd) sd.textContent='Погодинний графік · '+d;
 }
-setInterval(tick,1000); tick();
+tick();
 
-/* Accordion */
 function toggleAcc(name){
   const body=document.getElementById('body-'+name);
   const arr=document.getElementById('arr-'+name);
@@ -300,32 +270,26 @@ function toggleAcc(name){
   if(arr) arr.textContent=isOpen?'▼':'▲';
 }
 
-/* Checkboxes */
 function toggleAll(cb){
   document.querySelectorAll('.cb-q').forEach(c=>{c.checked=cb.checked;});
   updateQueues();
 }
 function updateQueues(){
-  const checked=[...document.querySelectorAll('.cb-q:checked')].map(c=>c.value);
-  activeQ=checked;
+  activeQ = [...document.querySelectorAll('.cb-q:checked')].map(c=>c.value);
   const all=document.getElementById('cb-all');
-  const total=QO.length;
-  all.checked=checked.length===total;
-  all.indeterminate=checked.length>0&&checked.length<total;
-  const lbl=document.getElementById('queues-label');
-  lbl.textContent=checked.length===total?'Всі':checked.length===0?'Нічого':checked.join(', ');
-  localStorage.setItem('mkv_queues', JSON.stringify(checked));
+  all.checked=activeQ.length===QO.length;
+  all.indeterminate=activeQ.length>0&&activeQ.length<QO.length;
+  document.getElementById('queues-label').textContent=activeQ.length===QO.length?'Всі':activeQ.length===0?'Нічого':activeQ.join(', ');
+  localStorage.setItem('mkv_queues', JSON.stringify(activeQ));
   renderSched();
 }
 
-/* Fetch */
 async function go(url){
   const r=await fetch(url);
   if(!r.ok) throw new Error('HTTP '+r.status);
   return r.json();
 }
 
-/* Custom select */
 const NAMES=['filial','ns','street','dom'];
 function initSel(n){
   const face=document.getElementById('sf-'+n);
@@ -340,11 +304,9 @@ function initSel(n){
     if(!was){drop.classList.add('open');srch.value='';paintOpts(n,'');srch.focus();}
   });
   srch.addEventListener('input',()=>paintOpts(n,srch.value));
-  drop.addEventListener('click',e=>e.stopPropagation());
   opts.addEventListener('click',e=>{
     const el=e.target.closest('.sel-opt');
-    if(!el)return;
-    pick(n,el.dataset.id,el.dataset.lbl);
+    if(el) pick(n,el.dataset.id,el.dataset.lbl);
   });
 }
 function closeDrops(){document.querySelectorAll('.sel-drop').forEach(d=>d.classList.remove('open'));}
@@ -359,9 +321,8 @@ function paintOpts(n,q){
 }
 function setData(n,arr,ik,lk){
   st[n].d=arr.map(i=>({v:String(i[ik]),l:String(i[lk])}));
-  const face=document.getElementById('sf-'+n);
-  face.textContent='— Оберіть —';
-  face.classList.remove('off');
+  const f=document.getElementById('sf-'+n);
+  f.textContent='— Оберіть —'; f.classList.remove('off');
   paintOpts(n,'');
 }
 function resetFrom(n){
@@ -369,9 +330,8 @@ function resetFrom(n){
   NAMES.slice(i).forEach(k=>{
     st[k]={d:[],v:null,l:''};
     const f=document.getElementById('sf-'+k);
-    const ph={filial:'— Оберіть —',ns:'— Спочатку дільниця —',street:'— Спочатку місто —',dom:'— Спочатку вулицю —'};
-    f.textContent=ph[k]; f.classList.add('off');
-    document.getElementById('so-'+k).innerHTML='';
+    const ph={filial:'— Оберіть —',ns:'— По-батькові —',street:'— Спочатку місто —',dom:'— Спочатку вулицю —'};
+    f.textContent=ph[k]||'— Спочатку —'; f.classList.add('off');
   });
   document.getElementById('btn-s').disabled=true;
 }
@@ -382,268 +342,191 @@ function pick(n,v,l){
   if(n==='filial'){resetFrom('ns');fetchNs();}
   if(n==='ns'){resetFrom('street');fetchStreet();}
   if(n==='street'){resetFrom('dom');fetchDom();}
-  if(n==='dom'){document.getElementById('btn-s').disabled=false;}
+  if(n==='dom') document.getElementById('btn-s').disabled=false;
 }
 
-/* Saved */
 function loadSaved(){
   try{
     const s=localStorage.getItem('mkv5');
     if(!s)return;
     saved=JSON.parse(s);
-    document.getElementById('saved-chip').innerHTML='📍 '+saved.street+' '+saved.dom+', '+saved.ns+' <span id="clr-saved" style="cursor:pointer;margin-left:6px;color:var(--text3)">✕</span>';
+    document.getElementById('saved-chip').innerHTML='📍 '+saved.street+' '+saved.dom+' <span id="clr-saved" style="cursor:pointer;margin-left:6px">✕</span>';
     document.getElementById('saved-wrap').style.display='block';
-    document.getElementById('saved-label').textContent=saved.street+' '+saved.dom;
-    document.getElementById('clr-saved').addEventListener('click',()=>{
+    document.getElementById('clr-saved').onclick=()=>{
       localStorage.removeItem('mkv5'); saved=null;
       document.getElementById('saved-wrap').style.display='none';
-      document.getElementById('saved-label').textContent='';
-    });
+    };
   }catch(e){}
 }
 
-/* Init */
 async function init(){
   NAMES.forEach(initSel);
   loadSaved();
-  document.getElementById('btn-s').addEventListener('click',doSearch);
-  // Restore saved queue filter
+  document.getElementById('btn-s').onclick=doSearch;
   try{
-    const saved=JSON.parse(localStorage.getItem('mkv_queues'));
-    if(saved&&saved.length){
-      document.querySelectorAll('.cb-q').forEach(cb=>{cb.checked=saved.includes(cb.value);});
+    const savedFilter=JSON.parse(localStorage.getItem('mkv_queues'));
+    if(savedFilter&&savedFilter.length){
+      document.querySelectorAll('.cb-q').forEach(cb=>cb.checked=savedFilter.includes(cb.value));
       updateQueues();
     }
-  }catch(e){}
-  try{
     const data=await go(BASE+'/addr/filii');
     data.sort((a,b)=>a.fullname.localeCompare(b.fullname,'uk'));
     setData('filial',data,'idfilial','fullname');
-  }catch(e){showErr('Помилка завантаження: '+e.message);}
+  }catch(e){}
   fetchSched();
-  setInterval(fetchSched,5*60*1000);
+  setInterval(fetchSched,300000);
 }
 
 async function fetchNs(){
   const id=st.filial.v; if(!id)return;
-  document.getElementById('sf-ns').textContent='Завантаження...';
-  document.getElementById('sf-ns').classList.add('off');
   try{
     const data=await go(BASE+'/addr/filii/'+id+'/ns');
     const arr=Array.isArray(data)?data:[];
-    if(!arr.length){document.getElementById('sf-ns').textContent='Немає даних';return;}
-    const f=arr[0];
-    const ik=['idnaspunkt','idns','id'].find(k=>f[k]!==undefined);
-    const lk=['naznaspunkt','nazns','fullname','name'].find(k=>f[k]!==undefined&&typeof f[k]==='string');
-    arr.sort((a,b)=>String(a[lk]||'').localeCompare(String(b[lk]||''),'uk'));
-    setData('ns',arr,ik,lk);
-  }catch(e){document.getElementById('sf-ns').textContent='Помилка';showErr(e.message);}
+    arr.sort((a,b)=>String(a.naznaspunkt||'').localeCompare(String(b.naznaspunkt||''),'uk'));
+    setData('ns',arr,'idnaspunkt','naznaspunkt');
+  }catch(e){}
 }
 async function fetchStreet(){
   const id=st.ns.v; if(!id)return;
-  document.getElementById('sf-street').textContent='Завантаження...';
-  document.getElementById('sf-street').classList.add('off');
   try{
     const data=await go(BASE+'/addr/ns/'+id+'/street');
     data.sort((a,b)=>a.nazstreet.localeCompare(b.nazstreet,'uk'));
     setData('street',data,'idstreet','nazstreet');
-  }catch(e){document.getElementById('sf-street').textContent='Помилка';}
+  }catch(e){}
 }
 async function fetchDom(){
   const id=st.street.v; if(!id)return;
-  document.getElementById('sf-dom').textContent='Завантаження...';
-  document.getElementById('sf-dom').classList.add('off');
   try{
     const data=await go(BASE+'/addr/street/'+id+'/dom');
-    data.sort((a,b)=>{const an=parseInt(a.nazdom),bn=parseInt(b.nazdom);return(!isNaN(an)&&!isNaN(bn))?an-bn:(a.nazdom||'').localeCompare(b.nazdom||'','uk');});
+    data.sort((a,b)=>parseInt(a.nazdom)-parseInt(b.nazdom));
     setData('dom',data,'iddom','nazdom');
-  }catch(e){document.getElementById('sf-dom').textContent='Помилка';}
+  }catch(e){}
 }
 
-/* Search */
 async function doSearch(){
   const id=st.dom.v; if(!id)return;
   const btn=document.getElementById('btn-s');
-  btn.disabled=true; btn.textContent='Пошук...'; hideErr();
+  btn.disabled=true; btn.textContent='Пошук...';
   try{
     const data=await go(BASE+'/addr/dom/'+id+'/outage-queue');
     saved={ns:st.ns.l,street:st.street.l,dom:st.dom.l};
     localStorage.setItem('mkv5',JSON.stringify(saved));
     loadSaved();
     showResult(data);
-  }catch(e){showErr('Помилка: '+e.message);}
+  }catch(e){}
   btn.disabled=false; btn.innerHTML='🔍 Перевірити відключення';
 }
 
 function showResult(data){
   document.getElementById('res-card').classList.add('on');
   const arr=Array.isArray(data)?data:(data?[data]:[]);
-
-  const queues={};
-  let gpvQueue=null;
-  arr.forEach(function(x){
-    const qn=(x.outage&&x.outage.name)||x.name||x.queue_name||null;
-    const tn=(x.outageType&&x.outageType.name)||null;
+  const queues={}; let gpvQueue=null;
+  arr.forEach(x=>{
+    const qn=x.name||x.queue_name; const tn=x.outageType?x.outageType.name:null;
     if(qn&&tn) queues[tn]=qn;
     if(tn==='ГПВ') gpvQueue=qn;
   });
-
-  myQ=gpvQueue||(arr.length?(arr[0].outage&&arr[0].outage.name)||arr[0].name:null)||null;
-
+  myQ=gpvQueue||(arr.length?arr[0].name:null);
   const badge=document.getElementById('res-badge');
-  if(Object.keys(queues).length>0){
-    const sl=slot();
-    const s2=(SD[myQ]||[])[sl]||0;
+  if(Object.keys(queues).length){
+    const s2=(SD[myQ]||[])[slot()]||0;
     const off=s2===1||s2===3, maybe=s2===2;
-    const parts=Object.entries(queues).map(function(e){
-      return '<span style="font-size:12px;opacity:.7">'+e[0]+'</span> <strong>'+e[1]+'</strong>';
-    });
-    badge.innerHTML=parts.join('<span style="margin:0 10px;opacity:.3">|</span>');
-    badge.className='queue-badge '+(off||maybe?'off':'on');
-    document.getElementById('res-ico').textContent=off?'🔴':(maybe?'🟡':'🟢');
-    document.getElementById('res-title').textContent=off?'Зараз відключено':(maybe?'Можливо відключено':'Є електроенергія');
-    document.getElementById('res-addr').textContent=saved.street+' '+saved.dom+', '+saved.ns;
+    badge.innerHTML=Object.entries(queues).map(e=>`<span>${e[0]}</span> <strong>${e[1]}</strong>`).join(' | ');
+    badge.className='queue-badge '+(off?'off':maybe?'maybe':'on');
+    document.getElementById('res-ico').textContent=off?'🔴':maybe?'🟡':'🟢';
+    document.getElementById('res-title').textContent=off?'Відключено':maybe?'Можливо':'Є світло';
+    document.getElementById('res-addr').textContent=saved.street+' '+saved.dom;
     startTimer(myQ);
-  }else{
-    badge.textContent='Адреса не в графіку'; badge.className='queue-badge unk';
-    document.getElementById('res-ico').textContent='❓';
-    document.getElementById('res-title').textContent='Не знайдено в графіках';
-    document.getElementById('res-addr').textContent='';
+  } else {
+    badge.textContent='Немає в графіку'; badge.className='queue-badge unk';
     document.getElementById('timer').style.display='none';
   }
   renderSched();
 }
-/* Timer */
+
 function slot(){const n=new Date();return n.getHours()*2+(n.getMinutes()>=30?1:0);}
 function startTimer(q){if(tmr)clearInterval(tmr);updTimer(q);tmr=setInterval(()=>updTimer(q),1000);}
 function updTimer(q){
   const arr=SD[q]; if(!arr)return;
   const s=slot(),c=arr[s],off=c===1||c===2||c===3;
-  document.getElementById('timer').style.display='block';
+  const tDiv=document.getElementById('timer'); tDiv.style.display='block';
   document.getElementById('t-lbl').textContent=off?'До включення':'До відключення';
   let nx=-1;
-  for(let i=s+1;i<48;i++){const v=arr[i],iO=v===1||v===2||v===3;if(iO!==off){nx=i;break;}}
-  if(nx===-1){document.getElementById('t-val').textContent='Без змін';document.getElementById('t-desc').textContent='До кінця доби';return;}
-  const now=new Date(),nt=new Date(now);
-  nt.setHours(Math.floor(nx/2),(nx%2)*30,0,0);
+  for(let i=s+1;i<48;i++) if((arr[i]>0)!==off) {nx=i;break;}
+  if(nx===-1){document.getElementById('t-val').textContent='Без змін';return;}
+  const now=new Date(),nt=new Date(now); nt.setHours(Math.floor(nx/2),(nx%2)*30,0,0);
   const d=nt-now,h=Math.floor(d/3600000),m=Math.floor((d%3600000)/60000),sc=Math.floor((d%60000)/1000);
   document.getElementById('t-val').textContent=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sc).padStart(2,'0')}`;
   document.getElementById('t-desc').textContent=`Зміна о ${String(Math.floor(nx/2)).padStart(2,'0')}:${(nx%2)*30===0?'00':'30'}`;
 }
 
-/* Schedule */
 async function fetchSched(){
   try{
     const ts=Date.now();
     const [q,a]=await Promise.all([go(BASE+'/outage-queue/by-type/3?_='+ts),go(BASE+'/schedule/active?_='+ts)]);
-    QM={};q.forEach(function(x){if(x.id&&x.name)QM[x.id]=x.name;});
-
+    QM={}; q.forEach(x=>{if(x.id&&x.name)QM[x.id]=x.name;});
     ALL_SCHED={};
-    // New format: [{from, to, series:[{time_series_id, outage_queue_id, type}]}]
-    if(a.length && a[0].series){
-      a.forEach(function(sched){
-        var dateKey=null;
-        if(sched.from){
-          // Convert UTC to local date
-          var d=new Date(sched.from);
-          var local=new Date(d.getTime()+d.getTimezoneOffset()*60000+3*3600000);
-          dateKey=local.getFullYear()+'-'+String(local.getMonth()+1).padStart(2,'0')+'-'+String(local.getDate()).padStart(2,'0');
-        }
-        if(!dateKey) return;
-        if(!ALL_SCHED[dateKey]){ALL_SCHED[dateKey]={};QO.forEach(function(x){ALL_SCHED[dateKey][x]=new Array(48).fill(0);});}
-        (sched.series||[]).forEach(function(x){
-          var qn=QM[x.outage_queue_id];
+    if(a.length&&a[0].series){
+      a.forEach(sched=>{
+        if(!sched.from)return;
+        const d=new Date(sched.from);
+        const local=new Date(d.getTime()+d.getTimezoneOffset()*60000+10800000);
+        const dateKey=local.toISOString().split('T')[0];
+        if(!ALL_SCHED[dateKey]){ALL_SCHED[dateKey]={};QO.forEach(x=>ALL_SCHED[dateKey][x]=new Array(48).fill(0));}
+        (sched.series||[]).forEach(x=>{
+          const qn=QM[x.outage_queue_id];
           if(qn&&ALL_SCHED[dateKey][qn]){
-            var i=x.time_series_id-1;
-            var s=0;if(x.type==='OFF')s=1;else if(x.type==='PROBABLY_OFF')s=2;else if(x.type==='SURE_OFF')s=3;
-            if(i>=0&&i<48)ALL_SCHED[dateKey][qn][i]=s;
+            const i=x.time_series_id-1;
+            ALL_SCHED[dateKey][qn][i]=x.type==='OFF'?1:x.type==='PROBABLY_OFF'?2:x.type==='SURE_OFF'?3:0;
           }
         });
       });
-    } else {
-      // Old flat format
-      var today=new Date().toISOString().substring(0,10);
-      ALL_SCHED[today]={};QO.forEach(function(x){ALL_SCHED[today][x]=new Array(48).fill(0);});
-      a.forEach(function(x){
-        var qn=QM[x.outage_queue_id];
-        if(qn&&ALL_SCHED[today][qn]){
-          var i=x.time_series_id-1;
-          var s=0;if(x.type==='OFF')s=1;else if(x.type==='PROBABLY_OFF')s=2;else if(x.type==='SURE_OFF')s=3;
-          if(i>=0&&i<48)ALL_SCHED[today][qn][i]=s;
-        }
-      });
     }
-
     DATES=Object.keys(ALL_SCHED).sort();
-    var today=new Date().toISOString().substring(0,10);
+    const today=new Date().toISOString().substring(0,10);
     selDate=DATES.includes(today)?today:(DATES[0]||today);
     SD=ALL_SCHED[selDate]||{};
-
-    renderDateBar();
-    renderSched();
+    renderDateBar(); renderSched();
     if(myQ)updTimer(myQ);
-  }catch(e){
-    document.getElementById('sched-body').innerHTML='<div style="padding:20px;font-size:12px;color:var(--red)">Помилка: '+e.message+'</div>';
-  }
+  }catch(e){}
 }
 
 function renderDateBar(){
-  var bar=document.getElementById('date-bar');
-  if(DATES.length<=1){bar.style.display='none';return;}
+  const bar=document.getElementById('date-bar'); if(DATES.length<=1){bar.style.display='none';return;}
   bar.style.display='flex';
-  bar.innerHTML=DATES.map(function(d){
-    var parts=d.split('-');
-    var label=parts[2]+'.'+parts[1]+'.'+parts[0];
-    return '<button class="date-btn'+(d===selDate?' act':'')+'" data-d="'+d+'">'+label+'</button>';
+  bar.innerHTML=DATES.map(d=>{
+    const p=d.split('-'); return `<button class="date-btn${d===selDate?' act':''}" data-d="${d}">${p[2]}.${p[1]}</button>`;
   }).join('');
-  bar.querySelectorAll('.date-btn').forEach(function(btn){
-    btn.addEventListener('click',function(){
-      selDate=btn.dataset.d;
-      SD=ALL_SCHED[selDate]||{};
-      bar.querySelectorAll('.date-btn').forEach(function(b){b.classList.toggle('act',b.dataset.d===selDate);});
-      var d=new Date(selDate);
-      const sd = document.getElementById('sched-date');
-      if(sd) sd.textContent='Погодинний графік · '+d.toLocaleDateString('uk-UA',{day:'numeric',month:'long',year:'numeric'});
-      renderSched();
-      if(myQ)updTimer(myQ);
-    });
+  bar.querySelectorAll('.date-btn').forEach(btn=>{
+    btn.onclick=()=>{
+      selDate=btn.dataset.d; SD=ALL_SCHED[selDate]||{};
+      bar.querySelectorAll('.date-btn').forEach(b=>b.classList.toggle('act',b.dataset.d===selDate));
+      renderSched(); if(myQ)updTimer(myQ);
+    };
   });
 }
 
 function renderSched(){
-  if(!activeQ.length){
-    document.getElementById('sched-body').innerHTML='<div style="padding:20px;font-size:12px;color:var(--text3);text-align:center">Оберіть черги для відображення</div>';
-    return;
-  }
-  const qs=activeQ;
+  const s_body=document.getElementById('sched-body');
+  if(!activeQ.length){s_body.innerHTML='<div class="loading">Оберіть черги</div>';return;}
   const now=new Date().getHours(), cs=slot();
   let h='<div class="bar-wrap">';
-  qs.forEach(q=>{
+  activeQ.forEach(q=>{
     const arr=SD[q]||new Array(48).fill(0);
-    h+=`<div class="bar-row"><div class="bar-lbl${q===myQ?' my':''}">${q}</div><div class="bar-track">`;
+    h+=`<div class="bar-row"><div class="bar-lbl${q===myQ?' my':''}">Черга ${q}</div><div class="bar-track">`;
     for(let hr=0;hr<24;hr++){
       const s1=arr[hr*2], s2=arr[hr*2+1];
       const cur1=(hr*2===cs), cur2=(hr*2+1===cs);
-      const hStr = String(hr).padStart(2,'0') + ':00';
+      const hStr = String(hr).padStart(2, '0')+':00';
       h+=`<div class="bar-hour" data-h="${hStr}">`;
-      h+=`<div class="bar-seg s${Math.min(s1,3)}${cur1?' now':''}" title="${hStr}"></div>`;
-      h+=`<div class="bar-seg s${Math.min(s2,3)}${cur2?' now':''}" title="${String(hr).padStart(2,'0')}:30"></div>`;
+      h+=`<div class="bar-seg s${s1}${cur1?' now':''}"></div>`;
+      h+=`<div class="bar-seg s${s2}${cur2?' now':''}"></div>`;
       h+=`</div>`;
     }
     h+='</div></div>';
   });
-  h+='<div class="bar-axis">';
-  for(let i=0;i<24;i++){
-    h+=`<div class="bar-tick${i===now?' now':''}"><span>${String(i).padStart(2,'0')}</span></div>`;
-    h+=`<div class="bar-tick half"></div>`;
-  }
-  h+='</div></div>';
-  document.getElementById('sched-body').innerHTML=h;
+  s_body.innerHTML=h;
 }
-
-function showErr(m){const e=document.getElementById('err');e.textContent=m;e.classList.add('on');}
-function hideErr(){document.getElementById('err').classList.remove('on');}
-
 init();
 </script>
 </body>
