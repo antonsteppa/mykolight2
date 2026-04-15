@@ -64,6 +64,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .queue-badge{display:inline-flex;align-items:center;padding:6px 14px;border-radius:6px;font-family:var(--display);font-size:16px;font-weight:700;margin:8px 0}
 .queue-badge.off{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.2)}
 .queue-badge.on{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.2)}
+.queue-badge.maybe{background:rgba(249,115,22,.12);color:var(--orange);border:1px solid rgba(249,115,22,.2)}
 .queue-badge.unk{background:var(--bg3);color:var(--text2);border:1px solid var(--border)}
 .timer-block{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px;margin-top:12px;text-align:center}
 .timer-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px}
@@ -87,7 +88,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .leg-d{width:14px;height:14px;border-radius:3px}
 .bar-wrap{padding:16px 20px 0}
 .bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.bar-lbl{font-size:12px;color:var(--text2);width:36px;text-align:right;flex-shrink:0;font-weight:500}
+.bar-lbl{font-size:12px;color:var(--text2);width:72px;text-align:right;flex-shrink:0;font-weight:500}
 .bar-lbl.my{color:var(--accent);font-weight:700}
 .bar-track{flex:1;height:52px;display:flex;gap:1px}
 .bar-hour{flex:1;display:flex;gap:1px}
@@ -97,7 +98,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .bar-seg.s2{background:#f0e68c}
 .bar-seg.s3{background:#e89090}
 .bar-seg.now{outline:3px solid #fff;outline-offset:-2px;z-index:1;position:relative}
-.bar-axis{display:flex;padding:0 0 12px 46px;gap:1px}
+.bar-axis{display:flex;padding:0 0 12px 82px;gap:1px}
 .bar-tick{flex:1;position:relative;height:24px}
 .bar-tick::before{content:"";position:absolute;left:0;top:0;width:1px;height:10px;background:#aaa}
 .bar-tick span{position:absolute;left:0;transform:translateX(-50%);top:12px;font-size:14px;color:#ccc;white-space:nowrap}
@@ -106,7 +107,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   .wrap { padding: 0 8px 60px }
   .sched-card, .acc, .result-card { border-radius: 0; margin-left: -8px; margin-right: -8px; border-left: none; border-right: none }
   .bar-row { flex-direction: column; align-items: stretch; gap: 8px; margin-bottom: 32px; padding: 12px; background: var(--bg3); border-radius: 8px; border: 1px solid var(--border) }
-  .bar-lbl { width: 100%; text-align: left; font-size: 15px; font-weight: 700; color: var(--accent); margin-bottom: 4px }
+  .bar-lbl { width: 100%; text-align: left; font-size: 15px; font-weight: 700; color: var(--text2); margin-bottom: 4px }
+  .bar-lbl.my { color: var(--accent) }
   .bar-track { flex-direction: column; height: auto; gap: 2px }
   .bar-hour { height: 28px; display: grid; grid-template-columns: 60px 1fr 1fr; gap: 4px }
   .bar-hour::before { content: attr(data-h); font-size: 12px; color: var(--text2); display: flex; align-items: center }
@@ -250,7 +252,7 @@ footer a{color:var(--text2);text-decoration:none}
 <script>
 const BASE = 'https://billowing-recipe-682d.antonsteppa.workers.dev/api';
 const QO = ['1.1','1.2','2.1','2.2','3.1','3.2','4.1','4.2','5.1','5.2','6.1','6.2'];
-let SD={}, QM={}, myQ=null, tmr=null, saved=null, ALL_SCHED={}, DATES=[], selDate=null;
+let SD={}, QM={}, myQ=null, tmr=null, saved=null, ALL_SCHED={}, DATES=[], selDate=null, TODAY_SD={};
 let activeQ = [...QO];
 const st={filial:{d:[],v:null,l:''},ns:{d:[],v:null,l:''},street:{d:[],v:null,l:''},dom:{d:[],v:null,l:''}};
 
@@ -330,7 +332,7 @@ function resetFrom(n){
   NAMES.slice(i).forEach(k=>{
     st[k]={d:[],v:null,l:''};
     const f=document.getElementById('sf-'+k);
-    const ph={filial:'— Оберіть —',ns:'— По-батькові —',street:'— Спочатку місто —',dom:'— Спочатку вулицю —'};
+    const ph={filial:'— Оберіть —',ns:'— Спочатку дільниця —',street:'— Спочатку місто —',dom:'— Спочатку вулицю —'};
     f.textContent=ph[k]||'— Спочатку —'; f.classList.add('off');
   });
   document.getElementById('btn-s').disabled=true;
@@ -372,7 +374,7 @@ async function init(){
     const data=await go(BASE+'/addr/filii');
     data.sort((a,b)=>a.fullname.localeCompare(b.fullname,'uk'));
     setData('filial',data,'idfilial','fullname');
-  }catch(e){}
+  }catch(e){console.error('Помилка завантаження дільниць:',e);}
   fetchSched();
   setInterval(fetchSched,300000);
 }
@@ -384,7 +386,7 @@ async function fetchNs(){
     const arr=Array.isArray(data)?data:[];
     arr.sort((a,b)=>String(a.naznaspunkt||'').localeCompare(String(b.naznaspunkt||''),'uk'));
     setData('ns',arr,'idnaspunkt','naznaspunkt');
-  }catch(e){}
+  }catch(e){console.error('Помилка завантаження населених пунктів:',e);}
 }
 async function fetchStreet(){
   const id=st.ns.v; if(!id)return;
@@ -392,7 +394,7 @@ async function fetchStreet(){
     const data=await go(BASE+'/addr/ns/'+id+'/street');
     data.sort((a,b)=>a.nazstreet.localeCompare(b.nazstreet,'uk'));
     setData('street',data,'idstreet','nazstreet');
-  }catch(e){}
+  }catch(e){console.error('Помилка завантаження вулиць:',e);}
 }
 async function fetchDom(){
   const id=st.street.v; if(!id)return;
@@ -400,7 +402,7 @@ async function fetchDom(){
     const data=await go(BASE+'/addr/street/'+id+'/dom');
     data.sort((a,b)=>parseInt(a.nazdom)-parseInt(b.nazdom));
     setData('dom',data,'iddom','nazdom');
-  }catch(e){}
+  }catch(e){console.error('Помилка завантаження будинків:',e);}
 }
 
 async function doSearch(){
@@ -413,7 +415,7 @@ async function doSearch(){
     localStorage.setItem('mkv5',JSON.stringify(saved));
     loadSaved();
     showResult(data);
-  }catch(e){}
+  }catch(e){console.error('Помилка пошуку:',e);const errDiv=document.getElementById('err');errDiv.textContent='Помилка завантаження даних. Спробуйте пізніше.';errDiv.classList.add('on');}
   btn.disabled=false; btn.innerHTML='🔍 Перевірити відключення';
 }
 
@@ -429,7 +431,7 @@ function showResult(data){
   myQ=gpvQueue||(arr.length?arr[0].name:null);
   const badge=document.getElementById('res-badge');
   if(Object.keys(queues).length){
-    const s2=(SD[myQ]||[])[slot()]||0;
+    const s2=(TODAY_SD[myQ]||SD[myQ]||[])[slot()]||0;
     const off=s2===1||s2===3, maybe=s2===2;
     badge.innerHTML=Object.entries(queues).map(e=>`<span>${e[0]}</span> <strong>${e[1]}</strong>`).join(' | ');
     badge.className='queue-badge '+(off?'off':maybe?'maybe':'on');
@@ -444,18 +446,21 @@ function showResult(data){
   renderSched();
 }
 
-function slot(){const n=new Date();return n.getHours()*2+(n.getMinutes()>=30?1:0);}
+function kyivNow(){const n=new Date();const utc=n.getTime()+n.getTimezoneOffset()*60000;return new Date(utc+10800000);}
+function slot(){const n=kyivNow();return n.getHours()*2+(n.getMinutes()>=30?1:0);}
 function startTimer(q){if(tmr)clearInterval(tmr);updTimer(q);tmr=setInterval(()=>updTimer(q),1000);}
 function updTimer(q){
-  const arr=SD[q]; if(!arr)return;
+  const arr=TODAY_SD[q]||SD[q]; if(!arr)return;
   const s=slot(),c=arr[s],off=c===1||c===2||c===3;
   const tDiv=document.getElementById('timer'); tDiv.style.display='block';
   document.getElementById('t-lbl').textContent=off?'До включення':'До відключення';
   let nx=-1;
   for(let i=s+1;i<48;i++) if((arr[i]>0)!==off) {nx=i;break;}
-  if(nx===-1){document.getElementById('t-val').textContent='Без змін';return;}
-  const now=new Date(),nt=new Date(now); nt.setHours(Math.floor(nx/2),(nx%2)*30,0,0);
-  const d=nt-now,h=Math.floor(d/3600000),m=Math.floor((d%3600000)/60000),sc=Math.floor((d%60000)/1000);
+  if(nx===-1){document.getElementById('t-val').textContent='Без змін';document.getElementById('t-desc').textContent='';return;}
+  const now=kyivNow(),nt=new Date(now); nt.setHours(Math.floor(nx/2),(nx%2)*30,0,0);
+  const d=nt-now;
+  if(d<=0){document.getElementById('t-val').textContent='Без змін';document.getElementById('t-desc').textContent='';return;}
+  const h=Math.floor(d/3600000),m=Math.floor((d%3600000)/60000),sc=Math.floor((d%60000)/1000);
   document.getElementById('t-val').textContent=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sc).padStart(2,'0')}`;
   document.getElementById('t-desc').textContent=`Зміна о ${String(Math.floor(nx/2)).padStart(2,'0')}:${(nx%2)*30===0?'00':'30'}`;
 }
@@ -483,12 +488,14 @@ async function fetchSched(){
       });
     }
     DATES=Object.keys(ALL_SCHED).sort();
-    const today=new Date().toISOString().substring(0,10);
+    const nowKyiv=kyivNow();
+    const today=nowKyiv.toISOString().substring(0,10);
+    TODAY_SD=ALL_SCHED[today]||{};
     selDate=DATES.includes(today)?today:(DATES[0]||today);
     SD=ALL_SCHED[selDate]||{};
     renderDateBar(); renderSched();
     if(myQ)updTimer(myQ);
-  }catch(e){}
+  }catch(e){console.error('Помилка завантаження графіку:',e);document.getElementById('sched-body').innerHTML='<div class="loading" style="animation:none">⚠️ Помилка завантаження графіку</div>';}
 }
 
 function renderDateBar(){
@@ -509,14 +516,14 @@ function renderDateBar(){
 function renderSched(){
   const s_body=document.getElementById('sched-body');
   if(!activeQ.length){s_body.innerHTML='<div class="loading">Оберіть черги</div>';return;}
-  const now=new Date().getHours(), cs=slot();
+  const cs=slot(), isToday=(selDate===kyivNow().toISOString().substring(0,10));
   let h='<div class="bar-wrap">';
   activeQ.forEach(q=>{
     const arr=SD[q]||new Array(48).fill(0);
     h+=`<div class="bar-row"><div class="bar-lbl${q===myQ?' my':''}">Черга ${q}</div><div class="bar-track">`;
     for(let hr=0;hr<24;hr++){
       const s1=arr[hr*2], s2=arr[hr*2+1];
-      const cur1=(hr*2===cs), cur2=(hr*2+1===cs);
+      const cur1=isToday&&(hr*2===cs), cur2=isToday&&(hr*2+1===cs);
       const hStr = String(hr).padStart(2, '0')+':00';
       h+=`<div class="bar-hour" data-h="${hStr}">`;
       h+=`<div class="bar-seg s${s1}${cur1?' now':''}"></div>`;
@@ -525,6 +532,13 @@ function renderSched(){
     }
     h+='</div></div>';
   });
+  // Time axis (desktop only, hidden on mobile via CSS)
+  h+='<div class="bar-axis">';
+  for(let hr=0;hr<24;hr++){
+    h+=`<div class="bar-tick"><span>${String(hr).padStart(2,'0')}</span></div>`;
+  }
+  h+='</div>';
+  h+='</div>';
   s_body.innerHTML=h;
 }
 init();
