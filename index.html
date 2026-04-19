@@ -244,25 +244,74 @@ footer a{color:var(--text2);text-decoration:none}
   <div id="sched-body"><div class="loading">Завантаження...</div></div>
   <div class="leg">
     <span class="leg-i"><span class="leg-d" style="background:#a8e6c0"></span>Світло</span>
-    <span class="leg-i"><span class="leg-d" style="background:#f4a9a8"></span>Нема</span>
+    <span class="leg-i"><span class="leg-d" style="background:#f4a9a8"></span>Немає</span>
     <span class="leg-i"><span class="leg-d" style="background:#f0e68c"></span>Можливо</span>
     <span class="leg-i"><span class="leg-d" style="background:#e89090"></span>Гарантовано</span>
   </div>
 </div>
 
 <footer>
-  <div>Дані: <a href="https://off.energy.mk.ua" target="_blank">off.energy.mk.ua</a> · Оновлення кожні 5 хв</div>
+  <div>Дані: Google Sheets · Оновлення кожні 5 хв</div>
 </footer>
 </div>
 
 <script>
-const API_BASES = [
-  'https://billowing-recipe-682d.antonsteppa.workers.dev/api'
-];
+const SCHEDULE_SHEET_ID = '1ue9qF2dIjy78-bd11obwxTxjG97HMDTt7HflvmVnMMQ';
+const ADDRESS_SHEET_ID = '1M6cXNrZ0yUHV6G3UT1r0shWBwdKDO-LBw8DiOBv1vMU';
+const SCHEDULE_SHEET_NAME = 'Data';
+const ADDRESS_SHEET_NAME = 'AddressData';
 const QO = ['1.1','1.2','2.1','2.2','3.1','3.2','4.1','4.2','5.1','5.2','6.1','6.2'];
-let SD={}, QM={}, myQ=null, tmr=null, saved=null, ALL_SCHED={}, DATES=[], selDate=null, TODAY_SD={};
+let SD={}, myQ=null, tmr=null, saved=null, ALL_SCHED={}, DATES=[], selDate=null, TODAY_SD={}, ADDRESS_ROWS=[];
 let activeQ = [...QO];
 const st={filial:{d:[],v:null,l:''},ns:{d:[],v:null,l:''},street:{d:[],v:null,l:''},dom:{d:[],v:null,l:''}};
+
+function loadSheetRows(sheetId,sheetName){
+  return new Promise((resolve,reject)=>{
+    const cb='sheetCb_'+Math.random().toString(36).slice(2);
+    const script=document.createElement('script');
+    const cleanup=()=>{
+      delete window[cb];
+      script.remove();
+    };
+    window[cb]=(payload)=>{
+      try{
+        const rows=((payload||{}).table||{}).rows||[];
+        resolve(rows.map(row => (row.c || []).map(cell => { if (!cell) return ''; return cell.f != null ? cell.f : cell.v; })));
+      }catch(err){
+        reject(err);
+      }finally{
+        cleanup();
+      }
+    };
+    script.onerror=()=>{
+      cleanup();
+      reject(new Error('Google Sheets request failed'));
+    };
+    script.src=`https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json;responseHandler:${cb}&sheet=${encodeURIComponent(sheetName)}`;
+    document.head.appendChild(script);
+  }).then(rows=>rows.filter(row=>row.some(value=>String(value).trim()!=='')));
+}
+
+function uniqBy(items,key){
+  const seen=new Set();
+  return items.filter(item=>{
+    const val=String(item[key]||'');
+    if(seen.has(val)) return false;
+    seen.add(val);
+    return true;
+  });
+}
+
+function sortByText(key){
+  return (a,b)=>String(a[key]||'').localeCompare(String(b[key]||''),'uk');
+}
+
+function byNumThenText(a,b,key){
+  const av=String(a[key]||''), bv=String(b[key]||'');
+  const an=parseInt(av,10), bn=parseInt(bv,10);
+  if(!Number.isNaN(an)&&!Number.isNaN(bn)&&an!==bn) return an-bn;
+  return av.localeCompare(bv,'uk');
+}
 
 function tick(){
   const n=new Date();
@@ -284,6 +333,7 @@ function toggleAll(cb){
   document.querySelectorAll('.cb-q').forEach(c=>{c.checked=cb.checked;});
   updateQueues();
 }
+
 function updateQueues(){
   activeQ = [...document.querySelectorAll('.cb-q:checked')].map(c=>c.value);
   const all=document.getElementById('cb-all');
@@ -292,20 +342,6 @@ function updateQueues(){
   document.getElementById('queues-label').textContent=activeQ.length===QO.length?'Всі':activeQ.length===0?'Нічого':activeQ.join(', ');
   localStorage.setItem('mkv_queues', JSON.stringify(activeQ));
   renderSched();
-}
-
-async function go(path){
-  let lastErr=null;
-  for(const base of API_BASES){
-    try{
-      const r=await fetch(base+path,{mode:'cors',cache:'no-store'});
-      if(!r.ok) throw new Error('HTTP '+r.status+' @ '+base);
-      return r.json();
-    }catch(err){
-      lastErr=err;
-    }
-  }
-  throw lastErr||new Error('API unavailable');
 }
 
 const NAMES=['filial','ns','street','dom'];
@@ -327,6 +363,7 @@ function initSel(n){
     if(el) pick(n,el.dataset.id,el.dataset.lbl);
   });
 }
+
 function closeDrops(){document.querySelectorAll('.sel-drop').forEach(d=>d.classList.remove('open'));}
 document.addEventListener('click',closeDrops);
 
@@ -337,22 +374,27 @@ function paintOpts(n,q){
   if(!list.length){opts.innerHTML='<div class="sel-none">Нічого не знайдено</div>';return;}
   opts.innerHTML=list.map(i=>`<div class="sel-opt${st[n].v==i.v?' sel':''}" data-id="${i.v}" data-lbl="${i.l.replace(/"/g,'&quot;')}">${i.l}</div>`).join('');
 }
+
 function setData(n,arr,ik,lk){
   st[n].d=arr.map(i=>({v:String(i[ik]),l:String(i[lk])}));
   const f=document.getElementById('sf-'+n);
-  f.textContent='— Оберіть —'; f.classList.remove('off');
+  f.textContent='— Оберіть —';
+  f.classList.remove('off');
   paintOpts(n,'');
 }
+
 function resetFrom(n){
   const i=NAMES.indexOf(n);
   NAMES.slice(i).forEach(k=>{
     st[k]={d:[],v:null,l:''};
     const f=document.getElementById('sf-'+k);
     const ph={filial:'— Оберіть —',ns:'— Спочатку дільниця —',street:'— Спочатку місто —',dom:'— Спочатку вулицю —'};
-    f.textContent=ph[k]||'— Спочатку —'; f.classList.add('off');
+    f.textContent=ph[k]||'— Спочатку —';
+    f.classList.add('off');
   });
   document.getElementById('btn-s').disabled=true;
 }
+
 function pick(n,v,l){
   st[n].v=v; st[n].l=l;
   document.getElementById('sf-'+n).textContent=l;
@@ -371,7 +413,8 @@ function loadSaved(){
     document.getElementById('saved-chip').innerHTML='📍 '+saved.street+' '+saved.dom+' <span id="clr-saved" style="cursor:pointer;margin-left:6px">✕</span>';
     document.getElementById('saved-wrap').style.display='block';
     document.getElementById('clr-saved').onclick=()=>{
-      localStorage.removeItem('mkv5'); saved=null;
+      localStorage.removeItem('mkv5');
+      saved=null;
       document.getElementById('saved-wrap').style.display='none';
     };
   }catch(e){}
@@ -387,36 +430,61 @@ async function init(){
       document.querySelectorAll('.cb-q').forEach(cb=>cb.checked=savedFilter.includes(cb.value));
       updateQueues();
     }
-    const data=await go('/addr/filii');
-    data.sort((a,b)=>a.fullname.localeCompare(b.fullname,'uk'));
-    setData('filial',data,'idfilial','fullname');
-  }catch(e){console.error('Помилка завантаження дільниць:',e);}
+    await fetchAddresses();
+  }catch(e){console.error('Помилка завантаження адресної таблиці:',e);}
   fetchSched();
   setInterval(fetchSched,300000);
+}
+
+async function fetchAddresses(){
+  const rows=await loadSheetRows(ADDRESS_SHEET_ID,ADDRESS_SHEET_NAME);
+  ADDRESS_ROWS=rows
+    .filter(r=>String(r[0]||'').trim()!=='' && String(r[1]||'').trim()!=='')
+    .map(r=>({
+      idfilial:String(r[0]||''),
+      fullname:String(r[1]||''),
+      idnaspunkt:String(r[2]||''),
+      naznaspunkt:String(r[3]||''),
+      idstreet:String(r[4]||''),
+      nazstreet:String(r[5]||''),
+      iddom:String(r[6]||''),
+      nazdom:String(r[7]||''),
+      queue_name:String(r[8]||'').trim(),
+      outage_type:String(r[9]||'').trim()
+    }));
+  const filii=uniqBy(ADDRESS_ROWS,'idfilial').sort(sortByText('fullname'));
+  if(filii.length){
+    setData('filial',filii,'idfilial','fullname');
+  }else{
+    resetFrom('filial');
+    const face=document.getElementById('sf-filial');
+    face.textContent='— Адресна таблиця поки порожня —';
+  }
 }
 
 async function fetchNs(){
   const id=st.filial.v; if(!id)return;
   try{
-    const data=await go('/addr/filii/'+id+'/ns');
-    const arr=Array.isArray(data)?data:[];
+    const arr=uniqBy(ADDRESS_ROWS.filter(x=>String(x.idfilial)===String(id)),'idnaspunkt');
     arr.sort((a,b)=>String(a.naznaspunkt||'').localeCompare(String(b.naznaspunkt||''),'uk'));
     setData('ns',arr,'idnaspunkt','naznaspunkt');
   }catch(e){console.error('Помилка завантаження населених пунктів:',e);}
 }
+
 async function fetchStreet(){
   const id=st.ns.v; if(!id)return;
   try{
-    const data=await go('/addr/ns/'+id+'/street');
-    data.sort((a,b)=>a.nazstreet.localeCompare(b.nazstreet,'uk'));
+    const data=uniqBy(ADDRESS_ROWS.filter(x=>String(x.idnaspunkt)===String(id)),'idstreet');
+    data.sort((a,b)=>String(a.nazstreet||'').localeCompare(String(b.nazstreet||''),'uk'));
     setData('street',data,'idstreet','nazstreet');
   }catch(e){console.error('Помилка завантаження вулиць:',e);}
 }
+
 async function fetchDom(){
   const id=st.street.v; if(!id)return;
   try{
-    const data=await go('/addr/street/'+id+'/dom');
-    data.sort((a,b)=>parseInt(a.nazdom)-parseInt(b.nazdom));
+    const data=uniqBy(ADDRESS_ROWS.filter(x=>String(x.idstreet)===String(id)),'iddom');
+    data.sort((a,b)=>byNumThenText(a,b,'nazdom'));
     setData('dom',data,'iddom','nazdom');
   }catch(e){console.error('Помилка завантаження будинків:',e);}
 }
@@ -426,13 +494,15 @@ async function doSearch(){
   const btn=document.getElementById('btn-s');
   btn.disabled=true; btn.textContent='Пошук...';
   try{
-    const data=await go('/addr/dom/'+id+'/outage-queue');
+    const rows=ADDRESS_ROWS.filter(x=>String(x.iddom)===String(id));
+    const data=rows.filter(x=>x.queue_name).map(x=>({name:x.queue_name,outageType:{name:x.outage_type||'ГПВ'}}));
     saved={ns:st.ns.l,street:st.street.l,dom:st.dom.l};
     localStorage.setItem('mkv5',JSON.stringify(saved));
     loadSaved();
     showResult(data);
-  }catch(e){console.error('Помилка пошуку:',e);const errDiv=document.getElementById('err');errDiv.textContent='Помилка завантаження даних. Спробуйте пізніше.';errDiv.classList.add('on');}
-  btn.disabled=false; btn.innerHTML='🔍 Перевірити відключення';
+  }catch(e){console.error('Помилка пошуку:',e);const errDiv=document.getElementById('err');errDiv.textContent='Помилка читання адресної таблиці. Спробуйте пізніше.';errDiv.classList.add('on');}
+  btn.disabled=false;
+  btn.innerHTML='🔍 Перевірити відключення';
 }
 
 function showResult(data){
@@ -440,7 +510,8 @@ function showResult(data){
   const arr=Array.isArray(data)?data:(data?[data]:[]);
   const queues={}; let gpvQueue=null;
   arr.forEach(x=>{
-    const qn=x.name||x.queue_name; const tn=x.outageType?x.outageType.name:null;
+    const qn=x.name||x.queue_name;
+    const tn=x.outageType?x.outageType.name:null;
     if(qn&&tn) queues[tn]=qn;
     if(tn==='ГПВ') gpvQueue=qn;
   });
@@ -455,8 +526,12 @@ function showResult(data){
     document.getElementById('res-title').textContent=off?'Відключено':maybe?'Можливо':'Є світло';
     document.getElementById('res-addr').textContent=saved.street+' '+saved.dom;
     startTimer(myQ);
-  } else {
-    badge.textContent='Немає в графіку'; badge.className='queue-badge unk';
+  }else{
+    badge.textContent='Черга ще не прив’язана в таблиці адрес';
+    badge.className='queue-badge unk';
+    document.getElementById('res-ico').textContent='⚠';
+    document.getElementById('res-title').textContent='Немає прив’язки';
+    document.getElementById('res-addr').textContent=saved?saved.street+' '+saved.dom:'—';
     document.getElementById('timer').style.display='none';
   }
   renderSched();
@@ -465,10 +540,12 @@ function showResult(data){
 function kyivNow(){const n=new Date();const utc=n.getTime()+n.getTimezoneOffset()*60000;return new Date(utc+10800000);}
 function slot(){const n=kyivNow();return n.getHours()*2+(n.getMinutes()>=30?1:0);}
 function startTimer(q){if(tmr)clearInterval(tmr);updTimer(q);tmr=setInterval(()=>updTimer(q),1000);}
+
 function updTimer(q){
   const arr=TODAY_SD[q]||SD[q]; if(!arr)return;
   const s=slot(),c=arr[s],off=c===1||c===2||c===3;
-  const tDiv=document.getElementById('timer'); tDiv.style.display='block';
+  const tDiv=document.getElementById('timer');
+  tDiv.style.display='block';
   document.getElementById('t-lbl').textContent=off?'До включення':'До відключення';
   let nx=-1;
   for(let i=s+1;i<48;i++) if((arr[i]>0)!==off) {nx=i;break;}
@@ -483,48 +560,49 @@ function updTimer(q){
 
 async function fetchSched(){
   try{
-    const ts=Date.now();
-    const [q,a]=await Promise.all([go('/outage-queue/by-type/3?_='+ts),go('/schedule/active?_='+ts)]);
-    QM={}; q.forEach(x=>{if(x.id&&x.name)QM[x.id]=x.name;});
-    ALL_SCHED={};
-    if(a.length&&a[0].series){
-      a.forEach(sched=>{
-        if(!sched.from)return;
-        const d=new Date(sched.from);
-        const local=new Date(d.getTime()+d.getTimezoneOffset()*60000+10800000);
-        const dateKey=local.toISOString().split('T')[0];
-        if(!ALL_SCHED[dateKey]){ALL_SCHED[dateKey]={};QO.forEach(x=>ALL_SCHED[dateKey][x]=new Array(48).fill(0));}
-        (sched.series||[]).forEach(x=>{
-          const qn=QM[x.outage_queue_id];
-          if(qn&&ALL_SCHED[dateKey][qn]){
-            const i=x.time_series_id-1;
-            ALL_SCHED[dateKey][qn][i]=x.type==='OFF'?1:x.type==='PROBABLY_OFF'?2:x.type==='SURE_OFF'?3:0;
-          }
-        });
-      });
+    const rows=await loadSheetRows(SCHEDULE_SHEET_ID,SCHEDULE_SHEET_NAME);
+    if(!rows.length){
+      ALL_SCHED={}; DATES=[]; selDate=null; SD={}; TODAY_SD={};
+      renderDateBar();
+      document.getElementById('sched-body').innerHTML='<div class="loading" style="animation:none">У таблиці графіка поки немає даних</div>';
+      return;
     }
-    DATES=Object.keys(ALL_SCHED).sort();
-    const nowKyiv=kyivNow();
-    const today=nowKyiv.toISOString().substring(0,10);
-    TODAY_SD=ALL_SCHED[today]||{};
-    selDate=DATES.includes(today)?today:(DATES[0]||today);
-    SD=ALL_SCHED[selDate]||{};
-    renderDateBar(); renderSched();
-    if(myQ)updTimer(myQ);
-  }catch(e){console.error('Помилка завантаження графіку:',e);document.getElementById('sched-body').innerHTML='<div class="loading" style="animation:none">⚠️ Помилка завантаження графіку</div>';}
+    const today=kyivNow().toISOString().substring(0,10);
+    const day={}; QO.forEach(x=>day[x]=new Array(48).fill(0));
+    rows.forEach(r=>{
+      const q=String(r[0]||'').trim();
+      if(!day[q]) return;
+      for(let i=0;i<48;i++) day[q][i]=Number(r[i+1]||0)||0;
+    });
+    ALL_SCHED={[today]:day};
+    DATES=[today];
+    TODAY_SD=day;
+    selDate=today;
+    SD=day;
+    renderDateBar();
+    renderSched();
+    if(myQ) updTimer(myQ);
+  }catch(e){
+    console.error('Помилка завантаження графіка:',e);
+    document.getElementById('sched-body').innerHTML='<div class="loading" style="animation:none">⚠️ Помилка завантаження графіка з Google Sheets</div>';
+  }
 }
 
 function renderDateBar(){
-  const bar=document.getElementById('date-bar'); if(DATES.length<=1){bar.style.display='none';return;}
+  const bar=document.getElementById('date-bar');
+  if(DATES.length<=1){bar.style.display='none';return;}
   bar.style.display='flex';
   bar.innerHTML=DATES.map(d=>{
-    const p=d.split('-'); return `<button class="date-btn${d===selDate?' act':''}" data-d="${d}">${p[2]}.${p[1]}</button>`;
+    const p=d.split('-');
+    return `<button class="date-btn${d===selDate?' act':''}" data-d="${d}">${p[2]}.${p[1]}</button>`;
   }).join('');
   bar.querySelectorAll('.date-btn').forEach(btn=>{
     btn.onclick=()=>{
-      selDate=btn.dataset.d; SD=ALL_SCHED[selDate]||{};
+      selDate=btn.dataset.d;
+      SD=ALL_SCHED[selDate]||{};
       bar.querySelectorAll('.date-btn').forEach(b=>b.classList.toggle('act',b.dataset.d===selDate));
-      renderSched(); if(myQ)updTimer(myQ);
+      renderSched();
+      if(myQ)updTimer(myQ);
     };
   });
 }
@@ -548,16 +626,16 @@ function renderSched(){
     }
     h+='</div></div>';
   });
-  // Time axis (desktop only, hidden on mobile via CSS)
   h+='<div class="bar-axis">';
-  for(let hr=0;hr<24;hr++){
-    h+=`<div class="bar-tick"><span>${String(hr).padStart(2,'0')}</span></div>`;
-  }
-  h+='</div>';
-  h+='</div>';
+  for(let hr=0;hr<24;hr++) h+=`<div class="bar-tick"><span>${String(hr).padStart(2,'0')}</span></div>`;
+  h+='</div></div>';
   s_body.innerHTML=h;
 }
+
 init();
 </script>
 </body>
 </html>
+
+
+
