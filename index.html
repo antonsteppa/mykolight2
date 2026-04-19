@@ -103,10 +103,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .bar-seg.now::after{content:"";position:absolute;inset:0;z-index:1;background:rgba(92,200,255,.88);animation:nowBlink 1.8s ease-in-out infinite;pointer-events:none}
 .bar-axis{display:flex;padding:0 0 12px 82px;gap:1px}
 .bar-tick{flex:1;position:relative;height:24px}
-.bar-tick::before{content:"";position:absolute;left:calc(100% + .5px);top:0;width:1px;height:10px;background:#aaa;transform:translateX(-50%)}
-.bar-tick:first-child::after{content:"";position:absolute;left:0;top:0;width:1px;height:10px;background:#aaa}
-.bar-tick span{position:absolute;left:calc(100% + .5px);transform:translateX(-50%);top:12px;font-size:14px;color:#ccc;white-space:nowrap}
-.bar-tick:first-child span{left:0;transform:translateX(-50%)}
+.bar-tick::before{content:"";position:absolute;left:0;top:0;width:1px;height:10px;background:#aaa;transform:translateX(-50%)}
+.bar-tick span{position:absolute;left:0;transform:translateX(-50%);top:12px;font-size:14px;color:#ccc;white-space:nowrap}
 @keyframes nowBlink{
   0%,100%{opacity:.38}
   50%{opacity:.92}
