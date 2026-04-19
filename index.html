@@ -12,9 +12,9 @@
 :root{--bg:#0a0a0f;--bg2:#0f0f1a;--bg3:#14141f;--bg4:#1a1a28;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);--text:#e8e8f0;--text2:#8888a8;--text3:#4a4a6a;--accent:#4f7fff;--accent2:#3a5fcc;--green:#22c55e;--red:#ef4444;--orange:#f97316;--mono:'JetBrains Mono',monospace;--display:'Unbounded',sans-serif}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:var(--mono);min-height:100vh;overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:var(--mono);min-height:100dvh;overflow-x:hidden;display:flex;flex-direction:column}
 body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(79,127,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(79,127,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
-.wrap{position:relative;z-index:1;width:100%;max-width:1400px;margin:0 auto;padding:0 16px 60px}
+.wrap{position:relative;z-index:1;width:100%;max-width:1400px;margin:0 auto;padding:0 16px 8px;flex:1;display:flex;flex-direction:column}
 #clock{color:var(--accent);font-size:15px;font-weight:600;letter-spacing:.08em}
 
 /* Accordion */
@@ -115,7 +115,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 }
 
 @media (max-width: 600px) {
-  .wrap { padding: 0 8px 60px }
+  .wrap { padding: 0 8px 0 }
   .sched-card, .acc, .result-card { border-radius: 0; margin-left: -8px; margin-right: -8px; border-left: none; border-right: none }
   .bar-row { flex-direction: column; align-items: stretch; gap: 8px; margin-bottom: 32px; padding: 12px; background: var(--bg3); border-radius: 8px; border: 1px solid var(--border) }
   .bar-lbl { width: 100%; text-align: left; font-size: 15px; font-weight: 700; color: var(--text2); margin-bottom: 4px }
@@ -138,7 +138,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .date-btn{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:var(--mono);font-size:12px;padding:8px 16px;cursor:pointer;transition:all .2s}
 .date-btn:hover{border-color:var(--accent);color:var(--text)}
 .date-btn.act{background:var(--accent);border-color:var(--accent);color:#fff}
-footer{text-align:center;padding:24px 0;font-size:10px;color:var(--text3);border-top:1px solid var(--border)}
+footer{text-align:center;padding:12px 0 2px;font-size:10px;color:var(--text3);border-top:1px solid var(--border);margin-top:auto}
 footer a{color:var(--text2);text-decoration:none}
 </style>
 </head>
