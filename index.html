@@ -24,6 +24,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .acc-arrow{font-size:10px;color:var(--text3);transition:transform .2s;flex-shrink:0}
 .acc-arrow.open{transform:rotate(180deg)}
 .acc-title{font-family:var(--display);font-size:12px;font-weight:500;color:var(--text2);letter-spacing:.05em}
+.acc-sub{font-family:var(--display);font-size:12px;font-weight:300;color:var(--text2);letter-spacing:.05em}
 .acc-body{display:none;padding:0 20px 20px;overflow:visible}
 .acc-body.open{display:block;overflow:visible}
 
@@ -226,6 +227,7 @@ footer a{color:var(--text2);text-decoration:none}
   <div class="acc-head" onclick="toggleAcc('queues')" style="border-bottom:1px solid var(--border)">
     <span class="acc-arrow" id="arr-queues">▼</span>
     <span class="acc-title">Вибір черги</span>
+    <span class="acc-sub" id="queues-date"></span>
     <span id="queues-label" style="margin-left:auto;font-size:11px;color:var(--text2)">Всі</span>
   </div>
   <div class="acc-body" id="body-queues" style="padding:16px 20px">
@@ -249,9 +251,6 @@ footer a{color:var(--text2);text-decoration:none}
   </div>
 
   <div class="date-bar" id="date-bar" style="display:none"></div>
-  <div class="sched-hd">
-    <span class="sched-title" id="sched-date">Погодинний графік</span>
-  </div>
   <div id="sched-body"><div class="loading">Завантаження...</div></div>
   <div class="leg">
     <span class="leg-i"><span class="leg-d" style="background:#a8e6c0"></span>Світло</span>
@@ -326,9 +325,10 @@ function byNumThenText(a,b,key){
 
 function tick(){
   const n=new Date();
-  const d=n.toLocaleDateString('uk-UA',{day:'numeric',month:'long',year:'numeric'});
-  const sd = document.getElementById('sched-date');
-  if(sd) sd.textContent='Погодинний графік · '+d;
+  const wd=n.toLocaleDateString('uk-UA',{weekday:'short'}).replace('.', '').replace(',', '').trim();
+  const d=n.toLocaleDateString('uk-UA',{day:'2-digit',month:'2-digit',year:'2-digit'});
+  const qd = document.getElementById('queues-date');
+  if(qd) qd.textContent=wd+'. '+d;
 }
 tick();
 
