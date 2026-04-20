@@ -117,7 +117,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 @media (max-width: 600px) {
   .wrap { padding: 0 8px 0 }
   .sched-card, .acc, .result-card { border-radius: 0; margin-left: -8px; margin-right: -8px; border-left: none; border-right: none }
-  .bar-row { flex-direction: column; align-items: stretch; gap: 8px; margin-bottom: 32px; padding: 12px; background: var(--bg3); border-radius: 8px; border: 1px solid var(--border) }
+  .bar-wrap { display: flex; flex-direction: column; gap: 6px; padding: 8px 12px 0 }
+  .bar-row { flex-direction: column; align-items: stretch; gap: 8px; margin-bottom: 0; padding: 12px; background: var(--bg3); border-radius: 8px; border: 1px solid var(--border) }
   .bar-lbl { width: 100%; text-align: left; font-size: 15px; font-weight: 700; color: var(--text2); margin-bottom: 4px }
   .bar-lbl.my { color: var(--accent) }
   .bar-track { flex-direction: column; height: auto; gap: 1px }
@@ -129,6 +130,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   .bar-hour > .bar-seg:first-of-type { border-radius: 4px 0 0 4px !important }
   .bar-hour > .bar-seg:last-of-type { border-radius: 0 4px 4px 0 !important }
   .bar-axis { display: none }
+  .leg { padding: 0 20px 8px }
 }
 
 .loading{text-align:center;padding:40px;color:var(--text3);font-size:13px}
