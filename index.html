@@ -14,11 +14,11 @@
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--mono);min-height:100dvh;overflow-x:hidden;display:flex;flex-direction:column}
 body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(79,127,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(79,127,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
-.wrap{position:relative;z-index:1;width:100%;max-width:1400px;margin:0 auto;padding:0 16px 8px;flex:1;display:flex;flex-direction:column}
+.wrap{position:relative;z-index:1;width:100%;max-width:1400px;margin:0 auto;padding:16px 16px 8px;flex:1;display:flex;flex-direction:column}
 #clock{color:var(--accent);font-size:15px;font-weight:600;letter-spacing:.08em}
 
 /* Accordion */
-.acc{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;margin:24px 0 16px;overflow:visible}
+.acc{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;margin:0 0 16px;overflow:visible}
 .acc-head{display:flex;align-items:center;padding:14px 20px;cursor:pointer;gap:12px;user-select:none}
 .acc-head:hover{background:var(--bg3)}
 .acc-arrow{font-size:10px;color:var(--text3);transition:transform .2s;flex-shrink:0}
@@ -81,7 +81,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .cb-item input{width:14px;height:14px;accent-color:var(--accent);cursor:pointer;flex-shrink:0}
 
 /* Schedule bar chart */
-.sched-card{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;margin-bottom:16px}
+.sched-card{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;margin:0 0 16px}
 .sched-hd{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
 .sched-title{font-family:var(--display);font-size:11px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:.1em}
 .leg{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;padding:12px 20px}
@@ -116,10 +116,11 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 }
 
 @media (max-width: 600px) {
-  .wrap { padding: 0 8px 0 }
-  .sched-card, .acc, .result-card { border-radius: 0; margin-left: -8px; margin-right: -8px; border-left: none; border-right: none }
+  .wrap { padding: 12px 8px 0 }
+  .sched-card, .acc { border-radius: 12px; margin: 0 0 12px; border-left: 1px solid var(--border2); border-right: 1px solid var(--border2) }
+  .result-card { border-radius: 12px; margin: 12px 0 0 }
   .bar-wrap { display: flex; flex-direction: column; gap: 6px; padding: 8px 12px 0 }
-  .bar-row { flex-direction: column; align-items: stretch; gap: 8px; margin-bottom: 0; padding: 12px; background: var(--bg3); border-radius: 8px; border: 1px solid var(--border) }
+  .bar-row { flex-direction: column; align-items: stretch; gap: 8px; margin-bottom: 0; padding: 0; background: transparent; border: none; border-radius: 0 }
   .bar-lbl { width: 100%; text-align: left; font-size: 15px; font-weight: 700; color: var(--text2); margin-bottom: 4px }
   .bar-lbl.my { color: var(--accent) }
   .bar-track { flex-direction: column; height: auto; gap: 1px }
@@ -222,8 +223,8 @@ footer a{color:var(--text2);text-decoration:none}
   </div>
 </div>
 
-<!-- Schedule card -->
-<div class="sched-card">
+<!-- Queue selection -->
+<div class="acc">
   <div class="acc-head" onclick="toggleAcc('queues')" style="border-bottom:1px solid var(--border)">
     <span class="acc-arrow" id="arr-queues">▼</span>
     <span class="acc-title">Вибір черги</span>
@@ -249,7 +250,10 @@ footer a{color:var(--text2);text-decoration:none}
       <label class="cb-item"><input type="checkbox" class="cb-q" value="6.2" checked onclick="updateQueues()"><span>6.2 Черга</span></label>
     </div>
   </div>
+</div>
 
+<!-- Schedule card -->
+<div class="sched-card">
   <div class="date-bar" id="date-bar" style="display:none"></div>
   <div id="sched-body"><div class="loading">Завантаження...</div></div>
   <div class="leg">
